@@ -1,0 +1,25 @@
+.card {
+    border-radius: 4px;
+    border-color: #DEE1E6FF;
+    min-height: 350px;
+}
+
+.main-btn {
+    font-family: "Source Sans 3", sans-serif;
+}
+
+.loading-icon {
+    padding: 1.1rem;
+    border: black dashed 5px;
+    opacity: 0.5;
+    border-radius: 50%;
+}
+
+.coming-soon {
+    background-color: #F3F4F6FF;
+    font-family: "Source Sans 3", sans-serif;
+}
+
+footer {
+    margin-top: 8rem;
+}
