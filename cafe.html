@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafe Menu</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+        integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="styles/cafe.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
+        <div class="container-fluid ms-2 me-2">
+            <a class="navbar-brand" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav text-center text-lg-start me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link ms-2 " aria-current="page" href="./index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link ms-2" href="#">Gallery</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link ms-2" href="#">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link ms-2" href="./booking.html">Booking</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active ms-2" href="#">Cafe</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link ms-2" href="#">About</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="profile-img d-none d-lg-block">
+                <img src="images/profile.jpg" class="img-fluid rounded-pill" alt="">
+            </div>
+        </div>
+    </nav>
+
+    <div class="container pt-5 pe-5">
+        <div class="heading ">
+            <h1 class="fw-bolder mb-4">Our Cafe Menu</h1>
+            <h2 class="fw-semibold pb-3 sub-title">Drinks</h2>
+        </div>
+        <div class="row pt-3 g-4">
+            <div class="box col-12 col-md-6 col-lg-3">
+                <div class="card pt-3 h-100">
+                    <div class="ps-3 pe-3">
+                        <img src="images/cafe/drinks/img1.png" class="card-img-top" alt="...">
+                    </div>
+                    <div class="card-body pb-1 d-flex flex-column">
+                        <h4 class="item-name fw-bold">Classic Latte</h4>
+                        <p class="card-text text-black-50 fw-semibold">Rich espresso, steamed milk, and a thin layer of
+                            foam.</p>
+                        <p class="btn main-btn rounded-pill mt-auto">$4.50</p>
+                    </div>
+                </div>
+            </div>
+            <div class="box col-12 col-md-6 col-lg-3">
+                <div class="card pt-3 h-100">
+                    <div class="ps-3 pe-3">
+                        <img src="images/cafe/drinks/img2.png" class="card-img-top" alt="...">
+                    </div>
+                    <div class="card-body pb-1 d-flex flex-column">
+                        <h4 class="item-name fw-bold">Americano</h4>
+                        <p class="card-text text-black-50 fw-semibold">Espresso shots topped with hot water, creating a
+                            light layer of crema.</p>
+                        <p class="btn main-btn rounded-pill mt-auto">$3.50</p>
+                    </div>
+                </div>
+            </div>
+            <div class="box col-12 col-md-6 col-lg-3">
+                <div class="card pt-3 h-100">
+                    <div class="ps-3 pe-3">
+                        <img src="images/cafe/drinks/img3.png" class="card-img-top" alt="...">
+                    </div>
+                    <div class="card-body pb-1 d-flex flex-column">
+                        <h4 class="item-name fw-bold">Cappuccino</h4>
+                        <p class="card-text text-black-50 fw-semibold">Espresso with a perfect balance of steamed milk
+                            and foamed milk.</p>
+                        <p class="btn main-btn rounded-pill mt-auto">$4.75</p>
+                    </div>
+                </div>
+            </div>
+            <div class="box col-12 col-md-6 col-lg-3">
+                <div class="card pt-3 h-100">
+                    <div class="ps-3 pe-3">
+                        <img src="images/cafe/drinks/img4.png" class="card-img-top" alt="...">
+                    </div>
+                    <div class="card-body pb-1 d-flex flex-column">
+                        <h4 class="item-name fw-bold">Matcha Latte</h4>
+                        <p class="card-text text-black-50 fw-semibold">Premium ceremonial grade matcha with steamed
+                            milk, served hot or iced.</p>
+                        <p class="btn main-btn rounded-pill mt-auto">$5.25</p>
+                    </div>
+                </div>
+            </div>
+            <div class="box col-12 col-md-6 col-lg-3">
+                <div class="card pt-3 h-100">
+                    <div class="ps-3 pe-3">
+                        <img src="images/cafe/drinks/img5.png" class="card-img-top" alt="...">
+                    </div>
+                    <div class="card-body pb-1 d-flex flex-column">
+                        <h4 class="item-name fw-bold">Iced Coffee</h4>
+                        <p class="card-text text-black-50 fw-semibold">Brewed coffee served over ice, customizable with
+                            milk and syrup.</p>
+                        <p class="btn main-btn rounded-pill mt-auto">$3.75</p>
+                    </div>
+                </div>
+            </div>
+            <div class="box col-12 col-md-6 col-lg-3">
+                <div class="card pt-3 h-100">
+                    <div class="ps-3 pe-3">
+                        <img src="images/cafe/drinks/img6.png" class="card-img-top" alt="...">
+                    </div>
+                    <div class="card-body pb-1 d-flex flex-column">
+                        <h4 class="item-name fw-bold">Herbal Tea Selection</h4>
+                        <p class="card-text text-black-50 fw-semibold">A soothing selection of herbal teas,
+                            caffeine-free.</p>
+                        <p class="btn main-btn rounded-pill mt-auto">$3.00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="heading mt-5">
+            <h2 class="fw-bold pb-3 sub-title">Food</h2>
+        </div>
+        <div class="row pt-3 pb-5 g-4">
+            <div class="box col-12 col-md-6 col-lg-3">
+                <div class="card pt-3 h-100">
+                    <div class="ps-3 pe-3">
+                        <img src="images/cafe/food/img1.png" class="card-img-top" alt="...">
+                    </div>
+                    <div class="card-body pb-1 d-flex flex-column">
+                        <h4 class="item-name fw-bold">Butter Croissant</h4>
+                        <p class="card-text text-black-50 fw-semibold">Classic flaky pastry, perfect for breakfast.</p>
+                        <p class="btn main-btn rounded-pill mt-auto">$4.50</p>
+                    </div>
+                </div>
+            </div>
+            <div class="box col-12 col-md-6 col-lg-3">
+                <div class="card pt-3 h-100">
+                    <div class="ps-3 pe-3">
+                        <img src="images/cafe/food/img2.png" class="card-img-top" alt="...">
+                    </div>
+                    <div class="card-body pb-1 d-flex flex-column">
+                        <h4 class="item-name fw-bold">Blueberry Muffin</h4>
+                        <p class="card-text text-black-50 fw-semibold">Soft and moist muffin loaded with fresh
+                            blueberries.</p>
+                        <p class="btn main-btn rounded-pill mt-auto">$3.50</p>
+                    </div>
+                </div>
+            </div>
+            <div class="box col-12 col-md-6 col-lg-3">
+                <div class="card pt-3 h-100">
+                    <div class="ps-3 pe-3">
+                        <img src="images/cafe/food/img3.png" class="card-img-top" alt="...">
+                    </div>
+                    <div class="card-body pb-1 d-flex flex-column">
+                        <h4 class="item-name fw-bold">Avocado Toast</h4>
+                        <p class="card-text text-black-50 fw-semibold">Toasted sourdough with mashed avocado, chili
+                            flakes, and sprouts..</p>
+                        <p class="btn main-btn rounded-pill mt-auto">$4.75</p>
+                    </div>
+                </div>
+            </div>
+            <div class="box col-12 col-md-6 col-lg-3">
+                <div class="card pt-3 h-100">
+                    <div class="ps-3 pe-3">
+                        <img src="images/cafe/food/img4.png" class="card-img-top" alt="...">
+                    </div>
+                    <div class="card-body pb-1 d-flex flex-column">
+                        <h4 class="item-name fw-bold">Greek Yogurt Parfait</h4>
+                        <p class="card-text text-black-50 fw-semibold">Creamy Greek yogurt with granola, mixed berries,
+                            and a drizzle of honey.</p>
+                        <p class="btn main-btn rounded-pill mt-auto">$5.25</p>
+                    </div>
+                </div>
+            </div>
+            <div class="box col-12 col-md-6 col-lg-3">
+                <div class="card pt-3 h-100">
+                    <div class="ps-3 pe-3">
+                        <img src="images/cafe/food/img5.png" class="card-img-top" alt="...">
+                    </div>
+                    <div class="card-body pb-1 d-flex flex-column">
+                        <h4 class="item-name fw-bold">Chicken Caesar Wrap</h4>
+                        <p class="card-text text-black-50 fw-semibold">Grilled chicken, romaine lettuce, parmesan, and
+                            Caesar dressing in a soft tortilla.</p>
+                        <p class="btn main-btn rounded-pill mt-auto">$3.75</p>
+                    </div>
+                </div>
+            </div>
+            <div class="box col-12 col-md-6 col-lg-3">
+                <div class="card pt-3 h-100">
+                    <div class="ps-3 pe-3">
+                        <img src="images/cafe/food/img6.png" class="card-img-top" alt="...">
+                    </div>
+                    <div class="card-body pb-1 d-flex flex-column">
+                        <h4 class="item-name fw-bold">Veggie Delight Sandwich</h4>
+                        <p class="card-text text-black-50 fw-semibold">A medley of fresh vegetables, hummus, and
+                            provolone cheese on whole wheat bread.</p>
+                        <p class="btn main-btn rounded-pill mt-auto">$3.00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="d-flex justify-content-between align-items-center pt-4 pb-4">
+            <div class="ms-0 ms-lg-5">
+                <a class="me-2" href="#">Navigate</a>
+                <a href="#">Contact</a>
+            </div>
+            <div class="icons me-0 me-lg-5">
+                <a href="https://www.linkedin.com/in/abdelrahman-ashraf-fathey/" target="_blank"><i
+                        class="fa-brands fa-linkedin-in list fs-4 me-2"></i></a>
+                <a href="https://github.com/AbdelrahmanAshraf62651" target="_blank"><i
+                        class="fa-brands fa-github fs-4 me-2"></i></a>
+                <a href="https://web.facebook.com/abdelrqhman.ashraf/" target="_blank"><i
+                        class="fa-brands fa-facebook-f fs-4"></i></a>
+            </div>
+        </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
