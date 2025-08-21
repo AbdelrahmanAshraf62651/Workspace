@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <!-- Link to Bootstrap CSS from CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        xintegrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <!-- Link to Google Fonts for Manrope and Source Sans 3 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap"
+        rel="stylesheet">
+    <!-- Link to Font Awesome for the edit icon and social media icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+        xintegrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Link to local CSS files -->
+    <link rel="stylesheet" href="styles/cafe.css">
+    <link rel="stylesheet" href="styles/booking.css">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Light gray background color for the body */
+        }
+        .myImage {
+            width: 120px; /* Set a fixed size for the profile image container */
+            height: 120px;
+            border-radius: 50%; /* Make it a circle */
+        }
+        .form-control-plaintext {
+            padding-left: 0; /* Align with input fields */
+        }
+        .nav-link.active {
+            font-weight: bold;
+        }
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+        .badge.bg-success {
+            background-color: #28a745 !important;
+        }
+        .badge.bg-warning {
+            background-color: #ffc107 !important;
+        }
+        .table-responsive {
+            overflow-x: auto;
+        }
+        .footer {
+            background-color: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            padding: 2rem 0;
+        }
+        .profile-image-container {
+            width: 120px; /* Set a fixed size for the profile image container */
+            height: 120px;
+            border-radius: 50%; /* Make it a circle */
+            overflow: hidden; /* Hide anything that goes outside the circle */
+            flex-shrink: 0; /* Prevents the image from shrinking on smaller screens */
+        }
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures the image covers the entire container */
+        }
+        .profile-img {
+            width: 40px; /* Set a fixed size for the navbar image container */
+            height: 40px;
+            border-radius: 50%; /* Make it a circle */
+            overflow: hidden; /* Hide anything that goes outside the circle */
+        }
+        .profile-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures the image covers the entire container */
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar from your provided code -->
+    <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
+        <div class="container-fluid ms-2 me-2">
+            <a class="navbar-brand" href="./index.html">
+                <span class="ms-1">Navbar</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav text-center text-lg-start me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link ms-2" aria-current="page" href="./index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link ms-2" href="./gallery.html">Gallery</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active ms-2" href="./profile.html">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link ms-2" href="./booking.html">Booking</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link ms-2" href="./cafe.html">Cafe</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link ms-2" href="https://example.com/">About & Location</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- Profile image in the navbar for larger screens -->
+            <div class="profile-img d-none d-lg-block">
+                <img src="images/profile.jpg" class="img-fluid rounded-circle" alt="Profile">
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content for the Profile Page -->
+    <div class="container profile-container">
+        <div class="card p-4 shadow-sm">
+            <!-- Header for the profile section -->
+            <h2 class="mb-4 fw-bold">My Profile</h2>
+
+            <div class="row align-items-start g-4">
+                <!-- Profile Image Section -->
+                <div class="col-12 col-md-auto d-flex justify-content-center">
+                    <div class="profile-image-container mb-3">
+                        <img id="user-profile-image" src="images/profile.jpg"
+                            class="myImage" alt="User Profile Image">
+                    </div>
+                </div>
+
+                <!-- Profile Form Fields -->
+                <div class="col">
+                    <form id="profile-form">
+                        <!-- Full Name Field -->
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label fw-bold">Full Name</label>
+                            <input type="text" class="form-control" id="fullName" value="Jane Doe" disabled>
+                        </div>
+                        <!-- Email Address Field -->
+                        <div class="mb-3">
+                            <label for="email" class="form-label fw-bold">Email Address</label>
+                            <input type="email" class="form-control" id="email" value="jane.doe@example.com" disabled>
+                        </div>
+                        <!-- Phone Number Field -->
+                        <div class="mb-3">
+                            <label for="phone" class="form-label fw-bold">Phone Number</label>
+                            <input type="tel" class="form-control" id="phone" value="+1 (555) 123-4567" disabled>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Edit Profile Button -->
+            <div class="d-flex justify-content-end mt-4">
+                <button type="button" class="btn btn-outline-secondary rounded-pill d-flex align-items-center"
+                    id="edit-profile-btn">
+                    <i class="fa-solid fa-pencil me-2"></i>
+                    Edit Profile
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking History Section -->
+    <div class="container booking-container">
+        <h2 class="mb-4 fw-bold">Booking History</h2>
+        <div class="card p-4 shadow-sm">
+            <!-- Tabs for Upcoming, Completed, and Canceled bookings -->
+            <ul class="nav nav-tabs mb-3" id="booking-tabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="upcoming-tab" data-bs-toggle="tab" data-bs-target="#upcoming"
+                        type="button" role="tab" aria-controls="upcoming" aria-selected="true">Upcoming</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="completed-tab" data-bs-toggle="tab" data-bs-target="#completed"
+                        type="button" role="tab" aria-controls="completed" aria-selected="false">Completed</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="canceled-tab" data-bs-toggle="tab" data-bs-target="#canceled"
+                        type="button" role="tab" aria-controls="canceled" aria-selected="false">Canceled</button>
+                </li>
+            </ul>
+
+            <!-- Tab content -->
+            <div class="tab-content" id="booking-tabs-content">
+                <div class="tab-pane fade show active" id="upcoming" role="tabpanel" aria-labelledby="upcoming-tab">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Room</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Time</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Meeting Room Alpha</td>
+                                    <td>2024-08-15</td>
+                                    <td>10:00 AM</td>
+                                    <td><span class="badge rounded-pill text-bg-success">Upcoming</span></td>
+                                    <td>$50.00</td>
+                                    <td>
+                                        <!-- No actions specified in the image, so it's left blank or with a placeholder -->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Meeting Room Alpha</td>
+                                    <td>2024-09-01</td>
+                                    <td>11:00 AM</td>
+                                    <td><span class="badge rounded-pill text-bg-success">Upcoming</span></td>
+                                    <td>$50.00</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Training Room Epsilon</td>
+                                    <td>2024-08-20</td>
+                                    <td>04:00 PM</td>
+                                    <td><span class="badge rounded-pill text-bg-success">Upcoming</span></td>
+                                    <td>$75.00</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Completed Bookings Tab Content -->
+                <div class="tab-pane fade" id="completed" role="tabpanel" aria-labelledby="completed-tab">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Room</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Time</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Meeting Room Zeta</td>
+                                    <td>2024-06-10</td>
+                                    <td>09:00 AM</td>
+                                    <td><span class="badge rounded-pill text-bg-success">Completed</span></td>
+                                    <td>$50.00</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary">View Details</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Conference Hall Delta</td>
+                                    <td>2024-05-25</td>
+                                    <td>01:00 PM</td>
+                                    <td><span class="badge rounded-pill text-bg-success">Completed</span></td>
+                                    <td>$120.00</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary">View Details</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Canceled Bookings Tab Content -->
+                <div class="tab-pane fade" id="canceled" role="tabpanel" aria-labelledby="canceled-tab">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Room</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Time</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Focus Pod Gamma</td>
+                                    <td>2024-07-29</td>
+                                    <td>10:00 AM</td>
+                                    <td><span class="badge rounded-pill text-bg-danger">Canceled</span></td>
+                                    <td>$15.00</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-secondary">View Details</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Hot Desk 7</td>
+                                    <td>2024-07-15</td>
+                                    <td>02:00 PM</td>
+                                    <td><span class="badge rounded-pill text-bg-danger">Canceled</span></td>
+                                    <td>$10.00</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-secondary">View Details</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transaction Logs Section -->
+    <div class="container transactions-container">
+        <h2 class="mb-4 fw-bold">Transaction Logs</h2>
+        <div class="card p-4 shadow-sm">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2024-08-15</td>
+                            <td>Booking: Meeting Room Alpha</td>
+                            <td>Payment</td>
+                            <td class="text-danger fw-bold">-$50.00</td>
+                            <td><span class="badge rounded-pill text-bg-success">Success</span></td>
+                        </tr>
+                        <tr>
+                            <td>2024-08-10</td>
+                            <td>Booking: Co-working Space Beta</td>
+                            <td>Payment</td>
+                            <td class="text-danger fw-bold">-$25.00</td>
+                            <td><span class="badge rounded-pill text-bg-success">Success</span></td>
+                        </tr>
+                        <tr>
+                            <td>2024-08-01</td>
+                            <td>Refund: Focus Pod Gamma (Cancellation)</td>
+                            <td>Refund</td>
+                            <td class="text-success fw-bold">+$15.00</td>
+                            <td><span class="badge rounded-pill text-bg-success">Success</span></td>
+                        </tr>
+                        <tr>
+                            <td>2024-07-28</td>
+                            <td>Booking: Conference Hall Delta</td>
+                            <td>Payment</td>
+                            <td class="text-danger fw-bold">-$120.00</td>
+                            <td><span class="badge rounded-pill text-bg-success">Success</span></td>
+                        </tr>
+                        <tr>
+                            <td>2024-07-25</td>
+                            <td>Deposit to Wallet</td>
+                            <td>Deposit</td>
+                            <td class="text-success fw-bold">+$100.00</td>
+                            <td><span class="badge rounded-pill text-bg-success">Success</span></td>
+                        </tr>
+                        <tr>
+                            <td>2024-07-20</td>
+                            <td>Booking: Hot Desk 7</td>
+                            <td>Payment</td>
+                            <td class="text-danger fw-bold">-$10.00</td>
+                            <td><span class="badge rounded-pill text-bg-success">Success</span></td>
+                        </tr>
+                        <tr>
+                            <td>2024-07-18</td>
+                            <td>Membership Renewal</td>
+                            <td>Payment</td>
+                            <td class="text-danger fw-bold">-$75.00</td>
+                            <td><span class="badge rounded-pill text-bg-warning">Pending</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- A simple footer -->
+    <footer class="footer">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <div class="d-flex mb-3 mb-md-0">
+                <a href="https://example.com/" class="text-secondary text-decoration-none me-4">Quick Links</a>
+                <a href="https://example.com/" class="text-secondary text-decoration-none">Company</a>
+            </div>
+            <div class="d-flex align-items-center">
+                <a href="https://example.com/" class="text-secondary me-3"><i class="fa-brands fa-facebook-f fa-lg"></i></a>
+                <a href="https://example.com/" class="text-secondary me-3"><i class="fa-brands fa-twitter fa-lg"></i></a>
+                <a href="https://www.linkedin.com/in/pola-samy-bb3a6031b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="text-secondary me-3"><i class="fa-brands fa-linkedin-in fa-lg"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Link to Bootstrap JS for navbar toggler and tabs -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+
+    <!-- Simple JavaScript for edit functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const editBtn = document.getElementById('edit-profile-btn');
+            const formInputs = document.querySelectorAll('#profile-form input');
+
+            // Add a click event listener to the edit button
+            editBtn.addEventListener('click', () => {
+                // Check if the button is currently in "Edit" mode
+                if (editBtn.innerText.includes('Edit')) {
+                    // Change button text and icon to "Save"
+                    editBtn.innerHTML = '<i class="fa-solid fa-save me-2"></i> Save Profile';
+                    // Loop through all form inputs and enable them
+                    formInputs.forEach(input => {
+                        input.disabled = false;
+                    });
+                } else {
+                    // Change button text and icon back to "Edit"
+                    editBtn.innerHTML = '<i class="fa-solid fa-pencil me-2"></i> Edit Profile';
+                    // Loop through all form inputs and disable them
+                    formInputs.forEach(input => {
+                        input.disabled = true;
+                    });
+                    // Here you would typically save the data to a backend
+                    console.log('Profile saved!');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
