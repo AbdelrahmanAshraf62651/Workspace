@@ -1,3 +1,51 @@
+:root {
+    --black-color: #171A1FFF;
+    --grey-color: #F3F4F6FF;
+    --black-btn-color: #202127FF;
+}
+
+* {
+    font-family: "Manrope", sans-serif;
+}
+
+.main-btn {
+    background-color: #F7F7F8FF;
+    color: black;
+    font-size: 1rem;
+    font-weight: 500;
+    display: inline-block !important;
+    width: auto !important;
+    padding: 0.375rem 1rem;
+    flex-shrink: 0;
+    align-self: flex-start;
+}
+
+.main-btn:hover, 
+.main-btn:active, 
+.main-btn:focus {
+    background-color: #F7F7F8FF!important;;
+    color: black!important;;
+    width: auto !important;
+    display: inline-block !important;
+}
+
+.sec-btn {
+    background-color: var(--black-btn-color);
+    font-family: "Source Sans 3", sans-serif;
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0.375rem 1rem;
+    border-radius: 2px;
+}
+
+.sec-btn:hover, 
+.sec-btn:active, 
+.sec-btn:focus {
+    background-color: #F7F7F8FF!important;;
+    color: #4C4F5DFF!important;;
+}
+
 .navbar-toggler i {
     color: white;
 }
