@@ -51,5 +51,3 @@ quickAccessData.forEach((item) => {
   `;
 });
 quickAccess.innerHTML = html;
-
-feather.replace();
