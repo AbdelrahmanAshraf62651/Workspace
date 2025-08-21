@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,18 +33,22 @@
             margin: auto;
             padding: 2rem 1rem;
         }
+
         .carousel-item img {
             border-radius: 8px;
         }
+
         .carousel-caption {
             position: static;
             text-align: left;
             padding: 1rem 0;
             color: #333;
         }
+
         .thumbnail-gallery .col {
             padding: 5px;
         }
+
         .thumbnail-img {
             width: 100%;
             height: 80px;
@@ -53,14 +58,17 @@
             border: 2px solid transparent;
             transition: border-color 0.3s;
         }
+
         .thumbnail-img.active {
             border-color: #0d6efd;
         }
+
         .footer {
             padding: 20px 0;
         }
     </style>
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
         <div class="container-fluid ms-2 me-2">
@@ -75,13 +83,13 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav text-center text-lg-start me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link ms-2" aria-current="page" href="./index.html">Home</a>
+                        <a class="nav-link ms-2" href="./index.html">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link ms-2" href="./gallery.html">Gallery</a>
+                        <a class="nav-link active ms-2" aria-current="page" href="./gallery.html">Gallery</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active ms-2" href="./profile.html">Profile</a>
+                        <a class="nav-link ms-2" href="./profile.html">Profile</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link ms-2" href="./booking.html">Booking</a>
@@ -90,7 +98,7 @@
                         <a class="nav-link ms-2" href="./cafe.html">Cafe</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link ms-2" href="https://example.com/">About & Location</a>
+                        <a class="nav-link ms-2" href="#">About</a>
                     </li>
                 </ul>
             </div>
@@ -107,11 +115,13 @@
             <div id="galleryCarousel" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#galleryCarousel" data-bs-slide="prev">
+                <button class="carousel-control-prev" type="button" data-bs-target="#galleryCarousel"
+                    data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Previous</span>
                 </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#galleryCarousel" data-bs-slide="next">
+                <button class="carousel-control-next" type="button" data-bs-target="#galleryCarousel"
+                    data-bs-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Next</span>
                 </button>
@@ -121,7 +131,7 @@
             </div>
         </div>
     </div>
-    
+
     <hr class="my-4">
 
     <footer class="footer">
@@ -131,19 +141,22 @@
                 <a href="https://example.com/" class="text-secondary text-decoration-none">Company</a>
             </div>
             <div class="d-flex align-items-center">
-                <a href="https://example.com/" class="text-secondary me-3"><i class="fa-brands fa-facebook-f fa-lg"></i></a>
-                <a href="https://example.com/" class="text-secondary me-3"><i class="fa-brands fa-twitter fa-lg"></i></a>
-                <a href="https://www.linkedin.com/in/pola-samy-bb3a6031b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="text-secondary me-3"><i class="fa-brands fa-linkedin-in fa-lg"></i></a>
+                <a href="https://example.com/" class="text-secondary me-3"><i
+                        class="fa-brands fa-facebook-f fa-lg"></i></a>
+                <a href="https://example.com/" class="text-secondary me-3"><i
+                        class="fa-brands fa-twitter fa-lg"></i></a>
+                <a href="https://www.linkedin.com/in/pola-samy-bb3a6031b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
+                    class="text-secondary me-3"><i class="fa-brands fa-linkedin-in fa-lg"></i></a>
             </div>
         </div>
     </footer>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const galleryItems = [
                 {
                     image: 'images/gallary/1.jpeg.jpg',
@@ -204,7 +217,7 @@
                 thumbnailImg.dataset.bsSlideTo = index;
                 thumbnailImg.setAttribute('aria-label', `Slide ${index + 1}`);
 
-                thumbnailImg.addEventListener('click', function() {
+                thumbnailImg.addEventListener('click', function () {
                     const carousel = new bootstrap.Carousel(document.getElementById('galleryCarousel'));
                     carousel.to(index);
                 });
@@ -219,7 +232,7 @@
             galleryCarousel.addEventListener('slid.bs.carousel', function () {
                 const activeItem = document.querySelector('.carousel-item.active');
                 const newIndex = Array.from(carouselInner.children).indexOf(activeItem);
-                
+
                 document.querySelectorAll('.thumbnail-img').forEach(thumb => {
                     thumb.classList.remove('active');
                 });
@@ -228,4 +241,5 @@
         });
     </script>
 </body>
+
 </html>
