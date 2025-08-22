@@ -19,95 +19,8 @@
         xintegrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Link to local CSS files -->
-    <link rel="stylesheet" href="styles/cafe.css">
-    <link rel="stylesheet" href="styles/booking.css">
+    <link rel="stylesheet" href="styles/profile.css">
     <link rel="stylesheet" href="styles/main-style.css">
-    <style>
-        body {
-            background-color: #f8f9fa;
-            /* Light gray background color for the body */
-        }
-
-        .myImage {
-            width: 120px;
-            /* Set a fixed size for the profile image container */
-            height: 120px;
-            border-radius: 50%;
-            /* Make it a circle */
-        }
-
-        .form-control-plaintext {
-            padding-left: 0;
-            /* Align with input fields */
-        }
-
-        .nav-link.active {
-            font-weight: bold;
-        }
-
-        .table-striped tbody tr:nth-of-type(odd) {
-            background-color: rgba(0, 0, 0, 0.05);
-        }
-
-        .table th,
-        .table td {
-            vertical-align: middle;
-        }
-
-        .badge.bg-success {
-            background-color: #28a745 !important;
-        }
-
-        .badge.bg-warning {
-            background-color: #ffc107 !important;
-        }
-
-        .table-responsive {
-            overflow-x: auto;
-        }
-
-        .footer {
-            background-color: #f8f9fa;
-            border-top: 1px solid #e9ecef;
-            padding: 2rem 0;
-        }
-
-        .profile-image-container {
-            width: 120px;
-            /* Set a fixed size for the profile image container */
-            height: 120px;
-            border-radius: 50%;
-            /* Make it a circle */
-            overflow: hidden;
-            /* Hide anything that goes outside the circle */
-            flex-shrink: 0;
-            /* Prevents the image from shrinking on smaller screens */
-        }
-
-        .profile-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            /* Ensures the image covers the entire container */
-        }
-
-        .profile-img {
-            width: 40px;
-            /* Set a fixed size for the navbar image container */
-            height: 40px;
-            border-radius: 50%;
-            /* Make it a circle */
-            overflow: hidden;
-            /* Hide anything that goes outside the circle */
-        }
-
-        .profile-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            /* Ensures the image covers the entire container */
-        }
-    </style>
 </head>
 
 <body>
@@ -152,7 +65,7 @@
     </nav>
 
     <!-- Main Content for the Profile Page -->
-    <div class="container profile-container">
+    <div class="container profile-container pt-5">
         <div class="card p-4 shadow-sm">
             <!-- Header for the profile section -->
             <h2 class="mb-4 fw-bold">My Profile</h2>
@@ -199,7 +112,7 @@
     </div>
 
     <!-- Booking History Section -->
-    <div class="container booking-container">
+    <div class="container booking-container pt-5">
         <h2 class="mb-4 fw-bold">Booking History</h2>
         <div class="card p-4 shadow-sm">
             <!-- Tabs for Upcoming, Completed, and Canceled bookings -->
@@ -348,7 +261,7 @@
     </div>
 
     <!-- Transaction Logs Section -->
-    <div class="container transactions-container">
+    <div class="container transactions-container pt-5">
         <h2 class="mb-4 fw-bold">Transaction Logs</h2>
         <div class="card p-4 shadow-sm">
             <div class="table-responsive">
@@ -419,22 +332,22 @@
     </div>
 
     <!-- A simple footer -->
-    <footer class="footer">
-        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
-            <div class="d-flex mb-3 mb-md-0">
-                <a href="https://example.com/" class="text-secondary text-decoration-none me-4">Quick Links</a>
-                <a href="https://example.com/" class="text-secondary text-decoration-none">Company</a>
+    <div class="container pt-5 pe-5">
+        <footer class="d-flex justify-content-between align-items-center pt-4 pb-4">
+            <div class="ms-0 ms-lg-5">
+                <a class="me-2" href="#">Navigate</a>
+                <a href="#">Contact</a>
             </div>
-            <div class="d-flex align-items-center">
-                <a href="https://example.com/" class="text-secondary me-3"><i
-                        class="fa-brands fa-facebook-f fa-lg"></i></a>
-                <a href="https://example.com/" class="text-secondary me-3"><i
-                        class="fa-brands fa-twitter fa-lg"></i></a>
-                <a href="https://www.linkedin.com/in/pola-samy-bb3a6031b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
-                    class="text-secondary me-3"><i class="fa-brands fa-linkedin-in fa-lg"></i></a>
+            <div class="icons me-0 me-lg-5">
+                <a href="https://www.linkedin.com/in/abdelrahman-ashraf-fathey/" target="_blank"><i
+                        class="fa-brands fa-linkedin-in list fs-4 me-2"></i></a>
+                <a href="https://github.com/AbdelrahmanAshraf62651" target="_blank"><i
+                        class="fa-brands fa-github fs-4 me-2"></i></a>
+                <a href="https://web.facebook.com/abdelrqhman.ashraf/" target="_blank"><i
+                        class="fa-brands fa-facebook-f fs-4"></i></a>
             </div>
-        </div>
-    </footer>
+        </footer>
+    </div>
 
     <!-- Link to Bootstrap JS for navbar toggler and tabs -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
