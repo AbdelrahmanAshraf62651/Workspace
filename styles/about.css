@@ -1,0 +1,15 @@
+form label{
+  color: gray;
+}
+form input {
+  border: gray solid 1px;
+  border-radius: 5px;
+}
+form textarea{
+  border: gray solid 1px;
+  border-radius: 5px;
+  height: 100px;
+}
+.ceo-message{
+  background-color: rgb(219, 219, 219);
+}
