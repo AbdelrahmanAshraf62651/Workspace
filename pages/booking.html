@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+        integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="../styles/main-style.css">
+    <link rel="stylesheet" href="../styles/booking.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
+        <div class="container-fluid ms-2 me-2">
+            <a class="navbar-brand" href="../index.html">Navbar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav text-center text-lg-start me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link ms-2 " href="../index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link ms-2" href="./gallery.html">Gallery</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link ms-2" href="./profile.html">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active ms-2" aria-current="page" href="#">Booking</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link ms-2" href="./cafe.html">Cafe</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link ms-2" href="./about.html">About</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="profile-img d-none d-lg-block">
+                <img src="../images/profile.jpg" class="img-fluid rounded-pill" alt="">
+            </div>
+        </div>
+    </nav>
+
+    <div class="container pt-5">
+        <div class="heading ">
+            <h1 class="fw-bolder mb-4">Book Your Workspace</h1>
+            <h2 class="fw-semibold pb-3 sub-title">Choose Your Workspace Type</h2>
+        </div>
+        <div class="row pt-3 g-4">
+            <div class="box col-12 col-md-6 col-lg-4">
+                <div class="card pt-3 h-100 shadow-sm">
+                    <div class="ps-3 pe-3">
+                        <img src="../images/booking/img1.png" class="card-img-top" alt="...">
+                    </div>
+                    <div class="card-body pb-1 d-flex flex-column">
+                        <h4 class="item-name fw-bold">Single Seat</h4>
+                        <p class="card-text text-black-50 fw-semibold">Dedicated space for individual focus and
+                            productivity.</p>
+                        <div>
+                            <p class="btn main-btn rounded-pill mt-auto">Capacity: 1 people</p>
+                        </div>
+                        <a href="" class="btn mb-3 sec-btn">Book Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="box col-12 col-md-6 col-lg-4">
+                <div class="card pt-3 h-100 shadow-sm">
+                    <div class="ps-3 pe-3">
+                        <img src="../images/booking/img2.png" class="card-img-top" alt="...">
+                    </div>
+                    <div class="card-body pb-1 d-flex flex-column">
+                        <h4 class="item-name fw-bold">Private Room</h4>
+                        <p class="card-text text-black-50 fw-semibold">Fully equipped room for team meetings and private
+                            sessions.</p>
+                        <div>
+                            <p class="btn main-btn rounded-pill mt-auto">Capacity: 4 people</p>
+                        </div>
+                        <a href="" class="btn mb-3 sec-btn">Book Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="box col-12 col-md-6 col-lg-4">
+                <div class="card d-flex justify-content-center align-items-center h-100 coming-soon shadow-sm">
+                    <div class="loading-icon mb-3"></div>
+                    More options coming soon!
+                </div>
+            </div>
+        </div>
+        <footer class="d-flex justify-content-between align-items-center pt-4 pb-4">
+            <div class="ms-0 ms-lg-5">
+                <a class="me-2" href="#">Navigate</a>
+                <a href="#">Contact</a>
+            </div>
+            <div class="icons me-0 me-lg-5">
+                <a href="https://www.linkedin.com/in/abdelrahman-ashraf-fathey/" target="_blank"><i
+                        class="fa-brands fa-linkedin-in list fs-5 me-2"></i></a>
+                <a href="https://github.com/AbdelrahmanAshraf62651" target="_blank"><i
+                        class="fa-brands fa-github fs-5 me-2"></i></a>
+                <a href="https://web.facebook.com/abdelrqhman.ashraf/" target="_blank"><i
+                        class="fa-brands fa-facebook-f fs-5"></i></a>
+            </div>
+        </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

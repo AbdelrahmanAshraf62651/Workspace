@@ -10,23 +10,20 @@
 
 .main-btn {
     background-color: #F7F7F8FF;
+    font-family: "Source Sans 3", sans-serif;
     color: black;
     font-size: 1rem;
     font-weight: 500;
-    display: inline-block !important;
-    width: auto !important;
     padding: 0.375rem 1rem;
-    flex-shrink: 0;
-    align-self: flex-start;
+    transition: all 0.3s ease-out;
 }
 
 .main-btn:hover, 
 .main-btn:active, 
 .main-btn:focus {
-    background-color: #F7F7F8FF!important;;
-    color: black!important;;
-    width: auto !important;
-    display: inline-block !important;
+    background-color: #F7F7F8FF!important;
+    opacity: 0.9;
+    color: black!important;
 }
 
 .sec-btn {
@@ -36,14 +33,15 @@
     font-size: 1rem;
     font-weight: 500;
     padding: 0.375rem 1rem;
-    border-radius: 2px;
+    transition: all 0.3s ease-out;
 }
 
 .sec-btn:hover, 
 .sec-btn:active, 
 .sec-btn:focus {
-    background-color: #F7F7F8FF!important;;
-    color: #4C4F5DFF!important;;
+    background-color: var(--black-btn-color);
+    opacity: 0.9;
+    color: rgb(255, 255, 255)!important;
 }
 
 .navbar-toggler i {
@@ -84,6 +82,7 @@ footer a {
     text-decoration: none;
     font-family: "Source Sans 3", sans-serif;
     font-size: 1rem;
+    transition: all 0.3s ease;
 }
 
 footer a:hover {
