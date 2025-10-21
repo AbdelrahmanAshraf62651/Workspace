@@ -1,11 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap');
+
+* {
+    font-family: "Manrope", sans-serif;
+}
+
 :root {
     --black-color: #171A1FFF;
     --grey-color: #F3F4F6FF;
     --black-btn-color: #202127FF;
-}
-
-* {
-    font-family: "Manrope", sans-serif;
 }
 
 .main-btn {
@@ -42,49 +44,4 @@
     background-color: var(--black-btn-color);
     opacity: 0.9;
     color: rgb(255, 255, 255)!important;
-}
-
-.navbar-toggler i {
-    color: white;
-}
-
-.navbar-toggler {
-    border: var(--grey-color) 1px solid;
-}
-
-.navbar-toggler:focus {
-    box-shadow: none;
-}
-
-.navbar-toggler[aria-expanded="true"] {
-    border: var(--black-color) 1px solid;
-}
-
-.navbar-nav .nav-item a {
-    color: var(--black-color)!important;
-    font-weight: 400;
-}
-
-.navbar-nav .nav-item a.active {
-    font-weight: 700;
-}
-
-.navbar-nav .nav-item a:hover {
-    opacity: 0.8;
-}
-
-nav .profile-img {
-    max-width: 2.5rem;
-}
-
-footer a {
-    color: var(--black-color);
-    text-decoration: none;
-    font-family: "Source Sans 3", sans-serif;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-}
-
-footer a:hover {
-    opacity: 0.8;
 }
