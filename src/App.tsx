@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import AdminNavbar from './components/AdminNavbar';
 import Footer from './components/Footer';
 import Cafe from './pages/Cafe';
+import Booking from './pages/Booking';
 import About from './pages/About';
 import Analytics from './pages/Analytics';
 
@@ -13,6 +14,7 @@ function App() {
       {isAdmin ? <AdminNavbar /> : <Navbar />}
       <Routes>
         <Route path="/cafe" element={<Cafe />} />
+        <Route path="/booking" element={<Booking />} />
         <Route path="/about" element={<About />} />
         <Route path="/analytics" element={<Analytics />} />
       </Routes>
