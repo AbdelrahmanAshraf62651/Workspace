@@ -1,14 +1,19 @@
+import { NavLink } from 'react-router-dom';
 import '../styles/variables.css';
 import './Navbar.css';
 
 import profilePic from '../assets/images/profile.jpg';
 
 function AdminNavbar() {
+  const getLinkClass = ({ isActive }: { isActive: boolean }): string => {
+    return isActive ? 'nav-link ms-2 active' : 'nav-link ms-2';
+  };
+
   return (
-    <nav className="navbar navbar-expand-lg bg-white border-bottom sticky-top container">
+    <nav className="navbar navbar-expand-lg bg-white border-bottom sticky-top">
       <div className="container-fluid ms-2 me-2">
-        <a className="navbar-brand" href="#">
-          Navbar
+        <a className="navbar-brand" href="/">
+          SpaceX
         </a>
         <button
           className="navbar-toggler"
@@ -24,33 +29,29 @@ function AdminNavbar() {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav text-center text-lg-start me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a
-                className="nav-link ms-2"
-                aria-current="page"
-                href="#"
-              >
+              <NavLink className={getLinkClass} to="/dashboard" end>
                 Dashboard
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link ms-2" href="#">
+              <NavLink className={getLinkClass} to="/access-history">
                 Access History
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link ms-2" href="#">
+              <NavLink className={getLinkClass} to="/room-availability">
                 Room Availability
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link ms-2" href="#">
+              <NavLink className={getLinkClass} to="/edit-schedule">
                 Edit Room Schedule
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link ms-2 active" href="#">
+              <NavLink className={getLinkClass} to="/analytics">
                 Analytics
-              </a>
+              </NavLink>
             </li>
           </ul>
         </div>

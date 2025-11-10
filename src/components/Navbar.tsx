@@ -1,14 +1,19 @@
+import { NavLink } from 'react-router-dom';
 import '../styles/variables.css';
 import './Navbar.css';
 
 import profilePic from '../assets/images/profile.jpg';
 
 function Navbar() {
+  const getLinkClass = ({ isActive }: { isActive: boolean }): string => {
+    return isActive ? 'nav-link ms-2 active' : 'nav-link ms-2';
+  };
+
   return (
-    <nav className="navbar navbar-expand-lg bg-white border-bottom sticky-top container">
+    <nav className="navbar navbar-expand-lg bg-white border-bottom sticky-top">
       <div className="container-fluid ms-2 me-2">
-        <a className="navbar-brand" href="#">
-          Navbar
+        <a className="navbar-brand" href="/">
+          SpaceX
         </a>
         <button
           className="navbar-toggler"
@@ -24,38 +29,34 @@ function Navbar() {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav text-center text-lg-start me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a
-                className="nav-link ms-2"
-                aria-current="page"
-                href="#"
-              >
+              <NavLink className={getLinkClass} to="/" end>
                 Home
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link ms-2" href="#">
+              <NavLink className={getLinkClass} to="/gallery" end>
                 Gallery
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link ms-2" href="#">
+              <NavLink className={getLinkClass} to="/profile">
                 Profile
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link ms-2" href="#">
+              <NavLink className={getLinkClass} to="/booking">
                 Booking
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link ms-2" href="#">
+              <NavLink className={getLinkClass} to="/cafe">
                 Cafe
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link ms-2 active" href="#">
+              <NavLink className={getLinkClass} to="/about">
                 About
-              </a>
+              </NavLink>
             </li>
           </ul>
         </div>
