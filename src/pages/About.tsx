@@ -1,5 +1,3 @@
-import './About.css';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faFacebookF,
@@ -17,7 +15,7 @@ import heroPic from '../assets/images/about/image.png';
 
 function About() {
   return (
-    <main className="container pt-5">
+    <main className="container pt-5 about-page">
       <div className="hero-section d-flex flex-column flex-lg-row align-items-center justify-content-between p-3 p-lg-4 rounded gap-5 gap-lg-3">
         <div className="col-12 col-lg-6 d-flex flex-column justify-content-between align-items-start gap-3">
           <p className="fs-1 fw-bold ">Your Ideal Workspace Await</p>
@@ -27,7 +25,7 @@ function About() {
             collaborative co-working spaces, we provide an environment where
             your ideas can thrive.
           </p>
-          <button className="btn sec-btn btn-lg rounded-1">
+          <button className="sec-btn btn-lg rounded-1">
             Discover More
           </button>
         </div>
@@ -166,7 +164,7 @@ function About() {
               </div>
               <button
                 type="submit"
-                className="btn sec-btn fs-5 btn-lg rounded-1 col-12 mt-3"
+                className="sec-btn fs-5 btn-lg rounded-1 col-12 mt-3"
               >
                 Send Message
               </button>

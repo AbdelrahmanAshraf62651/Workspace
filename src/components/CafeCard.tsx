@@ -1,5 +1,3 @@
-import './CafeCard.css';
-
 interface CafeCardProps {
   title: string;
   description: string;

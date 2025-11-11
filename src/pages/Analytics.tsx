@@ -2,79 +2,77 @@ import AnalyticsCard from '../components/AnalysisCard';
 import CustomActiveShapePieChart from '../components/CustomActiveShapePieChart';
 import CustomSimpleLineChart from '../components/CustomSimpleLineChart';
 
+const overview = [
+  {
+    title: 'Total Bookings',
+    body: '1520',
+    unit: 'This month',
+  },
+  {
+    title: 'Occupancy Rate',
+    body: '78%',
+    unit: 'Overall average',
+  },
+  {
+    title: 'Peak Hours',
+    body: '2-4 PM',
+    unit: 'Highest demand period',
+  },
+  {
+    title: 'Active Users',
+    body: '345',
+    unit: 'Currently logged in',
+  },
+];
+
+const days = ['Time / Day', 'Sat.', 'Sun.', 'Mon.', 'Tue.', 'Wed.', 'Thu.'];
+
+const times = [
+  '9-10 AM',
+  '10-11 AM',
+  '11-12 PM',
+  '1-2 PM',
+  '2-3 PM',
+  '3-4 PM',
+  '4-5 PM',
+];
+
+const nums = [
+  [4, 1, 12, 2, 20, 7],
+  [8, 12, 2, 2, 20, 7],
+  [5, 4, 1, 2, 20, 7],
+  [6, 6, 0, 2, 20, 7],
+  [1, 7, 1, 2, 20, 7],
+  [10, 2, 2, 2, 20, 7],
+  [10, 2, 2, 2, 20, 7],
+];
+
+const sampleData = [
+  { name: 'x', value: 400, color: '#FFab00' },
+  { name: 'y', value: 300, color: '#000000' },
+  { name: 'z', value: 200, color: '#8B0000' },
+  { name: 'N', value: 100 },
+];
+
+const sample = [
+  { name: 'Jan', value: 400 },
+  { name: 'Feb', value: 300 },
+  { name: 'Mar', value: 500 },
+  { name: 'Apr', value: 700 },
+  { name: 'May', value: 600 },
+  { name: 'Jun', value: 400 },
+  { name: 'Jul', value: 300 },
+  { name: 'Aug', value: 500 },
+  { name: 'Seb', value: 700 },
+  { name: 'Oct', value: 600 },
+  { name: 'Nov', value: 900 },
+  { name: 'Dec', value: 100 },
+];
+
 function Analytics() {
-  const overview = [
-    {
-      title: 'Total Bookings',
-      body: '1520',
-      unit: 'This month',
-    },
-    {
-      title: 'Occupancy Rate',
-      body: '78%',
-      unit: 'Overall average',
-    },
-    {
-      title: 'Peak Hours',
-      body: '2-4 PM',
-      unit: 'Highest demand period',
-    },
-    {
-      title: 'Active Users',
-      body: '345',
-      unit: 'Currently logged in',
-    },
-  ];
-
-  const days = ['Time / Day', 'Sat.', 'Sun.', 'Mon.', 'Tue.', 'Wed.', 'Thu.'];
-
-  const times = [
-    '9-10 AM',
-    '10-11 AM',
-    '11-12 PM',
-    '1-2 PM',
-    '2-3 PM',
-    '3-4 PM',
-    '4-5 PM',
-  ];
-
-  const nums = [
-    [4, 1, 12, 2, 20, 7],
-    [8, 12, 2, 2, 20, 7],
-    [5, 4, 1, 2, 20, 7],
-    [6, 6, 0, 2, 20, 7],
-    [1, 7, 1, 2, 20, 7],
-    [10, 2, 2, 2, 20, 7],
-    [10, 2, 2, 2, 20, 7],
-  ];
-
-  const sampleData = [
-    { name: 'x', value: 400, color: '#FFab00' },
-    { name: 'y', value: 300, color: '#000000' },
-    { name: 'z', value: 200, color: '#8B0000' },
-    { name: 'N', value: 100 },
-  ];
-
-  const sample = [
-    { name: 'Jan', value: 400 },
-    { name: 'Feb', value: 300 },
-    { name: 'Mar', value: 500 },
-    { name: 'Apr', value: 700 },
-    { name: 'May', value: 600 },
-    { name: 'Jun', value: 400 },
-    { name: 'Jul', value: 300 },
-    { name: 'Aug', value: 500 },
-    { name: 'Seb', value: 700 },
-    { name: 'Oct', value: 600 },
-    { name: 'Nov', value: 900 },
-    { name: 'Dec', value: 100 },
-  ];
-
   return (
-    <main className="container my-5">
-      <h1 className="fw-semibold mb-4 text-center text-lg-start">
-        Analytics Dashboard
-      </h1>
+    <main className="container pt-5">
+      <h1 className="fw-bolder mb-4">Analytics Dashboard</h1>
 
       <div className="row g-4 mb-5">
         {overview.map((item, index) => (

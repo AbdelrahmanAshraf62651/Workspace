@@ -13,6 +13,7 @@ function App() {
     <Router>
       {isAdmin ? <AdminNavbar /> : <Navbar />}
       <Routes>
+        {/* <Route path="/" element={} /> */}
         <Route path="/cafe" element={<Cafe />} />
         <Route path="/booking" element={<Booking />} />
         <Route path="/about" element={<About />} />

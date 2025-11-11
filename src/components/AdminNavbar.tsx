@@ -1,7 +1,4 @@
 import { NavLink } from 'react-router-dom';
-import '../styles/variables.css';
-import './Navbar.css';
-
 import profilePic from '../assets/images/profile.jpg';
 
 function AdminNavbar() {
@@ -12,9 +9,9 @@ function AdminNavbar() {
   return (
     <nav className="navbar navbar-expand-lg bg-white border-bottom sticky-top">
       <div className="container-fluid ms-2 me-2">
-        <a className="navbar-brand" href="/">
+        <NavLink className="navbar-brand" to="/dashboard" end>
           SpaceX
-        </a>
+        </NavLink>
         <button
           className="navbar-toggler"
           type="button"

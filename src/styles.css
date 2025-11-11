@@ -1,0 +1,166 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap');
+
+* {
+    font-family: "Manrope", sans-serif;
+}
+
+:root {
+    --black-color: #171A1FFF;
+    --grey-color: #F3F4F6FF;
+    --black-btn-color: #202127FF;
+}
+
+.main-btn {
+    background-color: #F7F7F8FF;
+    font-family: "Source Sans 3", sans-serif;
+    color: black;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0.375rem 1rem;
+    transition: all 0.3s ease-out;
+}
+
+.main-btn:hover {
+    opacity: 0.9;
+}
+
+.sec-btn {
+    background-color: var(--black-btn-color);
+    font-family: "Source Sans 3", sans-serif;
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0.375rem 1rem;
+    transition: all 0.3s ease-out;
+}
+
+.sec-btn:hover {
+    opacity: 0.9;
+}
+
+/* navbar */
+.navbar-toggler i {
+    color: white;
+}
+
+.navbar-toggler {
+    border: var(--grey-color) 1px solid;
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+.navbar-toggler[aria-expanded="true"] {
+    border: var(--black-color) 1px solid;
+}
+
+.navbar-nav .nav-item a {
+    color: var(--black-color) !important;
+    font-weight: 400;
+    transition: all 0.3s ease;
+}
+
+.navbar-nav .nav-item a.active {
+    font-weight: 700;
+}
+
+.navbar-nav .nav-item a:hover {
+    opacity: 0.8;
+}
+
+nav .profile-img {
+    max-width: 2.5rem;
+}
+
+/* footer */
+footer a {
+    color: var(--black-color);
+    text-decoration: none;
+    font-family: "Source Sans 3", sans-serif;
+    transition: all 0.3s ease;
+}
+
+footer a:hover {
+    opacity: 0.8;
+}
+
+/* header */
+.app-header {
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--grey-color);
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.app-header-logo {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+/* cafe card*/
+.cafe-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.cafe-card-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.cafe-card-title {
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+    font-weight: 600;
+}
+
+/* from src/components/CafeCard.css */
+.card {
+    border: solid 1px var(--grey-color);
+    transition: all 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1) !important;
+}
+
+.box img {
+    border-radius: 3px !important;
+}
+
+.box .card-body .item-name {
+    font-size: 20px;
+}
+
+.box .card-body .card-text {
+    font-size: 14px;
+    line-height: 20px;
+    font-family: "Source Sans 3", sans-serif;
+}
+
+/* about page */
+.about-page .hero-section {
+    background: #f2f2f2;
+}
+
+.about-page a {
+    color: var(--black-color);
+}
+
+.about-page .about-info .card {
+    min-height: 333px;
+}
+
+.about-page form label {
+    color: gray;
+}
+
+.about-page .ceo-message {
+    background-color: rgb(219, 219, 219);
+}
