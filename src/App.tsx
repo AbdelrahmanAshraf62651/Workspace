@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import AdminNavbar from './components/AdminNavbar';
 import Home from './pages/Home';
@@ -9,12 +9,17 @@ import About from './pages/About';
 import Analytics from './pages/Analytics';
 import Gallery from './pages/Gallery';
 import Profile from './pages/Profile';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
 
-function App() {
+const AppContent = () => {
+  const location = useLocation();
   const isAdmin = false;
+  const showLayout = !['/login', '/signup'].includes(location.pathname);
+
   return (
-    <Router>
-      {isAdmin ? <AdminNavbar /> : <Navbar />}
+    <>
+      {showLayout && (isAdmin ? <AdminNavbar /> : <Navbar />)}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/cafe" element={<Cafe />} />
@@ -23,8 +28,18 @@ function App() {
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
       </Routes>
-      <Footer />
+      {showLayout && <Footer />}
+    </>
+  );
+};
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 }
