@@ -183,6 +183,11 @@ footer a:hover {
     font-weight: 600;
 }
 
+/*Booking history*/
+.booking-history .nav-item .active {
+    font-weight: 600;
+}
+
 /* from src/components/CafeCard.css */
 .card {
     border: solid 1px var(--grey-color);

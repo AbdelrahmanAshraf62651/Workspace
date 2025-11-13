@@ -8,6 +8,7 @@ import Booking from './pages/Booking';
 import About from './pages/About';
 import Analytics from './pages/Analytics';
 import Gallery from './pages/Gallery';
+import Profile from './pages/Profile';
 
 function App() {
   const isAdmin = false;
@@ -21,6 +22,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/gallery" element={<Gallery />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
       <Footer />
     </Router>

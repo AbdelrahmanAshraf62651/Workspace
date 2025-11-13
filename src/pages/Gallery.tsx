@@ -1,6 +1,6 @@
 import ControlledCarousel from '../components/ControlledCarousel';
 import GalleryThumbnail from '../components/GalleryThumbnail';
-// Assuming you have images in this path
+
 import galleryImg1 from '../assets/images/gallery/1.jpg';
 import galleryImg2 from '../assets/images/gallery/2.jpg';
 import galleryImg3 from '../assets/images/gallery/3.jpg';
