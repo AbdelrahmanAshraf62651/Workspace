@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
-import '../styles.css';
-
 interface AccessEvent {
   timestamp: string;
   userName: string;
@@ -155,7 +153,6 @@ function AccessHistory() {
   return (
     <div className="container pt-5">
       <h1 className="fw-bolder mb-4">Access History Log</h1>
-
       <div className="row g-3 mb-4">
         <div className="col-12 col-md-6 col-lg-3">
           <div className="position-relative">
