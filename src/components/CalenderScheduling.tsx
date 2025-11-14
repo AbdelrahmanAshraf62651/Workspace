@@ -92,7 +92,10 @@ function CalenderScheduling() {
     <>
       <h3 className="fw-semibold mt-5 pb-2 sub-title">Calendar Scheduling</h3>
       <div className="border rounded-3 py-4 px-5 overflow-x-scroll">
-        <div className="d-flex flex-row align-items-center justify-content-between">
+        <div
+          className="d-flex flex-row align-items-center justify-content-between"
+          style={{ minWidth: '1180px' }}
+        >
           <h5 className="fw-semibold mb-1">
             {currentDate.toLocaleString('default', {
               month: 'long',
