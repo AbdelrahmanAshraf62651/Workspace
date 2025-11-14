@@ -58,17 +58,25 @@ function Navbar() {
                 About
               </NavLink>
             </li>
-            <li className='nav-item d-lg-none'>
-              <NavLink className={getLinkClass} to="/signup">Sign Up</NavLink>
+            <li className="nav-item d-lg-none">
+              <NavLink className={getLinkClass} to="/signup">
+                Sign Up
+              </NavLink>
             </li>
-            <li className='nav-item d-lg-none'>
-              <NavLink className={getLinkClass} to="/Login">Log In</NavLink>
+            <li className="nav-item d-lg-none">
+              <NavLink className={getLinkClass} to="/login">
+                Log In
+              </NavLink>
             </li>
           </ul>
         </div>
         <div className="d-none d-lg-flex gap-3">
-          <NavLink className={"btn btn-light"} to="/signup">Sign Up</NavLink>
-          <NavLink className={"btn btn-dark"} to="/Login">Log In</NavLink>
+          <NavLink className={'btn btn-light'} to="/signup">
+            Sign Up
+          </NavLink>
+          <NavLink className={'btn btn-dark'} to="/login">
+            Log In
+          </NavLink>
         </div>
       </div>
     </nav>

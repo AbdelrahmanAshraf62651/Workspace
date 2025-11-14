@@ -97,26 +97,6 @@ function Login() {
                 </Link>
               </div>
             </form>
-            <div className="icons me-0 me-lg-5 d-flex justify-content-center mt-3">
-              <a href="#" target="_blank">
-                <FontAwesomeIcon
-                  className="fs-5 me-2 text-black"
-                  icon={faLinkedinIn}
-                />
-              </a>
-              <a href="#" target="_blank">
-                <FontAwesomeIcon
-                  className="fs-5 me-2 text-black"
-                  icon={faGithub}
-                />
-              </a>
-              <a href="#" target="_blank">
-                <FontAwesomeIcon
-                  className="fs-5 me-2 text-black"
-                  icon={faFacebookF}
-                />
-              </a>
-            </div>
           </div>
         </div>
         <div

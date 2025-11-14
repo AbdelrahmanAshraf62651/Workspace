@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from 'react-router-dom';
 import Navbar from './components/Navbar';
 import AdminNavbar from './components/AdminNavbar';
 import Home from './pages/Home';
@@ -19,7 +24,7 @@ const AppContent = () => {
 
   return (
     <>
-      {showLayout && (isAdmin ? <AdminNavbar /> : <Navbar />)}
+      {isAdmin ? <AdminNavbar /> : <Navbar />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/cafe" element={<Cafe />} />
