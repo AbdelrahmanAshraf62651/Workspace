@@ -12,6 +12,7 @@ import Cafe from './pages/Cafe';
 import Booking from './pages/Booking';
 import About from './pages/About';
 import Analytics from './pages/Analytics';
+import RoomAvailability from './pages/RoomAvailability';
 import Gallery from './pages/Gallery';
 import Profile from './pages/Profile';
 import Login from './pages/Login';
@@ -19,7 +20,7 @@ import Signup from './pages/Signup';
 
 const AppContent = () => {
   const location = useLocation();
-  const isAdmin = false;
+  const isAdmin = true;
   const showLayout = !['/login', '/signup'].includes(location.pathname);
 
   return (
@@ -31,6 +32,7 @@ const AppContent = () => {
         <Route path="/booking" element={<Booking />} />
         <Route path="/about" element={<About />} />
         <Route path="/analytics" element={<Analytics />} />
+        <Route path="/room-availability" element={<RoomAvailability />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<Login />} />

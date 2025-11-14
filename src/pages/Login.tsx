@@ -1,12 +1,6 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faGoogle,
-  faLinkedinIn,
-  faGithub,
-  faFacebookF,
-} from '@fortawesome/free-brands-svg-icons';
+import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import img from '../assets/images/login/login.jpg';
 
 function Login() {
