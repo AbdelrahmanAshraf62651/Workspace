@@ -64,7 +64,7 @@ function BookingHistory() {
   return (
     <>
       <h2 className="mt-5 fw-bold">Booking History</h2>
-      <div className="card p-4 shadow-sm booking-history">
+      <div className="p-4 shadow-sm booking-history">
         <ul className="nav nav-tabs mb-3" id="booking-tabs" role="tablist">
           {states.map((state, index) => {
             const targetId = state.toLowerCase();

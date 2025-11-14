@@ -17,15 +17,23 @@ import Gallery from './pages/Gallery';
 import Profile from './pages/Profile';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import AccessHistory from './pages/AccessHistory';
 import AdminDashboard from './pages/AdminDashboard';
-import { useEffect , useState} from 'react';
+import EditRoomSchedule from './pages/EditRoomSchedule';
+import { useEffect, useState } from 'react';
 
 const AppContent = () => {
   const location = useLocation();
-  const [isAdmin , setIsAdmin] = useState<boolean>(false);
+  const [isAdmin, setIsAdmin] = useState<boolean>(true);
   const showLayout = !['/login', '/signup'].includes(location.pathname);
   useEffect(() => {
-    if (location.pathname === '/dashboard' || location.pathname === '/analytics' || location.pathname === '/room-availability') {
+    if (
+      location.pathname === '/dashboard' ||
+      location.pathname === '/analytics' ||
+      location.pathname === '/room-availability' ||
+      location.pathname === '/access-history' ||
+      location.pathname === '/edit-room-schedule'
+    ) {
       setIsAdmin(true);
     } else {
       setIsAdmin(false);
@@ -45,8 +53,10 @@ const AppContent = () => {
         <Route path="/signup" element={<Signup />} />
         {/* =================== admin sections =======================*/}
         <Route path="/dashboard" element={<AdminDashboard />} />
+        <Route path="/access-history" element={<AccessHistory />} />
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/room-availability" element={<RoomAvailability />} />
+        <Route path="/edit-room-schedule" element={<EditRoomSchedule />} />
       </Routes>
       {showLayout && <Footer />}
     </>

@@ -56,7 +56,7 @@ function Transactions() {
   return (
     <>
       <h2 className="mt-5 fw-bold">Transaction Logs</h2>
-      <div className="card p-4 shadow-sm">
+      <div className="p-4 shadow-sm">
         <div className="table-responsive">
           <table className="table table-striped">
             <thead>

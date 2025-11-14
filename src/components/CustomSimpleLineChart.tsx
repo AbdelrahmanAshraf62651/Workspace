@@ -10,7 +10,7 @@ import {
 } from 'recharts';
 
 type LineDataItem = {
-  name: string; 
+  name: string;
   value: number;
   [key: string]: string | number;
 };
@@ -31,7 +31,7 @@ const CustomSimpleLineChart: React.FC<CustomSimpleLineChartProps> = ({
   data,
   lineKeys = ['value'],
   colors = ['#8884d8', '#82ca9d', '#ff7300', '#ffc658'],
-  margin = { top: 20},
+  margin = { top: 20 },
   isAnimationActive = true,
   style,
   showGrid = true,

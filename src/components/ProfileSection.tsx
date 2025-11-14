@@ -11,7 +11,7 @@ const data = {
 function ProfileSection() {
   return (
     <>
-      <div className="card p-4 shadow-sm">
+      <div className="p-4 shadow-sm">
         <h2 className="mb-4 fw-bold">My Profile</h2>
         <div className="row align-items-start g-4">
           <div className="col-12 col-md-auto d-flex justify-content-center">

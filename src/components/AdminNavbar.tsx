@@ -41,7 +41,7 @@ function AdminNavbar() {
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className={getLinkClass} to="/edit-schedule">
+              <NavLink className={getLinkClass} to="/edit-room-schedule">
                 Edit Room Schedule
               </NavLink>
             </li>

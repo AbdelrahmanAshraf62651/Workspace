@@ -77,11 +77,7 @@ function Analytics() {
       <div className="row g-4 mb-5">
         {overview.map((item, index) => (
           <div key={index} className="col-12 col-md-6 col-lg-3">
-            <AnalyticsCard
-              title={item.title}
-              body={item.body}
-              unit={item.unit}
-            />
+            <AnalyticsCard {...item} />
           </div>
         ))}
       </div>
