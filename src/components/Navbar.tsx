@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 // import '../styles/variables.css';
 // import './Navbar.css';
 
-import profilePic from '../assets/images/profile.jpg';
+// import profilePic from '../assets/images/profile.jpg';
 
 function Navbar() {
   const getLinkClass = ({ isActive }: { isActive: boolean }): string => {
@@ -10,7 +10,7 @@ function Navbar() {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg bg-white border-bottom sticky-top">
+    <nav className="navbar navbar-expand-lg bg-white border-bottom sticky-top ">
       <div className="container-fluid ms-2 me-2">
         <NavLink className="navbar-brand" to="/" end>
           SpaceX
@@ -58,14 +58,17 @@ function Navbar() {
                 About
               </NavLink>
             </li>
+            <li className='nav-item d-lg-none'>
+              <NavLink className={getLinkClass} to="/signup">Sign Up</NavLink>
+            </li>
+            <li className='nav-item d-lg-none'>
+              <NavLink className={getLinkClass} to="/Login">Log In</NavLink>
+            </li>
           </ul>
         </div>
-        <div className="profile-img d-none d-lg-block">
-          <img
-            src={profilePic}
-            alt="Profile Picture"
-            className="img-fluid rounded-pill"
-          />
+        <div className="d-none d-lg-flex gap-3">
+          <NavLink className={"btn btn-light"} to="/signup">Sign Up</NavLink>
+          <NavLink className={"btn btn-dark"} to="/Login">Log In</NavLink>
         </div>
       </div>
     </nav>
