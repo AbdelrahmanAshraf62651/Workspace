@@ -17,12 +17,20 @@ import Gallery from './pages/Gallery';
 import Profile from './pages/Profile';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import AdminDashboard from './pages/AdminDashboard';
+import { useEffect , useState} from 'react';
 
 const AppContent = () => {
   const location = useLocation();
-  const isAdmin = true;
+  const [isAdmin , setIsAdmin] = useState<boolean>(false);
   const showLayout = !['/login', '/signup'].includes(location.pathname);
-
+  useEffect(() => {
+    if (location.pathname === '/dashboard' || location.pathname === '/analytics' || location.pathname === '/room-availability') {
+      setIsAdmin(true);
+    } else {
+      setIsAdmin(false);
+    }
+  }, [location.pathname]);
   return (
     <>
       {isAdmin ? <AdminNavbar /> : <Navbar />}
@@ -31,12 +39,14 @@ const AppContent = () => {
         <Route path="/cafe" element={<Cafe />} />
         <Route path="/booking" element={<Booking />} />
         <Route path="/about" element={<About />} />
-        <Route path="/analytics" element={<Analytics />} />
-        <Route path="/room-availability" element={<RoomAvailability />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        {/* =================== admin sections =======================*/}
+        <Route path="/dashboard" element={<AdminDashboard />} />
+        <Route path="/analytics" element={<Analytics />} />
+        <Route path="/room-availability" element={<RoomAvailability />} />
       </Routes>
       {showLayout && <Footer />}
     </>

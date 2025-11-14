@@ -1,9 +1,10 @@
-import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link, useNavigate } from 'react-router-dom';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import img from '../assets/images/login/login.jpg';
 
 function Login() {
+  const navigate = useNavigate();
   return (
     <div className=" vh-100">
       <div className="row h-100 m-0 justify-content-center align-items-center">
@@ -41,7 +42,12 @@ function Login() {
                 </div>
               </div>
             </div>
-            <form>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                navigate('/dashboard');
+              }}
+            >
               <div className="mb-3">
                 <label className="form-label fw-semibold text-dark">
                   Email

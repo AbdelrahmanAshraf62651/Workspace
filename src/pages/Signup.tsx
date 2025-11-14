@@ -1,22 +1,23 @@
-import { Link } from 'react-router-dom';
-import img from '../assets/images/signup/signup.jpg';
+import { Link, useNavigate } from "react-router-dom";
+import img from "../assets/images/signup/signup.jpg";
 function Signup() {
+  const navigate = useNavigate();
   return (
     <div className="container-fluid">
-      <div className="row" style={{ minHeight: '100vh' }}>
+      <div className="row" style={{ minHeight: "100vh" }}>
         <div
           className="col-lg-6 d-none d-lg-block"
           style={{
             backgroundImage: `url(${img})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
           }}
         ></div>
         <div className="col-12 py-5 col-lg-6 d-flex align-items-center justify-content-center flex-column">
           <div
             className="bg-white rounded-3 shadow-sm p-3 p-md-4 p-lg-5 w-100"
-            style={{ maxWidth: '480px', border: 'solid 1px var(--grey-color)' }}
+            style={{ maxWidth: "480px", border: "solid 1px var(--grey-color)" }}
           >
             <div className="row">
               <div className="col-12">
@@ -29,7 +30,12 @@ function Signup() {
                 </p>
               </div>
             </div>
-            <form>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                navigate("/dashboard");
+              }}
+            >
               <div className="mb-3">
                 <label className="form-label fw-semibold text-dark">
                   Full Name
@@ -105,7 +111,7 @@ function Signup() {
                     <a
                       href="#"
                       className="text-decoration-none fw-semibold"
-                      style={{ color: 'var(--black-color)' }}
+                      style={{ color: "var(--black-color)" }}
                     >
                       Terms of Service
                     </a>
@@ -113,7 +119,7 @@ function Signup() {
                     <a
                       href="#"
                       className="text-decoration-none fw-semibold"
-                      style={{ color: 'var(--black-color)' }}
+                      style={{ color: "var(--black-color)" }}
                     >
                       Privacy Policy
                     </a>
@@ -131,7 +137,7 @@ function Signup() {
                 <Link
                   to="/login"
                   className="text-decoration-none fw-semibold"
-                  style={{ color: 'var(--black-color)' }}
+                  style={{ color: "var(--black-color)" }}
                 >
                   Sign In
                 </Link>
