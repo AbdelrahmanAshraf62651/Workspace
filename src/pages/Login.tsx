@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, useNavigate } from 'react-router-dom';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
-import img from '../assets/images/login/login.jpg';
+import img from '/images/login/login.jpg';
 
 function Login() {
   const navigate = useNavigate();

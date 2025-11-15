@@ -38,20 +38,19 @@ const times = [
 ];
 
 const nums = [
-  [4, 1, 12, 2, 20, 7],
-  [8, 12, 2, 2, 20, 7],
-  [5, 4, 1, 2, 20, 7],
-  [6, 6, 0, 2, 20, 7],
-  [1, 7, 1, 2, 20, 7],
-  [10, 2, 2, 2, 20, 7],
-  [10, 2, 2, 2, 20, 7],
+  [4, 1, 12, 4, 2, 2],
+  [8, 12, 2, 5, 11, 1],
+  [5, 4, 1, 9, 8, 6],
+  [6, 6, 0, 7, 9, 2],
+  [1, 7, 1, 8, 4, 8],
+  [10, 2, 2, 6, 1, 4],
+  [10, 2, 2, 5, 0, 5],
 ];
 
 const sampleData = [
-  { name: 'x', value: 400, color: '#FFab00' },
-  { name: 'y', value: 300, color: '#000000' },
-  { name: 'z', value: 200, color: '#8B0000' },
-  { name: 'N', value: 100 },
+  { name: 'Meeting Rooms', value: 400, color: '#FFab00' },
+  { name: 'Private Offices', value: 300, color: '#000000' },
+  { name: 'Event Space', value: 200, color: '#8B0000' },
 ];
 
 const sample = [

@@ -1,15 +1,16 @@
 import BookingCard from '../components/BookingCard';
-import img from '../assets/images/booking/img1.png';
 
 const data = [
   {
     title: 'Single Seat',
     description: 'Dedicated space for individual focus and productivity.',
+    img: '/images/booking/img1.png',
     capacity: 1,
   },
   {
     title: 'Private Room',
     description: 'Fully equipped room for team meetings and private sessions.',
+    img: '/images/booking/img2.png',
     capacity: 4,
   },
 ];
@@ -20,7 +21,7 @@ function Booking() {
       <h1 className="fw-bolder mb-4">Book Your Workspace</h1>
       <div className="row g-4">
         {data.map((item, index) => (
-          <BookingCard {...item} key={index} img={img} />
+          <BookingCard {...item} key={index} />
         ))}
         <div className="box col-12 col-md-6 col-lg-4">
           <div

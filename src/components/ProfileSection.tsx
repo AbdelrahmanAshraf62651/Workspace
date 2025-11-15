@@ -1,4 +1,4 @@
-import profileImg from '../assets/images/profile.jpg';
+import profileImg from '/images/profile.jpg';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 

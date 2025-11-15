@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import profilePic from '../assets/images/profile.jpg';
+// import profilePic from '../assets/images/profile.jpg';
 
 function AdminNavbar() {
   const getLinkClass = ({ isActive }: { isActive: boolean }): string => {
@@ -51,13 +51,6 @@ function AdminNavbar() {
               </NavLink>
             </li>
           </ul>
-        </div>
-        <div className="profile-img d-none d-lg-block">
-          <img
-            src={profilePic}
-            alt="Profile Picture"
-            className="img-fluid rounded-pill"
-          />
         </div>
       </div>
     </nav>

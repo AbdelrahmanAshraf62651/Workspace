@@ -75,7 +75,7 @@ nav .profile-img {
 
 /*Home*/
 .landing {
-    background-image: url("./assets/images/home/hero-bg.jpg");
+    background-image: url("/images/home/hero-bg.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     overflow: hidden;
@@ -233,13 +233,15 @@ footer a:hover {
 .about-page .ceo-message {
     background-color: rgb(219, 219, 219);
 }
+
 @media screen and (max-width : 991px) {
-    .chart-style{
+    .chart-style {
         width: 100% !important;
     }
-} 
+}
+
 @media screen and (min-width : 992px) {
-    .chart-style{
+    .chart-style {
         width: 50% !important;
     }
-} 
+}

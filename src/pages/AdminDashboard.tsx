@@ -65,7 +65,7 @@ function AdminDashboard() {
 
   return (
     <div className="container pt-5 admin-dashboard-page">
-      <h2 className="fw-bold">Admin Dashboard</h2>
+      <h1 className="fw-bold">Admin Dashboard</h1>
       <div className="row g-4 pt-4">
         {statCardsData.map((card) => (
           <div key={card.title} className="col-12 col-sm-6 col-lg-3">

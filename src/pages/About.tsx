@@ -10,8 +10,7 @@ import {
   faEnvelope,
   faClock,
 } from '@fortawesome/free-solid-svg-icons';
-
-import heroPic from '../assets/images/about/image.png';
+import img from '/images/about/image.png';
 
 function About() {
   return (
@@ -25,12 +24,10 @@ function About() {
             collaborative co-working spaces, we provide an environment where
             your ideas can thrive.
           </p>
-          <button className="sec-btn btn-lg rounded-1">
-            Discover More
-          </button>
+          <button className="sec-btn btn-lg rounded-1">Discover More</button>
         </div>
         <div className="col-12 col-lg-6 pe-lg-3">
-          <img src={heroPic} alt="landscape" className="img-fluid rounded-2" />
+          <img src={img} alt="landscape" className="img-fluid rounded-2" />
         </div>
       </div>
       <div className="loaction-map mt-3 p-3 p-lg-4 rounded border g-4">

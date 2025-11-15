@@ -20,6 +20,7 @@ import Signup from './pages/Signup';
 import AccessHistory from './pages/AccessHistory';
 import AdminDashboard from './pages/AdminDashboard';
 import EditRoomSchedule from './pages/EditRoomSchedule';
+import NotFound from './pages/NotFound';
 import { useEffect, useState } from 'react';
 
 const AppContent = () => {
@@ -43,6 +44,7 @@ const AppContent = () => {
     <>
       {isAdmin ? <AdminNavbar /> : <Navbar />}
       <Routes>
+        <Route path="*" element={<NotFound />} />
         <Route path="/" element={<Home />} />
         <Route path="/cafe" element={<Cafe />} />
         <Route path="/booking" element={<Booking />} />
