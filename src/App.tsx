@@ -24,7 +24,8 @@ import AdminGalleryManagement from './pages/AdminGalleryManagement';
 import NotFound from './pages/NotFound';
 import { GalleryProvider } from './contexts/GalleryContext';
 import { useEffect, useState } from 'react';
-
+import AdminLogin from './pages/AdminLogin';
+import CafeManagement from './pages/CafeManagement';
 const AppContent = () => {
   const location = useLocation();
   const [isAdmin, setIsAdmin] = useState<boolean>(true);
@@ -37,6 +38,13 @@ const AppContent = () => {
       location.pathname === '/access-history' ||
       location.pathname === '/edit-room-schedule' ||
       location.pathname === '/admin-gallery-management'
+      location.pathname === '/edit-room-schedule'||
+      location.pathname === '/admin-login'||
+      location.pathname === '/gallery-management'||
+      location.pathname === '/cafe-management'||
+      location.pathname === '/booking-management'||
+      location.pathname === '/about-management'||
+      location.pathname === '/messages'
     ) {
       setIsAdmin(true);
     } else {
@@ -57,12 +65,14 @@ const AppContent = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         {/* =================== admin sections =======================*/}
+        <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/dashboard" element={<AdminDashboard />} />
         <Route path="/access-history" element={<AccessHistory />} />
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/room-availability" element={<RoomAvailability />} />
         <Route path="/edit-room-schedule" element={<EditRoomSchedule />} />
         <Route path="/admin-gallery-management" element={<AdminGalleryManagement />} />
+        <Route path='/cafe-management' element={<CafeManagement />} />
       </Routes>
       {showLayout && <Footer />}
     </>

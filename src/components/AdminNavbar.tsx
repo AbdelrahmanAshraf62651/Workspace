@@ -55,6 +55,31 @@ function AdminNavbar() {
                 Analytics
               </NavLink>
             </li>
+            <li className='nav-item'>
+              <NavLink className={getLinkClass} to="/gallery-management">
+                Gallery Management
+              </NavLink>
+            </li>
+            <li className='nav-item'>
+              <NavLink className={getLinkClass} to="/cafe-management">
+                Cafe Management
+              </NavLink>
+            </li>
+            <li className='nav-item'>
+              <NavLink className={getLinkClass} to="/booking-management">
+                Booking Management
+              </NavLink>
+            </li>
+            <li className='nav-item'>
+              <NavLink className={getLinkClass} to="/about-management">
+                About Management
+              </NavLink>
+            </li>
+            <li className='nav-item'>
+              <NavLink className={getLinkClass} to="/messages">
+                Messages
+              </NavLink>
+            </li>            
           </ul>
         </div>
       </div>
