@@ -45,7 +45,8 @@ function Login() {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                navigate('/dashboard');
+                navigate('/profile');
+                localStorage.setItem("isUserLoggedIn" , "true");
               }}
             >
               <div className="mb-3">

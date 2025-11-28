@@ -5,10 +5,20 @@ import {
   faMugSaucer,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
+import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { Link } from 'react-router-dom';
 import HomeCard from '../components/HomeCard';
+import { useMemo, useState } from 'react';
 
-const data = [
+interface HomeCardData {
+  title: string;
+  description: string;
+  icon: IconDefinition;
+  link: string;
+  btn: string;
+}
+
+const loggedInCards: HomeCardData[] = [
   {
     title: 'Seamless Booking',
     description: 'Find and reserve your perfect workspace with ease.',
@@ -40,7 +50,51 @@ const data = [
     btn: 'View Profile',
   },
 ];
+
+const loggedOutCards: HomeCardData[] = [
+  {
+    title: 'Seamless Booking',
+    description: 'Find and reserve your perfect workspace with ease.',
+    icon: faCalendarCheck,
+    link: '/login',
+    btn: 'Book Now',
+  },
+  {
+    title: 'Explore Our Spaces',
+    description:
+      'Discover stunning photos of our modern and versatile workspaces.',
+    icon: faImages,
+    link: '/gallery',
+    btn: 'View Gallery',
+  },
+  {
+    title: 'Delightful Cafe',
+    description:
+      'Order your favorite beverages and snacks from our in-house cafe.',
+    icon: faMugSaucer,
+    link: '/cafe',
+    btn: 'Order Now',
+  },
+  {
+    title: 'Your Profile',
+    description: 'Manage your personal details, bookings, and preferences.',
+    icon: faUser,
+    link: '/login',
+    btn: 'View Profile',
+  },
+];
 function Home() {
+  const [isUserLoggedIn] = useState<boolean>(() =>
+    typeof window !== 'undefined'
+      ? localStorage.getItem('isUserLoggedIn') === 'true'
+      : false
+  );
+
+  const data: HomeCardData[] = useMemo(
+    () => (isUserLoggedIn ? loggedInCards : loggedOutCards),
+    [isUserLoggedIn]
+  );
+
   return (
     <>
       <section className="landing position-relative text-center d-flex justify-content-center flex-column">
