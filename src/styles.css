@@ -234,6 +234,11 @@ footer a:hover {
     background-color: rgb(219, 219, 219);
 }
 
+.active-category{
+    background-color: black !important;
+    color: #fff !important;
+}
+
 @media screen and (max-width : 991px) {
     .chart-style {
         width: 100% !important;
