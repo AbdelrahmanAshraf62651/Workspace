@@ -37,7 +37,7 @@ const AppContent = () => {
       location.pathname === '/room-availability' ||
       location.pathname === '/access-history' ||
       location.pathname === '/edit-room-schedule' ||
-      location.pathname === '/admin-gallery-management'
+      location.pathname === '/admin-gallery-management' ||
       location.pathname === '/edit-room-schedule'||
       location.pathname === '/admin-login'||
       location.pathname === '/gallery-management'||
