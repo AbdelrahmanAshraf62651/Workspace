@@ -20,7 +20,9 @@ import Signup from './pages/Signup';
 import AccessHistory from './pages/AccessHistory';
 import AdminDashboard from './pages/AdminDashboard';
 import EditRoomSchedule from './pages/EditRoomSchedule';
+import AdminGalleryManagement from './pages/AdminGalleryManagement';
 import NotFound from './pages/NotFound';
+import { GalleryProvider } from './contexts/GalleryContext';
 import { useEffect, useState } from 'react';
 import AdminLogin from './pages/AdminLogin';
 import CafeManagement from './pages/CafeManagement';
@@ -34,6 +36,8 @@ const AppContent = () => {
       location.pathname === '/analytics' ||
       location.pathname === '/room-availability' ||
       location.pathname === '/access-history' ||
+      location.pathname === '/edit-room-schedule' ||
+      location.pathname === '/admin-gallery-management'
       location.pathname === '/edit-room-schedule'||
       location.pathname === '/admin-login'||
       location.pathname === '/gallery-management'||
@@ -67,6 +71,7 @@ const AppContent = () => {
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/room-availability" element={<RoomAvailability />} />
         <Route path="/edit-room-schedule" element={<EditRoomSchedule />} />
+        <Route path="/admin-gallery-management" element={<AdminGalleryManagement />} />
         <Route path='/cafe-management' element={<CafeManagement />} />
       </Routes>
       {showLayout && <Footer />}
@@ -77,7 +82,9 @@ const AppContent = () => {
 function App() {
   return (
     <Router>
-      <AppContent />
+      <GalleryProvider>
+        <AppContent />
+      </GalleryProvider>
     </Router>
   );
 }

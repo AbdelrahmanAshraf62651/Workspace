@@ -5,3 +5,11 @@ export type Room = {
   status: string;
   nextEvent: string;
 };
+
+export type GalleryImage = {
+  id: number;
+  img: string;
+  title: string;
+  description: string;
+  isVisible: boolean;
+};
