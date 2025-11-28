@@ -46,6 +46,11 @@ function AdminNavbar() {
               </NavLink>
             </li>
             <li className="nav-item">
+              <NavLink className={getLinkClass} to="/admin-gallery-management">
+                Gallery Management
+              </NavLink>
+            </li>
+            <li className="nav-item">
               <NavLink className={getLinkClass} to="/analytics">
                 Analytics
               </NavLink>
