@@ -1,94 +1,102 @@
-import { useState, useEffect } from 'react';
-import { Form, Button } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState, useEffect} from "react";
+import { Form, Button } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faLocationDot,
   faClock,
   faPhone,
-} from '@fortawesome/free-solid-svg-icons';
-import { useAbout } from '../contexts/AboutContext';
-import type { AboutSettings } from '../types';
+} from "@fortawesome/free-solid-svg-icons";
+// import { useAbout } from '../contexts/AboutContext';
+// import type { AboutSettings } from '../types';
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const DAYS = [
-  { key: 'monday', label: 'Monday' },
-  { key: 'tuesday', label: 'Tuesday' },
-  { key: 'wednesday', label: 'Wednesday' },
-  { key: 'thursday', label: 'Thursday' },
-  { key: 'friday', label: 'Friday' },
-  { key: 'saturday', label: 'Saturday' },
-  { key: 'sunday', label: 'Sunday' },
+  { key: "monday", label: "Monday" },
+  { key: "tuesday", label: "Tuesday" },
+  { key: "wednesday", label: "Wednesday" },
+  { key: "thursday", label: "Thursday" },
+  { key: "friday", label: "Friday" },
+  { key: "saturday", label: "Saturday" },
+  { key: "sunday", label: "Sunday" },
 ] as const;
 
+interface DayOpeningHours {
+  id: number;
+  isOpen: boolean;
+  openTime: string;
+  closeTime: string;
+}
+interface OpeningHours {
+  [key: string]: DayOpeningHours;
+}
+interface AboutInfo {
+  id: number;
+  address: string;
+  contact_phone: string;
+  contact_email: string;
+  location_link: string;
+  opening_hours: OpeningHours;
+  // Add other fields as necessary
+}
+
 function AdminAbout() {
-  const { settings, updateSettings } = useAbout();
-  const [formData, setFormData] = useState<AboutSettings>(settings);
-  const [hasChanges, setHasChanges] = useState(false);
-
+  const navigate = useNavigate();
+  const [aboutData, setAboutData] = useState<AboutInfo | null>(null);
+  const [address, setAddress] = useState("");
+  const [contactPhone, setContactPhone] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
+  const [locationLink, setLocationLink] = useState("");
+  const [openingHours, setOpeningHours] = useState<OpeningHours>({
+    monday: { id: 1, isOpen: false, openTime: "10AM", closeTime: "7PM" },
+    tuesday: { id: 2, isOpen: false, openTime: "10AM", closeTime: "7PM" },
+    wednesday: { id: 3, isOpen: false, openTime: "10AM", closeTime: "7PM" },
+    thursday: { id: 4, isOpen: false, openTime: "10AM", closeTime: "7PM" },
+    friday: { id: 5, isOpen: false, openTime: "10AM", closeTime: "7PM" },
+    saturday: { id: 6, isOpen: false, openTime: "10AM", closeTime: "7PM" },
+    sunday: { id: 7, isOpen: false, openTime: "10AM", closeTime: "7PM" },
+  });
   useEffect(() => {
-    setFormData(settings);
-    setHasChanges(false);
-  }, [settings]);
+    axios
+      .get("https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/location/1")
+      .then((response) => {
+        const data = response.data;
+        setAboutData(data);
+      }
+      )
+      .catch((error) => {
+        console.error("Error fetching about info:", error);
+      });
 
-  const handleInputChange = (
-    section: 'location' | 'contact',
-    field: string,
-    value: string
-  ) => {
-    setFormData((prev) => ({
-      ...prev,
-      [section]: {
-        ...prev[section],
-        [field]: value,
-      },
-    }));
-    setHasChanges(true);
-  };
-
-  const handleDayToggle = (
-    day: keyof AboutSettings['openingHours'],
-    isOpen: boolean
-  ) => {
-    setFormData((prev) => ({
-      ...prev,
-      openingHours: {
-        ...prev.openingHours,
-        [day]: {
-          ...prev.openingHours[day],
-          isOpen,
-        },
-      },
-    }));
-    setHasChanges(true);
-  };
-
-  const handleTimeChange = (
-    day: keyof AboutSettings['openingHours'],
-    timeType: 'openTime' | 'closeTime',
-    value: string
-  ) => {
-    setFormData((prev) => ({
-      ...prev,
-      openingHours: {
-        ...prev.openingHours,
-        [day]: {
-          ...prev.openingHours[day],
-          [timeType]: value,
-        },
-      },
-    }));
-    setHasChanges(true);
-  };
+      setAddress(aboutData?.address || "");
+      setContactPhone(aboutData?.contact_phone || "");
+      setContactEmail(aboutData?.contact_email || "");
+      setLocationLink(aboutData?.location_link || "");
+  }, [aboutData?.address, aboutData?.contact_email, aboutData?.contact_phone, aboutData?.location_link]);
+  const hasChanges = true; // Implement logic to check if there are unsaved changes
 
   const handleSave = () => {
-    updateSettings(formData);
-    setHasChanges(false);
-    alert('Settings saved successfully!');
+    axios
+      .patch(
+        "https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/location/1",
+        {
+          address : address,
+          contact_phone: contactPhone,
+          contact_email: contactEmail,
+          location_link: locationLink,
+          opening_hours: openingHours,
+        }
+      )
+      .then(() => {
+        console.log("Settings saved successfully");
+      })
+      .catch((error) => {
+        console.error("Error saving settings:", error);
+      });
   };
-
-  const handleCancel = () => {
-    setFormData(settings);
-    setHasChanges(false);
-  };
+  const handleCancel= ()=>{
+    navigate(0);
+  }
 
   return (
     <div className="container pt-5">
@@ -118,33 +126,11 @@ function AdminAbout() {
                 <Form.Label>Address</Form.Label>
                 <Form.Control
                   type="text"
-                  value={formData.location.address}
-                  onChange={(e) =>
-                    handleInputChange('location', 'address', e.target.value)
-                  }
+                  value={aboutData?.address || ""}
+                  onChange={(e) => {
+                    setAddress(e.target.value);
+                  }}
                   placeholder="Enter full address"
-                />
-              </div>
-              <div className="col-md-4">
-                <Form.Label>City</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={formData.location.city}
-                  onChange={(e) =>
-                    handleInputChange('location', 'city', e.target.value)
-                  }
-                  placeholder="Enter city"
-                />
-              </div>
-              <div className="col-md-4">
-                <Form.Label>Country</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={formData.location.country}
-                  onChange={(e) =>
-                    handleInputChange('location', 'country', e.target.value)
-                  }
-                  placeholder="Enter country"
                 />
               </div>
               <div className="col-md-4">
@@ -153,10 +139,8 @@ function AdminAbout() {
                 </Form.Label>
                 <Form.Control
                   type="text"
-                  value={formData.location.mapLink}
-                  onChange={(e) =>
-                    handleInputChange('location', 'mapLink', e.target.value)
-                  }
+                  value={aboutData?.location_link || ""}
+                  onChange={(e) => setLocationLink(e.target.value)}
                   placeholder="https://maps.app.goo.gl/example"
                 />
               </div>
@@ -173,7 +157,7 @@ function AdminAbout() {
             </div>
             <div className="row g-3">
               {DAYS.map(({ key, label }) => {
-                const dayData = formData.openingHours[key];
+                const dayData = openingHours[key];
                 return (
                   <div key={key} className="col-12">
                     <div className="d-flex align-items-center gap-3">
@@ -181,39 +165,59 @@ function AdminAbout() {
                         <input
                           className="form-check-input"
                           type="checkbox"
-                          checked={dayData.isOpen}
+                          checked={dayData?.isOpen || false}
                           onChange={(e) =>
-                            handleDayToggle(key, e.target.checked)
+                            setOpeningHours({
+                              ...openingHours,
+                              [key]: {
+                                ...openingHours[key],
+                                isOpen: e.target.checked,
+                              },
+                            })
                           }
                           id={`switch-${key}`}
                         />
                         <label
                           className="form-check-label fw-semibold"
                           htmlFor={`switch-${key}`}
-                          style={{ minWidth: '100px' }}
+                          style={{ minWidth: "100px" }}
                         >
                           {label}
                         </label>
                       </div>
-                      {dayData.isOpen ? (
+                      {dayData?.isOpen ? (
                         <div className="d-flex align-items-center gap-2 flex-grow-1">
                           <Form.Control
-                            type="time"
-                            value={dayData.openTime}
+                            type="number"
+                            value={parseInt(dayData.openTime)}
                             onChange={(e) =>
-                              handleTimeChange(key, 'openTime', e.target.value)
+                              setOpeningHours({
+                                ...openingHours,
+                                [key]: {
+                                  ...openingHours[key],
+                                  openTime: e.target.value,
+                                },
+                              })
                             }
-                            style={{ maxWidth: '150px' }}
+                            style={{ maxWidth: "100px" }}
                           />
+                          <span className="text-muted">AM</span>
                           <span className="text-muted">-</span>
                           <Form.Control
-                            type="time"
-                            value={dayData.closeTime}
+                            type="number"
+                            value={parseInt(dayData.closeTime)}
                             onChange={(e) =>
-                              handleTimeChange(key, 'closeTime', e.target.value)
+                              setOpeningHours({
+                                ...openingHours,
+                                [key]: {
+                                  ...openingHours[key],
+                                  closeTime: e.target.value,
+                                },
+                              })
                             }
-                            style={{ maxWidth: '150px' }}
+                            style={{ maxWidth: "100px" }}
                           />
+                          <span className="text-muted">PM</span>
                         </div>
                       ) : (
                         <span className="text-muted">Closed</span>
@@ -238,10 +242,8 @@ function AdminAbout() {
                 <Form.Label>Phone Number</Form.Label>
                 <Form.Control
                   type="tel"
-                  value={formData.contact.phone}
-                  onChange={(e) =>
-                    handleInputChange('contact', 'phone', e.target.value)
-                  }
+                    value={contactPhone || ""}
+                  onChange={(e) => setContactPhone(e.target.value)}
                   placeholder="+1 (555) 987-6545"
                 />
               </div>
@@ -249,9 +251,9 @@ function AdminAbout() {
                 <Form.Label>Email</Form.Label>
                 <Form.Control
                   type="email"
-                  value={formData.contact.email}
+                  value={contactEmail || ""}
                   onChange={(e) =>
-                    handleInputChange('contact', 'email', e.target.value)
+                    setContactEmail(e.target.value)
                   }
                   placeholder="contact@techbusiness.com"
                 />
@@ -270,11 +272,7 @@ function AdminAbout() {
         >
           Cancel
         </Button>
-        <Button
-          className="sec-btn"
-          onClick={handleSave}
-          disabled={!hasChanges}
-        >
+        <Button className="sec-btn" onClick={handleSave} disabled={!hasChanges}>
           Save Settings
         </Button>
       </div>
@@ -283,4 +281,3 @@ function AdminAbout() {
 }
 
 export default AdminAbout;
-

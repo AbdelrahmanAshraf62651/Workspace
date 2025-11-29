@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 // import profilePic from '../assets/images/profile.jpg';
+import logo from '/logo.png';
 
 function AdminNavbar() {
   const getLinkClass = ({ isActive }: { isActive: boolean }): string => {
@@ -10,7 +11,7 @@ function AdminNavbar() {
     <nav className="navbar navbar-expand-lg bg-white border-bottom sticky-top">
       <div className="container-fluid ms-2 me-2">
         <NavLink className="navbar-brand" to="/dashboard" end>
-          SpaceX
+          <img src={logo} alt="Logo" style={{ maxHeight: '30px' }} />
         </NavLink>
         <button
           className="navbar-toggler"
@@ -28,11 +29,6 @@ function AdminNavbar() {
             <li className="nav-item">
               <NavLink className={getLinkClass} to="/dashboard" end>
                 Dashboard
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink className={getLinkClass} to="/access-history">
-                Access History
               </NavLink>
             </li>
             <li className="nav-item">
@@ -55,26 +51,26 @@ function AdminNavbar() {
                 Gallery Management
               </NavLink>
             </li>
-            <li className='nav-item'>
+            <li className="nav-item">
               <NavLink className={getLinkClass} to="/cafe-management">
                 Cafe Management
               </NavLink>
             </li>
-            <li className='nav-item'>
+            <li className="nav-item">
               <NavLink className={getLinkClass} to="/booking-management">
                 Booking Management
               </NavLink>
             </li>
-            <li className='nav-item'>
+            <li className="nav-item">
               <NavLink className={getLinkClass} to="/admin-about-settings">
                 About Settings
               </NavLink>
             </li>
-            <li className='nav-item'>
-              <NavLink className={getLinkClass} to="/contact-messages">
+            <li className="nav-item">
+              <NavLink className={getLinkClass} to="/messages">
                 Messages
               </NavLink>
-            </li>            
+            </li>
           </ul>
         </div>
       </div>
