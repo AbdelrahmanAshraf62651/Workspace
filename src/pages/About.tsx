@@ -11,19 +11,62 @@ import {
   faClock,
 } from '@fortawesome/free-solid-svg-icons';
 import img from '/images/about/image.png';
-import { useAbout } from '../contexts/AboutContext';
+// import { useAbout } from '../contexts/AboutContext';
+import axios from 'axios';
+import { useEffect , useState } from 'react';
+import ContactForm from '../components/ContactForm';
 
-// Helper function to convert 24-hour time to 12-hour format
-const formatTime = (time24: string): string => {
-  const [hours, minutes] = time24.split(':');
-  const hour = parseInt(hours, 10);
-  const ampm = hour >= 12 ? 'PM' : 'AM';
-  const hour12 = hour % 12 || 12;
-  return `${hour12}:${minutes} ${ampm}`;
-};
+// // Helper function to convert 24-hour time to 12-hour format
+// const formatTime = (time24: string): string => {
+//   const [hours, minutes] = time24.split(':');
+//   const hour = parseInt(hours, 10);
+//   const ampm = hour >= 12 ? 'PM' : 'AM';
+//   const hour12 = hour % 12 || 12;
+//   return `${hour12}:${minutes} ${ampm}`;
+// };
+
+// axios.get('https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/location/1').then((response) => {
+//   const data = response.data;
+//   console.log('About Info:', data);
+// }).catch((error) => {
+//   console.error('Error fetching about info:', error);
+// });
+
+interface AboutInfo {
+  id: number;
+  address: string;
+  contact_phone: string;
+  contact_email: string;
+  location_link: string;
+  opening_hours: {
+    monday: { open: string; close: string , isOpen: boolean };
+    tuesday: { open: string; close: string , isOpen: boolean };
+    wednesday: { open: string; close: string , isOpen: boolean };
+    thursday: { open: string; close: string , isOpen: boolean };
+    friday: { open: string; close: string , isOpen: boolean };
+    saturday: { open: string; close: string , isOpen: boolean };
+    sunday: { open: string; close: string , isOpen: boolean };
+  }
+  // Add other fields as necessary
+}
 
 function About() {
-  const { settings } = useAbout();
+  const [aboutInfo, setAboutInfo] = useState<AboutInfo | null>(null);
+  useEffect(() => {
+    axios
+      .get(
+        'https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/location/1'
+      )
+      .then((response) => {
+        setAboutInfo(response.data);
+        console.log('About Info:', response.data);
+      }
+      )
+      .catch((error) => {
+        console.error('Error fetching about info:', error);
+      });
+  }, []);
+  // const { settings } = useAbout();
   return (
     <main className="container pt-5 about-page">
       <div className="hero-section d-flex flex-column flex-lg-row align-items-center justify-content-between p-3 p-lg-4 rounded gap-5 gap-lg-3">
@@ -45,7 +88,7 @@ function About() {
         <p className="fs-2 fw-bold">Our Location</p>
         <iframe
           className="col-12"
-          src={settings.location.mapLink}
+          src={aboutInfo?.location_link as string}
           width="600"
           height="450"
           allowFullScreen
@@ -61,15 +104,15 @@ function About() {
                 <p className="fs-3 fw-bold pb-2">Contact Details</p>
                 <div className="d-flex gap-2 align-items-start mb-2">
                   <FontAwesomeIcon className="mt-1" icon={faLocationDot} />
-                  <div>{settings.location.address}</div>
+                  <div>{aboutInfo?.address}</div>
                 </div>
                 <div className="d-flex gap-2 align-items-center mb-2">
                   <FontAwesomeIcon icon={faPhone} />
-                  <div>{settings.contact.phone}</div>
+                  <div>{aboutInfo?.contact_phone}</div>
                 </div>
                 <div className="d-flex gap-2 align-items-center">
                   <FontAwesomeIcon icon={faEnvelope} />
-                  <div>{settings.contact.email}</div>
+                  <div>{aboutInfo?.contact_email}</div>
                 </div>
               </div>
               <div>
@@ -95,7 +138,7 @@ function About() {
             <div className="p-3 border rounded-1 h-100 d-flex flex-column justify-content-between w-100 shadow-sm">
               <div>
                 <p className="fs-3 fw-bold pb-2">Opening Hours</p>
-                {Object.entries(settings.openingHours).map(([day, schedule]) => {
+                {Object.entries(aboutInfo?.opening_hours || {}).map(([day, schedule]) => {
                   const dayLabels: { [key: string]: string } = {
                     monday: 'Monday',
                     tuesday: 'Tuesday',
@@ -113,7 +156,7 @@ function About() {
                       <div>
                         {dayLabel}:{' '}
                         <span className="ms-2">
-                          {formatTime(schedule.openTime)} - {formatTime(schedule.closeTime)}
+                          {schedule.open} - {schedule.close}
                         </span>
                       </div>
                     </div>
@@ -140,53 +183,7 @@ function About() {
         <div className="col-12 mt-4">
           <div className="p-3 border rounded-1 shadow-sm">
             <p className="fs-3 fw-bold pb-2">Send Us a Message</p>
-            <form className="col-12" action="/submit" method="POST">
-              <div className="mb-3">
-                <label className="fs-6 py-2">Your Name</label>
-                <input
-                  type="text"
-                  placeholder="John Doe"
-                  id="name"
-                  className="form-control px-3 py-2"
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <label className="fs-6 py-2">Your Email</label>
-                <input
-                  type="email"
-                  placeholder="john.doe@example.com"
-                  id="email"
-                  className="form-control px-3 py-2"
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <label className="fs-6 py-2">Subject</label>
-                <input
-                  type="text"
-                  placeholder="Inquiry about booking"
-                  id="subject"
-                  className="form-control px-3 py-2"
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <label className="fs-6 py-2">Your Message</label>
-                <textarea
-                  placeholder="Your message"
-                  id="message"
-                  className="form-control px-3 py-2"
-                  required
-                ></textarea>
-              </div>
-              <button
-                type="submit"
-                className="sec-btn fs-5 btn-lg rounded-1 col-12 mt-3"
-              >
-                Send Message
-              </button>
-            </form>
+            <ContactForm />
           </div>
         </div>
       </div>
