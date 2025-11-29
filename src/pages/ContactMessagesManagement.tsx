@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { 
   Form, 
   Button, 
@@ -8,8 +8,7 @@ import {
   Row, 
   Col, 
   Dropdown,
-  Modal,
-  Alert 
+  Modal
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
@@ -17,8 +16,7 @@ import {
   faEye, 
   faEyeSlash, 
   faTrash, 
-  faSearch, 
-  faFilter 
+  faSearch
 } from '@fortawesome/free-solid-svg-icons';
 import { useContactMessages } from '../contexts/ContactMessagesContext';
 

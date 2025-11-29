@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 
 interface ContactMessage {
   id: number;
@@ -205,6 +205,7 @@ export function ContactMessagesProvider({ children }: { children: ReactNode }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useContactMessages = () => {
   const context = useContext(ContactMessagesContext);
   if (!context) {
