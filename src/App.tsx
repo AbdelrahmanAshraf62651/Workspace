@@ -21,8 +21,10 @@ import AccessHistory from './pages/AccessHistory';
 import AdminDashboard from './pages/AdminDashboard';
 import EditRoomSchedule from './pages/EditRoomSchedule';
 import AdminGalleryManagement from './pages/AdminGalleryManagement';
+import AdminAbout from './pages/AdminAbout';
 import NotFound from './pages/NotFound';
 import { GalleryProvider } from './contexts/GalleryContext';
+import { AboutProvider } from './contexts/AboutContext';
 import { useEffect, useState } from 'react';
 import AdminLogin from './pages/AdminLogin';
 import CafeManagement from './pages/CafeManagement';
@@ -38,6 +40,7 @@ const AppContent = () => {
       location.pathname === '/access-history' ||
       location.pathname === '/edit-room-schedule' ||
       location.pathname === '/admin-gallery-management' ||
+      location.pathname === '/admin-about-settings' ||
       location.pathname === '/edit-room-schedule'||
       location.pathname === '/admin-login'||
       location.pathname === '/gallery-management'||
@@ -72,6 +75,7 @@ const AppContent = () => {
         <Route path="/room-availability" element={<RoomAvailability />} />
         <Route path="/edit-room-schedule" element={<EditRoomSchedule />} />
         <Route path="/admin-gallery-management" element={<AdminGalleryManagement />} />
+        <Route path="/admin-about-settings" element={<AdminAbout />} />
         <Route path='/cafe-management' element={<CafeManagement />} />
       </Routes>
       {showLayout && <Footer />}
@@ -82,9 +86,11 @@ const AppContent = () => {
 function App() {
   return (
     <Router>
-      <GalleryProvider>
-        <AppContent />
-      </GalleryProvider>
+       <GalleryProvider>
+         <AboutProvider>
+           <AppContent />
+         </AboutProvider>
+        </GalleryProvider>
     </Router>
   );
 }

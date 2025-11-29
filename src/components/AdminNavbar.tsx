@@ -66,8 +66,8 @@ function AdminNavbar() {
               </NavLink>
             </li>
             <li className='nav-item'>
-              <NavLink className={getLinkClass} to="/about-management">
-                About Management
+              <NavLink className={getLinkClass} to="/admin-about-settings">
+                About Settings
               </NavLink>
             </li>
             <li className='nav-item'>

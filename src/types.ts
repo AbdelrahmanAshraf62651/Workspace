@@ -13,3 +13,31 @@ export type GalleryImage = {
   description: string;
   isVisible: boolean;
 };
+
+export type DaySchedule = {
+  isOpen: boolean;
+  openTime: string;
+  closeTime: string;
+};
+
+export type AboutSettings = {
+  location: {
+    address: string;
+    city: string;
+    country: string;
+    mapLink: string;
+  };
+  openingHours: {
+    monday: DaySchedule;
+    tuesday: DaySchedule;
+    wednesday: DaySchedule;
+    thursday: DaySchedule;
+    friday: DaySchedule;
+    saturday: DaySchedule;
+    sunday: DaySchedule;
+  };
+  contact: {
+    phone: string;
+    email: string;
+  };
+};

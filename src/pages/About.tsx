@@ -11,8 +11,19 @@ import {
   faClock,
 } from '@fortawesome/free-solid-svg-icons';
 import img from '/images/about/image.png';
+import { useAbout } from '../contexts/AboutContext';
+
+// Helper function to convert 24-hour time to 12-hour format
+const formatTime = (time24: string): string => {
+  const [hours, minutes] = time24.split(':');
+  const hour = parseInt(hours, 10);
+  const ampm = hour >= 12 ? 'PM' : 'AM';
+  const hour12 = hour % 12 || 12;
+  return `${hour12}:${minutes} ${ampm}`;
+};
 
 function About() {
+  const { settings } = useAbout();
   return (
     <main className="container pt-5 about-page">
       <div className="hero-section d-flex flex-column flex-lg-row align-items-center justify-content-between p-3 p-lg-4 rounded gap-5 gap-lg-3">
@@ -34,7 +45,7 @@ function About() {
         <p className="fs-2 fw-bold">Our Location</p>
         <iframe
           className="col-12"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3765.66717872805!2d31.245493534800627!3d30.061764094951126!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x145841b80df27891%3A0xf2a201caea65c2b3!2sRamsis%20Square!5e0!3m2!1sen!2seg!4v1755849468072!5m2!1sen!2seg"
+          src={settings.location.mapLink}
           width="600"
           height="450"
           allowFullScreen
@@ -50,17 +61,15 @@ function About() {
                 <p className="fs-3 fw-bold pb-2">Contact Details</p>
                 <div className="d-flex gap-2 align-items-start mb-2">
                   <FontAwesomeIcon className="mt-1" icon={faLocationDot} />
-                  <div>
-                    123 Innovation Drive, Suite 400, Metropole City, MC 12345
-                  </div>
+                  <div>{settings.location.address}</div>
                 </div>
                 <div className="d-flex gap-2 align-items-center mb-2">
                   <FontAwesomeIcon icon={faPhone} />
-                  <div>(+20) 112-345-6789</div>
+                  <div>{settings.contact.phone}</div>
                 </div>
                 <div className="d-flex gap-2 align-items-center">
                   <FontAwesomeIcon icon={faEnvelope} />
-                  <div>contact@example.com</div>
+                  <div>{settings.contact.email}</div>
                 </div>
               </div>
               <div>
@@ -86,25 +95,37 @@ function About() {
             <div className="p-3 border rounded-1 h-100 d-flex flex-column justify-content-between w-100 shadow-sm">
               <div>
                 <p className="fs-3 fw-bold pb-2">Opening Hours</p>
-                <div className="d-flex gap-2 align-items-center mb-2">
-                  <FontAwesomeIcon icon={faClock} />
-                  <div>
-                    Monday - Friday:{' '}
-                    <span className="ms-2">9:00 AM - 6:00 PM</span>
-                  </div>
-                </div>
-                <div className="d-flex gap-2 align-items-center mb-2">
-                  <FontAwesomeIcon icon={faClock} />
-                  <div>
-                    Saturday: <span className="ms-2">10:00 AM - 5:00 PM</span>
-                  </div>
-                </div>
-                <div className="d-flex gap-2 align-items-center mb-2">
-                  <FontAwesomeIcon icon={faClock} />
-                  <div>
-                    Sunday: <span className="ms-2">Closed</span>
-                  </div>
-                </div>
+                {Object.entries(settings.openingHours).map(([day, schedule]) => {
+                  const dayLabels: { [key: string]: string } = {
+                    monday: 'Monday',
+                    tuesday: 'Tuesday',
+                    wednesday: 'Wednesday',
+                    thursday: 'Thursday',
+                    friday: 'Friday',
+                    saturday: 'Saturday',
+                    sunday: 'Sunday',
+                  };
+                  const dayLabel = dayLabels[day] || day;
+                  
+                  return schedule.isOpen ? (
+                    <div key={day} className="d-flex gap-2 align-items-center mb-2">
+                      <FontAwesomeIcon icon={faClock} />
+                      <div>
+                        {dayLabel}:{' '}
+                        <span className="ms-2">
+                          {formatTime(schedule.openTime)} - {formatTime(schedule.closeTime)}
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div key={day} className="d-flex gap-2 align-items-center mb-2">
+                      <FontAwesomeIcon icon={faClock} />
+                      <div>
+                        {dayLabel}: <span className="ms-2">Closed</span>
+                      </div>
+                    </div>
+                  );
+                })}
                 <div className="d-flex gap-2 align-items-center">
                   <FontAwesomeIcon icon={faClock} />
                   <div>
