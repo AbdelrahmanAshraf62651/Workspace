@@ -25,9 +25,11 @@ import AdminAbout from './pages/AdminAbout';
 import NotFound from './pages/NotFound';
 import { GalleryProvider } from './contexts/GalleryContext';
 import { AboutProvider } from './contexts/AboutContext';
+import { RoomsProvider } from './contexts/RoomsContext';
 import { useEffect, useState } from 'react';
 import AdminLogin from './pages/AdminLogin';
 import CafeManagement from './pages/CafeManagement';
+import BookingManagement from './pages/BookingManagement';
 const AppContent = () => {
   const location = useLocation();
   const [isAdmin, setIsAdmin] = useState<boolean>(true);
@@ -77,6 +79,7 @@ const AppContent = () => {
         <Route path="/admin-gallery-management" element={<AdminGalleryManagement />} />
         <Route path="/admin-about-settings" element={<AdminAbout />} />
         <Route path='/cafe-management' element={<CafeManagement />} />
+        <Route path="/booking-management" element={<BookingManagement />} />
       </Routes>
       {showLayout && <Footer />}
     </>
@@ -86,11 +89,13 @@ const AppContent = () => {
 function App() {
   return (
     <Router>
-       <GalleryProvider>
-         <AboutProvider>
-           <AppContent />
-         </AboutProvider>
-        </GalleryProvider>
+      <RoomsProvider>
+         <GalleryProvider>
+           <AboutProvider>
+             <AppContent />
+           </AboutProvider>
+          </GalleryProvider>
+        </RoomsProvider>
     </Router>
   );
 }
