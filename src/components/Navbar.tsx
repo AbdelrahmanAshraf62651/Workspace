@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 
-import profilePic from '../../public/images/profile.jpg';
+import profilePic from '/images/profile.jpg';
 
 function Navbar() {
   const getLinkClass = ({ isActive }: { isActive: boolean }): string => {
