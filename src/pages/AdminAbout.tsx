@@ -72,7 +72,7 @@ function AdminAbout() {
       setContactPhone(aboutData?.contact_phone || "");
       setContactEmail(aboutData?.contact_email || "");
       setLocationLink(aboutData?.location_link || "");
-  }, []);
+  }, [aboutData?.address, aboutData?.contact_email, aboutData?.contact_phone, aboutData?.location_link]);
   const hasChanges = true; // Implement logic to check if there are unsaved changes
 
   const handleSave = () => {

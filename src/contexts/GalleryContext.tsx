@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import type { GalleryImage } from '../types';
 
 interface GalleryContextType {
@@ -129,6 +129,7 @@ export function GalleryProvider({ children }: { children: ReactNode }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useGallery() {
   const context = useContext(GalleryContext);
   if (context === undefined) {

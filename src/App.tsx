@@ -3,53 +3,52 @@ import {
   Routes,
   Route,
   useLocation,
-} from 'react-router-dom';
-import Navbar from './components/Navbar';
-import AdminNavbar from './components/AdminNavbar';
-import Home from './pages/Home';
-import Footer from './components/Footer';
-import Cafe from './pages/Cafe';
-import Booking from './pages/Booking';
-import About from './pages/About';
-import Analytics from './pages/Analytics';
-import RoomAvailability from './pages/RoomAvailability';
-import Gallery from './pages/Gallery';
-import Profile from './pages/Profile';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import AccessHistory from './pages/AccessHistory';
-import AdminDashboard from './pages/AdminDashboard';
-import EditRoomSchedule from './pages/EditRoomSchedule';
-import AdminGalleryManagement from './pages/AdminGalleryManagement';
-import AdminAbout from './pages/AdminAbout';
-import NotFound from './pages/NotFound';
-import { GalleryProvider } from './contexts/GalleryContext';
-import { AboutProvider } from './contexts/AboutContext';
-import { RoomsProvider } from './contexts/RoomsContext';
-import { useEffect, useState } from 'react';
-import AdminLogin from './pages/AdminLogin';
-import CafeManagement from './pages/CafeManagement';
-import BookingManagement from './pages/BookingManagement';
+} from "react-router-dom";
+import Navbar from "./components/Navbar";
+import AdminNavbar from "./components/AdminNavbar";
+import Home from "./pages/Home";
+import Footer from "./components/Footer";
+import Cafe from "./pages/Cafe";
+import Booking from "./pages/Booking";
+import About from "./pages/About";
+import Analytics from "./pages/Analytics";
+import RoomAvailability from "./pages/RoomAvailability";
+import Gallery from "./pages/Gallery";
+import Profile from "./pages/Profile";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import AccessHistory from "./pages/AccessHistory";
+import AdminDashboard from "./pages/AdminDashboard";
+import EditRoomSchedule from "./pages/EditRoomSchedule";
+import AdminGalleryManagement from "./pages/AdminGalleryManagement";
+import AdminAbout from "./pages/AdminAbout";
+import NotFound from "./pages/NotFound";
+import { GalleryProvider } from "./contexts/GalleryContext";
+import { RoomsProvider } from "./contexts/RoomsContext";
+import { useEffect, useState } from "react";
+import AdminLogin from "./pages/AdminLogin";
+import CafeManagement from "./pages/CafeManagement";
+import BookingManagement from "./pages/BookingManagement";
 const AppContent = () => {
   const location = useLocation();
   const [isAdmin, setIsAdmin] = useState<boolean>(true);
-  const showLayout = !['/login', '/signup'].includes(location.pathname);
+  const showLayout = !["/login", "/signup"].includes(location.pathname);
   useEffect(() => {
     if (
-      location.pathname === '/dashboard' ||
-      location.pathname === '/analytics' ||
-      location.pathname === '/room-availability' ||
-      location.pathname === '/access-history' ||
-      location.pathname === '/edit-room-schedule' ||
-      location.pathname === '/admin-gallery-management' ||
-      location.pathname === '/admin-about-settings' ||
-      location.pathname === '/edit-room-schedule'||
-      location.pathname === '/admin-login'||
-      location.pathname === '/gallery-management'||
-      location.pathname === '/cafe-management'||
-      location.pathname === '/booking-management'||
-      location.pathname === '/about-management'||
-      location.pathname === '/messages'
+      location.pathname === "/dashboard" ||
+      location.pathname === "/analytics" ||
+      location.pathname === "/room-availability" ||
+      location.pathname === "/access-history" ||
+      location.pathname === "/edit-room-schedule" ||
+      location.pathname === "/admin-gallery-management" ||
+      location.pathname === "/admin-about-settings" ||
+      location.pathname === "/edit-room-schedule" ||
+      location.pathname === "/admin-login" ||
+      location.pathname === "/gallery-management" ||
+      location.pathname === "/cafe-management" ||
+      location.pathname === "/booking-management" ||
+      location.pathname === "/about-management" ||
+      location.pathname === "/messages"
     ) {
       setIsAdmin(true);
     } else {
@@ -76,9 +75,12 @@ const AppContent = () => {
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/room-availability" element={<RoomAvailability />} />
         <Route path="/edit-room-schedule" element={<EditRoomSchedule />} />
-        <Route path="/admin-gallery-management" element={<AdminGalleryManagement />} />
+        <Route
+          path="/admin-gallery-management"
+          element={<AdminGalleryManagement />}
+        />
         <Route path="/admin-about-settings" element={<AdminAbout />} />
-        <Route path='/cafe-management' element={<CafeManagement />} />
+        <Route path="/cafe-management" element={<CafeManagement />} />
         <Route path="/booking-management" element={<BookingManagement />} />
       </Routes>
       {showLayout && <Footer />}
@@ -90,12 +92,10 @@ function App() {
   return (
     <Router>
       <RoomsProvider>
-         <GalleryProvider>
-           <AboutProvider>
-             <AppContent />
-           </AboutProvider>
-          </GalleryProvider>
-        </RoomsProvider>
+        <GalleryProvider>
+          <AppContent />
+        </GalleryProvider>
+      </RoomsProvider>
     </Router>
   );
 }

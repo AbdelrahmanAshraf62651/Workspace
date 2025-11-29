@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 
 interface Room {
   id: string;
@@ -274,6 +274,7 @@ export function RoomsProvider({ children }: { children: ReactNode }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useRooms = () => {
   const context = useContext(RoomsContext);
   if (!context) {
