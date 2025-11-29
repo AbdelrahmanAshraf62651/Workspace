@@ -71,7 +71,7 @@ function AdminNavbar() {
               </NavLink>
             </li>
             <li className='nav-item'>
-              <NavLink className={getLinkClass} to="/messages">
+              <NavLink className={getLinkClass} to="/contact-messages">
                 Messages
               </NavLink>
             </li>            

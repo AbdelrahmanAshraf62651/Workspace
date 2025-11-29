@@ -26,10 +26,12 @@ import NotFound from './pages/NotFound';
 import { GalleryProvider } from './contexts/GalleryContext';
 import { AboutProvider } from './contexts/AboutContext';
 import { RoomsProvider } from './contexts/RoomsContext';
+import { ContactMessagesProvider } from './contexts/ContactMessagesContext';
 import { useEffect, useState } from 'react';
 import AdminLogin from './pages/AdminLogin';
 import CafeManagement from './pages/CafeManagement';
 import BookingManagement from './pages/BookingManagement';
+import ContactMessagesManagement from './pages/ContactMessagesManagement';
 const AppContent = () => {
   const location = useLocation();
   const [isAdmin, setIsAdmin] = useState<boolean>(true);
@@ -49,7 +51,7 @@ const AppContent = () => {
       location.pathname === '/cafe-management'||
       location.pathname === '/booking-management'||
       location.pathname === '/about-management'||
-      location.pathname === '/messages'
+      location.pathname === '/contact-messages'
     ) {
       setIsAdmin(true);
     } else {
@@ -80,6 +82,7 @@ const AppContent = () => {
         <Route path="/admin-about-settings" element={<AdminAbout />} />
         <Route path='/cafe-management' element={<CafeManagement />} />
         <Route path="/booking-management" element={<BookingManagement />} />
+        <Route path="/contact-messages" element={<ContactMessagesManagement />} />
       </Routes>
       {showLayout && <Footer />}
     </>
@@ -90,11 +93,13 @@ function App() {
   return (
     <Router>
       <RoomsProvider>
-         <GalleryProvider>
-           <AboutProvider>
-             <AppContent />
-           </AboutProvider>
-          </GalleryProvider>
+      <ContactMessagesProvider>
+          <GalleryProvider>
+            <AboutProvider>
+              <AppContent />
+            </AboutProvider>
+            </GalleryProvider>
+      </ContactMessagesProvider>
         </RoomsProvider>
     </Router>
   );
