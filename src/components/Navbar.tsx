@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 // import './Navbar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
-
+import logo from '/logo.png';
 import profilePic from '/images/profile.jpg';
 
 function Navbar() {
@@ -18,7 +18,7 @@ function Navbar() {
     <nav className="navbar navbar-expand-lg bg-white border-bottom sticky-top ">
       <div className="container-fluid ms-2 me-2">
         <NavLink className="navbar-brand" to="/" end>
-          <img src="/logo.png" alt="Logo" style={{ maxHeight: '30px' }} />
+          <img src={logo} alt="Logo" style={{ maxHeight: '30px' }} />
         </NavLink>
         <button
           className="navbar-toggler"

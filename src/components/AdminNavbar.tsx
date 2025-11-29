@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 // import profilePic from '../assets/images/profile.jpg';
+import logo from '/logo.png';
 
 function AdminNavbar() {
   const getLinkClass = ({ isActive }: { isActive: boolean }): string => {
@@ -10,7 +11,7 @@ function AdminNavbar() {
     <nav className="navbar navbar-expand-lg bg-white border-bottom sticky-top">
       <div className="container-fluid ms-2 me-2">
         <NavLink className="navbar-brand" to="/dashboard" end>
-          <img src="/logo.png" alt="Logo" style={{ maxHeight: '30px' }} />
+          <img src={logo} alt="Logo" style={{ maxHeight: '30px' }} />
         </NavLink>
         <button
           className="navbar-toggler"
