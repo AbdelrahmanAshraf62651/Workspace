@@ -1,9 +1,9 @@
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
-import logo from '/logo.png';
-import profilePic from '/images/profile.jpg';
-import { useEffect, useState } from 'react';
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import logo from "/logo.png";
+import profilePic from "/images/profile.jpg";
+import { useEffect, useState } from "react";
 
 function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -11,24 +11,25 @@ function Navbar() {
   const location = useLocation();
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem("authToken");
     setIsLoggedIn(!!token);
   }, [location]);
 
   const getLinkClass = ({ isActive }: { isActive: boolean }): string => {
-    return isActive ? 'nav-link ms-2 active' : 'nav-link ms-2';
+    return isActive ? "nav-link ms-2 active" : "nav-link ms-2";
   };
   const handleLogout = () => {
-    localStorage.removeItem('authToken');
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("role");
     setIsLoggedIn(false);
-    navigate('/login');
+    navigate("/login");
     window.location.reload();
   };
   return (
     <nav className="navbar navbar-expand-lg bg-white border-bottom sticky-top ">
       <div className="container-fluid ms-2 me-2">
         <NavLink className="navbar-brand" to="/" end>
-          <img src={logo} alt="Logo" style={{ maxHeight: '30px' }} />
+          <img src={logo} alt="Logo" style={{ maxHeight: "30px" }} />
         </NavLink>
         <button
           className="navbar-toggler"
@@ -75,10 +76,7 @@ function Navbar() {
                 </NavLink>
               </li>
               <li className="nav-item d-lg-none">
-                <button
-                  className={'btn btn-dark w-100'}
-                  onClick={handleLogout}
-                >
+                <button className={"btn btn-dark w-100"} onClick={handleLogout}>
                   <FontAwesomeIcon icon={faRightFromBracket} />
                 </button>
               </li>
@@ -120,7 +118,7 @@ function Navbar() {
         </div>
         {isLoggedIn ? (
           <div className="d-none d-lg-flex gap-3 align-items-center">
-            <button className={'btn btn-dark'} onClick={handleLogout}>
+            <button className={"btn btn-dark"} onClick={handleLogout}>
               <FontAwesomeIcon icon={faRightFromBracket} />
             </button>
             <NavLink to="/profile" className="">
@@ -128,16 +126,16 @@ function Navbar() {
                 src={profilePic}
                 alt="Profile"
                 className="rounded-circle"
-                style={{ width: '40px', height: '40px' }}
+                style={{ width: "40px", height: "40px" }}
               />
             </NavLink>
           </div>
         ) : (
           <div className="d-none d-lg-flex gap-3">
-            <NavLink className={'btn btn-light'} to="/signup">
+            <NavLink className={"btn btn-light"} to="/signup">
               Sign Up
             </NavLink>
-            <NavLink className={'btn btn-dark'} to="/login">
+            <NavLink className={"btn btn-dark"} to="/login">
               Log In
             </NavLink>
           </div>

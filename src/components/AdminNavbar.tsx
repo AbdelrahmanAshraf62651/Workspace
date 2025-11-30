@@ -18,6 +18,7 @@ function AdminNavbar() {
     localStorage.removeItem('authToken');
     setIsLoggedIn(false);
     navigate('/login');
+    localStorage.removeItem('role');
     window.location.reload();
   };
 
