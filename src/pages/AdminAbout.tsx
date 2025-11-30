@@ -1,24 +1,22 @@
-import { useState, useEffect} from "react";
-import { Form, Button } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState, useEffect } from 'react';
+import { Form } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faLocationDot,
   faClock,
   faPhone,
-} from "@fortawesome/free-solid-svg-icons";
-// import { useAbout } from '../contexts/AboutContext';
-// import type { AboutSettings } from '../types';
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+} from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const DAYS = [
-  { key: "monday", label: "Monday" },
-  { key: "tuesday", label: "Tuesday" },
-  { key: "wednesday", label: "Wednesday" },
-  { key: "thursday", label: "Thursday" },
-  { key: "friday", label: "Friday" },
-  { key: "saturday", label: "Saturday" },
-  { key: "sunday", label: "Sunday" },
+  { key: 'monday', label: 'Monday' },
+  { key: 'tuesday', label: 'Tuesday' },
+  { key: 'wednesday', label: 'Wednesday' },
+  { key: 'thursday', label: 'Thursday' },
+  { key: 'friday', label: 'Friday' },
+  { key: 'saturday', label: 'Saturday' },
+  { key: 'sunday', label: 'Sunday' },
 ] as const;
 
 interface DayOpeningHours {
@@ -43,60 +41,61 @@ interface AboutInfo {
 function AdminAbout() {
   const navigate = useNavigate();
   const [aboutData, setAboutData] = useState<AboutInfo | null>(null);
-  const [address, setAddress] = useState("");
-  const [contactPhone, setContactPhone] = useState("");
-  const [contactEmail, setContactEmail] = useState("");
-  const [locationLink, setLocationLink] = useState("");
+  const [address, setAddress] = useState('');
+  const [contactPhone, setContactPhone] = useState('');
+  const [contactEmail, setContactEmail] = useState('');
+  const [locationLink, setLocationLink] = useState('');
   const [openingHours, setOpeningHours] = useState<OpeningHours>({
-    monday: { id: 1, isOpen: false, openTime: "10AM", closeTime: "7PM" },
-    tuesday: { id: 2, isOpen: false, openTime: "10AM", closeTime: "7PM" },
-    wednesday: { id: 3, isOpen: false, openTime: "10AM", closeTime: "7PM" },
-    thursday: { id: 4, isOpen: false, openTime: "10AM", closeTime: "7PM" },
-    friday: { id: 5, isOpen: false, openTime: "10AM", closeTime: "7PM" },
-    saturday: { id: 6, isOpen: false, openTime: "10AM", closeTime: "7PM" },
-    sunday: { id: 7, isOpen: false, openTime: "10AM", closeTime: "7PM" },
+    monday: { id: 1, isOpen: false, openTime: '10AM', closeTime: '7PM' },
+    tuesday: { id: 2, isOpen: false, openTime: '10AM', closeTime: '7PM' },
+    wednesday: { id: 3, isOpen: false, openTime: '10AM', closeTime: '7PM' },
+    thursday: { id: 4, isOpen: false, openTime: '10AM', closeTime: '7PM' },
+    friday: { id: 5, isOpen: false, openTime: '10AM', closeTime: '7PM' },
+    saturday: { id: 6, isOpen: false, openTime: '10AM', closeTime: '7PM' },
+    sunday: { id: 7, isOpen: false, openTime: '10AM', closeTime: '7PM' },
   });
   useEffect(() => {
     axios
-      .get("https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/location/1")
+      .get('https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/location/1')
       .then((response) => {
         const data = response.data;
         setAboutData(data);
-      }
-      )
+      })
       .catch((error) => {
-        console.error("Error fetching about info:", error);
+        console.error('Error fetching about info:', error);
       });
 
-      setAddress(aboutData?.address || "");
-      setContactPhone(aboutData?.contact_phone || "");
-      setContactEmail(aboutData?.contact_email || "");
-      setLocationLink(aboutData?.location_link || "");
-  }, [aboutData?.address, aboutData?.contact_email, aboutData?.contact_phone, aboutData?.location_link]);
+    setAddress(aboutData?.address || '');
+    setContactPhone(aboutData?.contact_phone || '');
+    setContactEmail(aboutData?.contact_email || '');
+    setLocationLink(aboutData?.location_link || '');
+  }, [
+    aboutData?.address,
+    aboutData?.contact_email,
+    aboutData?.contact_phone,
+    aboutData?.location_link,
+  ]);
   const hasChanges = true; // Implement logic to check if there are unsaved changes
 
   const handleSave = () => {
     axios
-      .patch(
-        "https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/location/1",
-        {
-          address : address,
-          contact_phone: contactPhone,
-          contact_email: contactEmail,
-          location_link: locationLink,
-          opening_hours: openingHours,
-        }
-      )
+      .patch('https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/location/1', {
+        address: address,
+        contact_phone: contactPhone,
+        contact_email: contactEmail,
+        location_link: locationLink,
+        opening_hours: openingHours,
+      })
       .then(() => {
-        console.log("Settings saved successfully");
+        console.log('Settings saved successfully');
       })
       .catch((error) => {
-        console.error("Error saving settings:", error);
+        console.error('Error saving settings:', error);
       });
   };
-  const handleCancel= ()=>{
+  const handleCancel = () => {
     navigate(0);
-  }
+  };
 
   return (
     <div className="container pt-5">
@@ -108,8 +107,8 @@ function AdminAbout() {
         </p>
       </div>
 
-      <div className="card shadow-sm mb-4">
-        <div className="card-body p-4">
+      <div className="shadow-sm mb-4">
+        <div className="p-4">
           <h5 className="fw-bold mb-3">Business Settings</h5>
           <p className="text-muted mb-4">
             Configure your public-facing business information.
@@ -118,28 +117,28 @@ function AdminAbout() {
           {/* Location Settings */}
           <div className="mb-4">
             <div className="d-flex align-items-center gap-2 mb-3">
-              <FontAwesomeIcon icon={faLocationDot} className="text-primary" />
+              <FontAwesomeIcon icon={faLocationDot} className="text-black" />
               <h6 className="mb-0 fw-bold">Location Settings</h6>
             </div>
             <div className="row g-3">
-              <div className="col-12">
+              <div className="col-12 col-md-6">
                 <Form.Label>Address</Form.Label>
                 <Form.Control
                   type="text"
-                  value={aboutData?.address || ""}
+                  value={aboutData?.address || ''}
                   onChange={(e) => {
                     setAddress(e.target.value);
                   }}
                   placeholder="Enter full address"
                 />
               </div>
-              <div className="col-md-4">
+              <div className="col-12 col-md-6">
                 <Form.Label>
                   Map Link <span className="text-muted">(Optional)</span>
                 </Form.Label>
                 <Form.Control
                   type="text"
-                  value={aboutData?.location_link || ""}
+                  value={aboutData?.location_link || ''}
                   onChange={(e) => setLocationLink(e.target.value)}
                   placeholder="https://maps.app.goo.gl/example"
                 />
@@ -152,14 +151,14 @@ function AdminAbout() {
           {/* Opening Hours */}
           <div className="mb-4">
             <div className="d-flex align-items-center gap-2 mb-3">
-              <FontAwesomeIcon icon={faClock} className="text-primary" />
+              <FontAwesomeIcon icon={faClock} className="text-black " />
               <h6 className="mb-0 fw-bold">Opening Hours</h6>
             </div>
             <div className="row g-3">
               {DAYS.map(({ key, label }) => {
                 const dayData = openingHours[key];
                 return (
-                  <div key={key} className="col-12">
+                  <div key={key} className="col-12 col-md-6">
                     <div className="d-flex align-items-center gap-3">
                       <div className="form-check form-switch">
                         <input
@@ -180,7 +179,7 @@ function AdminAbout() {
                         <label
                           className="form-check-label fw-semibold"
                           htmlFor={`switch-${key}`}
-                          style={{ minWidth: "100px" }}
+                          style={{ minWidth: '100px' }}
                         >
                           {label}
                         </label>
@@ -199,7 +198,7 @@ function AdminAbout() {
                                 },
                               })
                             }
-                            style={{ maxWidth: "100px" }}
+                            style={{ maxWidth: '100px' }}
                           />
                           <span className="text-muted">AM</span>
                           <span className="text-muted">-</span>
@@ -215,7 +214,7 @@ function AdminAbout() {
                                 },
                               })
                             }
-                            style={{ maxWidth: "100px" }}
+                            style={{ maxWidth: '100px' }}
                           />
                           <span className="text-muted">PM</span>
                         </div>
@@ -234,7 +233,7 @@ function AdminAbout() {
           {/* Contact Information */}
           <div>
             <div className="d-flex align-items-center gap-2 mb-3">
-              <FontAwesomeIcon icon={faPhone} className="text-primary" />
+              <FontAwesomeIcon icon={faPhone} className="text-black" />
               <h6 className="mb-0 fw-bold">Contact Information</h6>
             </div>
             <div className="row g-3">
@@ -242,7 +241,7 @@ function AdminAbout() {
                 <Form.Label>Phone Number</Form.Label>
                 <Form.Control
                   type="tel"
-                    value={contactPhone || ""}
+                  value={contactPhone || ''}
                   onChange={(e) => setContactPhone(e.target.value)}
                   placeholder="+1 (555) 987-6545"
                 />
@@ -251,10 +250,8 @@ function AdminAbout() {
                 <Form.Label>Email</Form.Label>
                 <Form.Control
                   type="email"
-                  value={contactEmail || ""}
-                  onChange={(e) =>
-                    setContactEmail(e.target.value)
-                  }
+                  value={contactEmail || ''}
+                  onChange={(e) => setContactEmail(e.target.value)}
                   placeholder="contact@techbusiness.com"
                 />
               </div>
@@ -265,16 +262,20 @@ function AdminAbout() {
 
       {/* Action Buttons */}
       <div className="d-flex justify-content-end gap-3">
-        <Button
-          variant="secondary"
+        <button
+          className="btn main-btn"
           onClick={handleCancel}
           disabled={!hasChanges}
         >
           Cancel
-        </Button>
-        <Button className="sec-btn" onClick={handleSave} disabled={!hasChanges}>
+        </button>
+        <button
+          className="btn sec-btn"
+          onClick={handleSave}
+          disabled={!hasChanges}
+        >
           Save Settings
-        </Button>
+        </button>
       </div>
     </div>
   );

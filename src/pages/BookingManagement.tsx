@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   Form,
   Button,
@@ -6,11 +6,10 @@ import {
   Modal,
   Table,
   Alert,
-  Card,
   Row,
   Col,
-} from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+} from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faPlus,
   faEdit,
@@ -18,8 +17,8 @@ import {
   faCheckCircle,
   faTimesCircle,
   faImage,
-} from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+} from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 
 interface Room {
   id: string;
@@ -30,38 +29,38 @@ interface Room {
   image: string | null;
   capacity: number;
   hourlyRate: number;
-  status: "Available" | "Booked" | "Maintenance";
+  status: 'cancelled' | 'pending' | 'confirmed';
 }
 
 function BookingManagement() {
   const [rooms, setRooms] = useState<Room[]>([]);
   useEffect(() => {
     axios
-      .get("https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/booking")
+      .get('https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/booking')
       .then((response) => {
         setRooms(response.data);
         console.log(response.data);
       })
       .catch((error) => {
-        console.error("Error fetching rooms:", error);
+        console.error('Error fetching rooms:', error);
       });
   }, []);
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingRoom, setEditingRoom] = useState<Room | null>(null);
 
   const [formData, setFormData] = useState({
-    name: "",
-    title: "",
-    type: "",
-    description: "",
-    image: "",
+    name: '',
+    title: '',
+    type: '',
+    description: '',
+    image: '',
     capacity: 1,
     hourlyRate: 0,
   });
 
   // Success/Error Messages
   const [message, setMessage] = useState<string | null>(null);
-  const [messageType, setMessageType] = useState<"success" | "error" | null>(
+  const [messageType, setMessageType] = useState<'success' | 'error' | null>(
     null
   );
   // Load editing room data
@@ -69,17 +68,17 @@ function BookingManagement() {
     if (editingRoom) {
       setFormData({
         name: editingRoom.name,
-        title: editingRoom.title || "",
+        title: editingRoom.title || '',
         type: editingRoom.type,
-        description: editingRoom.description || "",
-        image: editingRoom.image || "",
+        description: editingRoom.description || '',
+        image: editingRoom.image || '',
         capacity: editingRoom.capacity,
         hourlyRate: editingRoom.hourlyRate,
       });
     }
   }, [editingRoom]);
 
-  const showMessage = (text: string, type: "success" | "error") => {
+  const showMessage = (text: string, type: 'success' | 'error') => {
     setMessage(text);
     setMessageType(type);
     setTimeout(() => {
@@ -94,11 +93,11 @@ function BookingManagement() {
 
   const resetForm = () => {
     setFormData({
-      name: "",
-      title: "",
-      type: "",
-      description: "",
-      image: "",
+      name: '',
+      title: '',
+      type: '',
+      description: '',
+      image: '',
       capacity: 1,
       hourlyRate: 0,
     });
@@ -108,7 +107,7 @@ function BookingManagement() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const addRoom = async (roomData: Record<string, any>) => {
     const response = await axios.post(
-      "https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/booking",
+      'https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/booking',
       roomData
     );
     setRooms([...rooms, response.data]);
@@ -134,11 +133,11 @@ function BookingManagement() {
 
   const toggleRoomStatus = async (id: string, currentStatus: string) => {
     const statusMap: { [key: string]: string } = {
-      Available: "Booked",
-      Booked: "Maintenance",
-      Maintenance: "Available",
+      confirmed: 'pending',
+      pending: 'cancelled',
+      cancelled: 'confirmed',
     };
-    const newStatus = statusMap[currentStatus] || "Available";
+    const newStatus = statusMap[currentStatus] || 'confirmed';
     await updateRoom(id, { status: newStatus });
   };
   const handleAddRoom = async () => {
@@ -155,16 +154,16 @@ function BookingManagement() {
 
       if (editingRoom) {
         await updateRoom(editingRoom.id, roomData);
-        showMessage("Room updated successfully!", "success");
+        showMessage('Room updated successfully!', 'success');
       } else {
         await addRoom(roomData);
-        showMessage("Room added successfully!", "success");
+        showMessage('Room added successfully!', 'success');
       }
       setShowAddModal(false);
       resetForm();
     } catch (error) {
-      console.error("Error saving room:", error);
-      showMessage("Error saving room. Please try again.", "error");
+      console.error('Error saving room:', error);
+      showMessage('Error saving room. Please try again.', 'error');
     }
   };
 
@@ -174,22 +173,22 @@ function BookingManagement() {
   };
 
   const handleDeleteRoom = (id: string) => {
-    if (window.confirm("Are you sure you want to delete this room?")) {
+    if (window.confirm('Are you sure you want to delete this room?')) {
       deleteRoom(id);
-      showMessage("Room deleted successfully!", "success");
+      showMessage('Room deleted successfully!', 'success');
     }
   };
 
-  const getStatusBadgeVariant = (status: Room["status"]) => {
+  const getStatusBadgeVariant = (status: Room['status']) => {
     switch (status) {
-      case "Available":
-        return "success";
-      case "Booked":
-        return "danger";
-      case "Maintenance":
-        return "secondary";
+      case 'confirmed':
+        return 'success text-white';
+      case 'pending':
+        return 'warning text-dark';
+      case 'cancelled':
+        return 'danger text-white';
       default:
-        return "secondary";
+        return 'secondary';
     }
   };
 
@@ -202,23 +201,22 @@ function BookingManagement() {
             Manage your booking rooms, their details, and availability status
           </p>
         </div>
-        <Button
-          variant="primary"
+        <button
           onClick={() => {
             resetForm();
             setShowAddModal(true);
           }}
-          className="sec-btn"
+          className="btn sec-btn"
         >
           <FontAwesomeIcon icon={faPlus} className="me-2" />
           Add Room
-        </Button>
+        </button>
       </div>
 
       {/*  Success/Error Messages */}
       {message && (
         <Alert
-          variant={messageType === "success" ? "success" : "danger"}
+          variant={messageType === 'success' ? 'success' : 'danger'}
           dismissible
           onClose={() => {
             setMessage(null);
@@ -230,10 +228,10 @@ function BookingManagement() {
       )}
 
       {/* Statistics */}
-      <Card className="shadow-sm mb-4">
-        <Card.Body>
-          <Row className="align-items-center">
-            <Col md={6}>
+      <div className="shadow-sm mb-4">
+        <div className="p-4 bg-white rounded-top">
+          <div className="align-items-center row">
+            <div className="col-md-6">
               <div className="d-flex align-items-center gap-4 flex-wrap">
                 <div>
                   <span className="fw-semibold">Total Rooms:</span>
@@ -242,35 +240,35 @@ function BookingManagement() {
                   </Badge>
                 </div>
                 <div>
-                  <span className="fw-semibold">Available:</span>
+                  <span className="fw-semibold">Confirmed:</span>
                   <Badge bg="success" className="ms-2">
-                    {rooms.filter((r) => r.status === "Available").length}
+                    {rooms.filter((r) => r.status === 'confirmed').length}
                   </Badge>
                 </div>
                 <div>
-                  <span className="fw-semibold">Booked:</span>
+                  <span className="fw-semibold">Cancelled:</span>
                   <Badge bg="danger" className="ms-2">
-                    {rooms.filter((r) => r.status === "Booked").length}
+                    {rooms.filter((r) => r.status === 'cancelled').length}
                   </Badge>
                 </div>
                 <div>
-                  <span className="fw-semibold">Maintenance:</span>
-                  <Badge bg="secondary" className="ms-2">
-                    {rooms.filter((r) => r.status === "Maintenance").length}
+                  <span className="fw-semibold">Pending:</span>
+                  <Badge bg="warning" className="ms-2 text-dark">
+                    {rooms.filter((r) => r.status === 'pending').length}
                   </Badge>
                 </div>
               </div>
-            </Col>
+            </div>
             <Col md={6}>
               <div className="d-flex justify-content-end gap-2"></div>
             </Col>
-          </Row>
-        </Card.Body>
-      </Card>
+          </div>
+        </div>
+      </div>
 
       {/* Rooms Table */}
-      <Card className="shadow-sm">
-        <Card.Body className="p-0">
+      <div className="shadow-sm">
+        <div className="p-0">
           <div className="table-responsive">
             <Table className="table table-hover mb-0">
               <thead className="table-dark">
@@ -280,7 +278,7 @@ function BookingManagement() {
                   <th>Capacity</th>
                   <th>Hourly Rate</th>
                   <th>Status</th>
-                  <th style={{ width: "150px" }}>Actions</th>
+                  <th style={{ width: '150px' }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -305,12 +303,15 @@ function BookingManagement() {
                         <strong>${room.hourlyRate}/hr</strong>
                       </td>
                       <td>
-                        <Badge
-                          bg={getStatusBadgeVariant(room.status)}
-                          className="px-2 py-1"
-                        >
-                          {room.status}
-                        </Badge>
+                        <div className="d-flex align-items-center">
+                          <p
+                            className={`rounded-pill px-2 small text-center fw-semibold bg-${getStatusBadgeVariant(
+                              room.status
+                            )} mb-0`}
+                          >
+                            {room.status}
+                          </p>
+                        </div>
                       </td>
                       <td>
                         <div className="btn-group" role="group">
@@ -373,8 +374,8 @@ function BookingManagement() {
               </tbody>
             </Table>
           </div>
-        </Card.Body>
-      </Card>
+        </div>
+      </div>
 
       {/*  Add/Edit Room Modal */}
       <Modal
@@ -387,7 +388,7 @@ function BookingManagement() {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            {editingRoom ? "Edit Room" : "Add New Room"}
+            {editingRoom ? 'Edit Room' : 'Add New Room'}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -401,7 +402,7 @@ function BookingManagement() {
                 type="text"
                 placeholder="e.g., Executive Suite 101"
                 value={formData.name}
-                onChange={(e) => handleInputChange("name", e.target.value)}
+                onChange={(e) => handleInputChange('name', e.target.value)}
                 required
               />
               <Form.Text className="text-muted">
@@ -412,14 +413,14 @@ function BookingManagement() {
             {/* Room Title (User Display) */}
             <Form.Group className="mb-3">
               <Form.Label className="fw-semibold">
-                Room Title{" "}
+                Room Title{' '}
                 <span className="text-success small">(User Display)</span>
               </Form.Label>
               <Form.Control
                 type="text"
                 placeholder="e.g., Executive Suite"
                 value={formData.title}
-                onChange={(e) => handleInputChange("title", e.target.value)}
+                onChange={(e) => handleInputChange('title', e.target.value)}
                 required
               />
               <Form.Text className="text-muted">
@@ -432,7 +433,7 @@ function BookingManagement() {
               <Form.Label className="fw-semibold">Room Type</Form.Label>
               <Form.Select
                 value={formData.type}
-                onChange={(e) => handleInputChange("type", e.target.value)}
+                onChange={(e) => handleInputChange('type', e.target.value)}
                 required
               >
                 <option value="">Select type</option>
@@ -452,9 +453,9 @@ function BookingManagement() {
                 as="textarea"
                 rows={3}
                 placeholder="Describe this room for users..."
-                value={formData.description || ""}
+                value={formData.description || ''}
                 onChange={(e) =>
-                  handleInputChange("description", e.target.value)
+                  handleInputChange('description', e.target.value)
                 }
               />
               <Form.Text className="text-muted">
@@ -472,8 +473,8 @@ function BookingManagement() {
                 <Form.Control
                   type="url"
                   placeholder="https://example.com/room-image.jpg"
-                  value={formData.image || ""}
-                  onChange={(e) => handleInputChange("image", e.target.value)}
+                  value={formData.image || ''}
+                  onChange={(e) => handleInputChange('image', e.target.value)}
                 />
               </div>
               {formData.image && (
@@ -482,9 +483,9 @@ function BookingManagement() {
                     src={formData.image}
                     alt="Preview"
                     className="img-thumbnail"
-                    style={{ maxWidth: "200px", maxHeight: "150px" }}
+                    style={{ maxWidth: '200px', maxHeight: '150px' }}
                     onError={(e) => {
-                      (e.target as HTMLImageElement).style.display = "none";
+                      (e.target as HTMLImageElement).style.display = 'none';
                     }}
                   />
                 </div>
@@ -507,7 +508,7 @@ function BookingManagement() {
                     max={50}
                     value={formData.capacity}
                     onChange={(e) =>
-                      handleInputChange("capacity", Number(e.target.value))
+                      handleInputChange('capacity', Number(e.target.value))
                     }
                     required
                   />
@@ -524,7 +525,7 @@ function BookingManagement() {
                     step={5}
                     value={formData.hourlyRate}
                     onChange={(e) =>
-                      handleInputChange("hourlyRate", Number(e.target.value))
+                      handleInputChange('hourlyRate', Number(e.target.value))
                     }
                     required
                   />
@@ -554,7 +555,7 @@ function BookingManagement() {
               formData.capacity < 1
             }
           >
-            {editingRoom ? "Update Room" : "Add Room"}
+            {editingRoom ? 'Update Room' : 'Add Room'}
           </Button>
         </Modal.Footer>
       </Modal>

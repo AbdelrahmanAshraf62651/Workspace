@@ -123,7 +123,7 @@ function CafeManagement() {
             Manage your cafe items, stock, and categories easily.
           </p>
         </div>
-        <button className="btn btn-dark" onClick={handleAddItem}>
+        <button className="btn sec-btn" onClick={handleAddItem}>
           Add Item
         </button>
         {addItems && (
@@ -233,7 +233,7 @@ function CafeManagement() {
             <h5 className="fw-bold py-4 text-center">Categories</h5>
             <ul className="list-unstyled d-flex flex-column gap-3 justify-content-center text-center">
               <li
-                className={`px-3 py-2 d-block btn btn-light ${
+                className={`px-3 py-2 d-block btn main-btn ${
                   category === '' ? 'active-category' : ''
                 } `}
                 onClick={() => setCategory('')}
