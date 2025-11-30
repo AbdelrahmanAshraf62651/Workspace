@@ -117,7 +117,12 @@ function CafeManagement() {
   return (
     <main className="container pt-5">
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h3 className="fw-bold">Cafe Menu</h3>
+        <div>
+          <h1 className="fw-bold">Cafe Management</h1>
+          <p className="text-muted">
+            Manage your cafe items, stock, and categories easily.
+          </p>
+        </div>
         <button className="btn btn-dark" onClick={handleAddItem}>
           Add Item
         </button>
