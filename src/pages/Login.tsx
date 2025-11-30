@@ -1,12 +1,66 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, useNavigate } from 'react-router-dom';
-import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import img from '/images/login/login.jpg';
+import { useState } from 'react';
 
 function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  interface LoginPayload {
+    email: string;
+    password: string;
+  }
+
   const navigate = useNavigate();
+
+  function handleLogin(props: LoginPayload) {
+    setIsLoading(true);
+
+    const loginUrl =
+      'https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/auth/login';
+
+    fetch(loginUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(props),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          return response.json().then((err) => {
+            throw new Error(err.message);
+          });
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // Your API returns:
+        // { "authToken": "token", "role": "customer" }
+
+        localStorage.setItem('authToken', data.authToken);
+        localStorage.setItem('role', data.role);
+
+        setIsLoading(false);
+
+        // 🔥 Redirect based on role
+        if (data.role === 'admin') {
+          navigate('/dashboard');
+        } else {
+          navigate('/');
+        }
+      })
+      .catch((error) => {
+        setError(error.message);
+        console.error('Error:', error);
+        setIsLoading(false);
+      });
+  }
+
   return (
-    <div className=" vh-100">
+    <div className="vh-100">
       <div className="row h-100 m-0 justify-content-center align-items-center">
         <div className="col-12 col-lg-6 d-flex align-items-center justify-content-center flex-column">
           <div
@@ -21,72 +75,57 @@ function Login() {
                 <p className="text-muted mb-4 text-center text-lg-center">
                   Sign in to access your workspace.
                 </p>
-                <button
-                  className="main-btn w-100 rounded-3 d-flex align-items-center justify-content-center gap-2"
-                  style={{
-                    border: 'solid 2px var(--grey-color)',
-                    backgroundColor: 'inherit',
-                  }}
-                >
-                  <FontAwesomeIcon icon={faGoogle} />
-                  <span>Sign in with Google</span>
-                </button>
-                <div className="position-relative py-2 text-center">
-                  <hr />
-                  <span
-                    className="position-absolute"
-                    style={{ top: '50%', transform: 'translateY(-50%)' }}
-                  >
-                    OR
-                  </span>
-                </div>
               </div>
             </div>
+
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                navigate('/profile');
-                localStorage.setItem("isUserLoggedIn" , "true");
+                setError('');
+                handleLogin({ email, password });
               }}
             >
               <div className="mb-3">
-                <label className="form-label fw-semibold text-dark">
-                  Email
-                </label>
+                <label className="form-label fw-semibold text-dark">Email</label>
                 <input
                   type="email"
                   className="form-control form-control-md"
-                  id="email"
                   required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
+
               <div className="mb-3">
-                <label className="form-label fw-semibold text-dark">
-                  Password
-                </label>
+                <label className="form-label fw-semibold text-dark">Password</label>
                 <input
                   type="password"
                   className="form-control form-control-md"
-                  id="password"
                   required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
+
+              {error && <div className="text-danger mb-3">{error}</div>}
+
               <div className="mb-4">
-                <div className="form-check text-end ">
-                  <a
-                    href="#"
-                    className="text-decoration-none fw-semibold"
-                    style={{ color: 'var(--black-color)' }}
-                  >
-                    Forget Password ?
-                  </a>
-                </div>
-              </div>
-              <div className="mb-4">
-                <button type="submit" className="btn btn-dark w-100 py-2 fs-6">
-                  Login
+                <button
+                  type="submit"
+                  className="btn btn-dark w-100 py-2 fs-6"
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <span
+                      className="spinner-border spinner-border-sm"
+                      role="status"
+                    ></span>
+                  ) : (
+                    'Login'
+                  )}
                 </button>
               </div>
+
               <div className="text-start d-flex gap-2 align-items-center">
                 <span className="text-muted">Don't have an account?</span>
                 <Link
@@ -100,13 +139,13 @@ function Login() {
             </form>
           </div>
         </div>
+
         <div
           className="col-lg-6 d-none d-lg-block h-100"
           style={{
             backgroundImage: `url(${img})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
           }}
         ></div>
       </div>

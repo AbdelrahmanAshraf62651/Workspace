@@ -1,18 +1,28 @@
-import { NavLink } from 'react-router-dom';
-// import '../styles/variables.css';
-// import './Navbar.css';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import logo from '/logo.png';
 import profilePic from '/images/profile.jpg';
+import { useEffect, useState } from 'react';
 
 function Navbar() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    setIsLoggedIn(!!token);
+  }, [location]);
+
   const getLinkClass = ({ isActive }: { isActive: boolean }): string => {
     return isActive ? 'nav-link ms-2 active' : 'nav-link ms-2';
   };
   const handleLogout = () => {
-    localStorage.setItem('isUserLoggedIn', 'false');
-    window.location.href = '/';
+    localStorage.removeItem('authToken');
+    setIsLoggedIn(false);
+    navigate('/login');
+    window.location.reload();
   };
   return (
     <nav className="navbar navbar-expand-lg bg-white border-bottom sticky-top ">
@@ -32,7 +42,7 @@ function Navbar() {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          {localStorage.getItem('isUserLoggedIn') === 'true' ? (
+          {isLoggedIn ? (
             <ul className="navbar-nav text-center text-lg-start me-auto mb-2 mb-lg-0">
               <li className="nav-item">
                 <NavLink className={getLinkClass} to="/" end>
@@ -60,14 +70,17 @@ function Navbar() {
                 </NavLink>
               </li>
               <li className="nav-item d-lg-none">
-                <NavLink className={getLinkClass} to="/signup">
-                  Sign Up
+                <NavLink to="/profile" className={getLinkClass}>
+                  Profile
                 </NavLink>
               </li>
               <li className="nav-item d-lg-none">
-                <NavLink className={getLinkClass} to="/login">
-                  Log In
-                </NavLink>
+                <button
+                  className={'btn btn-dark w-100'}
+                  onClick={handleLogout}
+                >
+                  <FontAwesomeIcon icon={faRightFromBracket} />
+                </button>
               </li>
             </ul>
           ) : (
@@ -105,7 +118,7 @@ function Navbar() {
             </ul>
           )}
         </div>
-        {localStorage.getItem('isUserLoggedIn') === 'true' ? (
+        {isLoggedIn ? (
           <div className="d-none d-lg-flex gap-3 align-items-center">
             <button className={'btn btn-dark'} onClick={handleLogout}>
               <FontAwesomeIcon icon={faRightFromBracket} />

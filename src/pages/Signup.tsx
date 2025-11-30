@@ -1,6 +1,70 @@
 import { Link, useNavigate } from 'react-router-dom';
 import img from '/images/signup/signup.jpg';
+import { useState } from 'react';
 function Signup() {
+  const [full_name, setFull_name] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  interface UserPayload {
+    name: string;
+    email: string;
+    password: string;
+    phone_number: string;
+  }
+  function handleSignup(props: UserPayload) {
+    setIsLoading(true);
+    const signupUrl =
+      'https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/auth/signup';
+    try {
+      fetch(signupUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ...props }),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            return response.json().then((err) => {
+              throw new Error(err.message);
+            });
+          }
+          return response.json();
+        })
+        .then((data) => {
+          localStorage.setItem('authToken', data.auth_token);
+          setIsLoading(false);
+          navigate('/');
+        })
+        .catch((error) => {
+          setError(error.message);
+          console.error('Error: ', error);
+          setIsLoading(false);
+        });
+    } catch (error) {
+      console.error('There was a problem with the signup request:', error);
+    }
+  }
+  const validatePassword = () => {
+    const symbolRegex = /[-!@#$%^&*()_+|~=`{}[\]:";'<>?,./]/;
+    if (password.length < 8) {
+      return 'Password must be at least 8 characters long';
+    }
+    if (!/[A-Z]/.test(password)) {
+      return 'Password must include an uppercase letter';
+    }
+    if (!/\d/.test(password)) {
+      return 'Password must include a number';
+    }
+    if (!symbolRegex.test(password)) {
+      return 'Password must include a symbol';
+    }
+    return '';
+  };
   const navigate = useNavigate();
   return (
     <div className="container-fluid">
@@ -33,8 +97,22 @@ function Signup() {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                navigate('/profile');
-                localStorage.setItem("isUserLoggedIn" , "true");
+                const passwordError = validatePassword();
+                if (passwordError) {
+                  setError(passwordError);
+                  return;
+                }
+                if (password !== confirmPassword) {
+                  setError('Passwords do not match');
+                  return;
+                }
+                setError('');
+                handleSignup({
+                  name: full_name,
+                  email: email,
+                  password: password,
+                  phone_number: phone,
+                });
               }}
             >
               <div className="mb-3">
@@ -47,6 +125,8 @@ function Signup() {
                   id="fullName"
                   placeholder="John Doe"
                   required
+                  value={full_name}
+                  onChange={(e) => setFull_name(e.target.value)}
                 />
               </div>
               <div className="mb-3">
@@ -59,6 +139,8 @@ function Signup() {
                   id="email"
                   placeholder="john.doe@example.com"
                   required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div className="mb-3">
@@ -71,6 +153,8 @@ function Signup() {
                   id="phone"
                   placeholder="+1 (555) 123-4567"
                   required
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                 />
               </div>
               <div className="mb-3">
@@ -82,6 +166,8 @@ function Signup() {
                   className="form-control form-control-md"
                   id="password"
                   required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
                 <div className="form-text text-muted small">
                   Password must be at least 8 characters long, include an
@@ -97,7 +183,10 @@ function Signup() {
                   className="form-control form-control-md"
                   id="confirmPassword"
                   required
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                 />
+                {error && <div className="text-danger">{error}</div>}
               </div>
               <div className="mb-4">
                 <div className="form-check d-flex gap-2 align-items-center">
@@ -129,8 +218,20 @@ function Signup() {
                 </div>
               </div>
               <div className="mb-4">
-                <button type="submit" className="btn btn-dark w-100 py-2 fs-6">
-                  Register
+                <button
+                  type="submit"
+                  className="btn btn-dark w-100 py-2 fs-6"
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <span
+                      className="spinner-border spinner-border-sm"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                  ) : (
+                    'Register'
+                  )}
                 </button>
               </div>
               <div className="text-center">
