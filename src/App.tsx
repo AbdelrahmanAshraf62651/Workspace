@@ -24,8 +24,6 @@ import AdminGalleryManagement from './pages/AdminGalleryManagement';
 import AdminAbout from './pages/AdminAbout';
 import NotFound from './pages/NotFound';
 import { GalleryProvider } from './contexts/GalleryContext';
-import { RoomsProvider } from './contexts/RoomsContext';
-import { ContactMessagesProvider } from './contexts/ContactMessagesContext';
 import { useEffect, useState } from 'react';
 import AdminLogin from './pages/AdminLogin';
 import CafeManagement from './pages/CafeManagement';
@@ -94,13 +92,9 @@ const AppContent = () => {
 function App() {
   return (
     <Router>
-      <RoomsProvider>
-      <ContactMessagesProvider>
           <GalleryProvider>
               <AppContent />
             </GalleryProvider>
-      </ContactMessagesProvider>
-        </RoomsProvider>
     </Router>
   );
 }

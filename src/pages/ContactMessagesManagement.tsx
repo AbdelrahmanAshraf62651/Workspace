@@ -1,24 +1,20 @@
-import { useState, useMemo } from 'react';
-import { 
-  Form, 
-  Button, 
-  Badge, 
-  Table, 
-  Card, 
-  Row, 
-  Col, 
+import { useState, useEffect } from "react";
+import {
+  Button,
+  Badge,
+  Table,
+  Card,
   Dropdown,
-  Modal
-} from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faEnvelope, 
-  faEye, 
-  faEyeSlash, 
-  faTrash, 
-  faSearch
-} from '@fortawesome/free-solid-svg-icons';
-import { useContactMessages } from '../contexts/ContactMessagesContext';
+  Modal,
+} from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEnvelope,
+  faEye,
+  faEyeSlash,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
 interface ContactMessage {
   id: number;
@@ -26,78 +22,114 @@ interface ContactMessage {
   email: string;
   subject: string;
   message: string;
-  receivedAt: string;
-  isRead: boolean;
+  created_at: string;
+  is_read: boolean;
 }
 
 function ContactMessagesManagement() {
-  const { messages, markAsRead, markAsUnread, deleteMessage } = useContactMessages();
-  
-  // Filters & Search
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState<'all' | 'unread' | 'read'>('all');
-  const [showMessageModal, setShowMessageModal] = useState(false);
-  const [selectedMessage, setSelectedMessage] = useState<ContactMessage | null>(null);
+  const [messagesData, setMessagesData] = useState<ContactMessage[]>([]);
+  useEffect(() => {
+    fetchMessagesData();
+  }, []);
 
-  // Filtered & Searched Messages
-  const filteredMessages = useMemo(() => {
-    return messages
-      .filter(message => {
-        // Status filter
-        if (statusFilter !== 'all') {
-          const isReadMatch = statusFilter === 'read' ? message.isRead : !message.isRead;
-          if (!isReadMatch) return false;
-        }
-        
-        // Search filter
-        if (searchTerm) {
-          const searchLower = searchTerm.toLowerCase();
-          return (
-            message.name.toLowerCase().includes(searchLower) ||
-            message.email.toLowerCase().includes(searchLower) ||
-            message.subject.toLowerCase().includes(searchLower)
-          );
-        }
-        
-        return true;
+  const fetchMessagesData = () =>
+    axios
+      .get("https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/contact_message")
+      .then((response) => {
+        setMessagesData(response.data);
+        console.log("Contact Messages Data:", response.data);
       })
-      .sort((a, b) => new Date(b.receivedAt).getTime() - new Date(a.receivedAt).getTime());
-  }, [messages, searchTerm, statusFilter]);
+      .catch((error) => {
+        console.error("Error fetching contact messages data:", error);
+      });
+  const [showMessageModal, setShowMessageModal] = useState(false);
+  const [selectedMessage, setSelectedMessage] = useState<ContactMessage | null>(
+    null
+  );
+
+  // Sort messages by date (newest first)
+  const sortedMessages = [...messagesData].sort(
+    (a, b) =>
+      new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+  );
+
+  const markAsRead = (id: number) => {
+    axios
+      .patch(`https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/contact_message/${id}`, {
+        is_read: true,
+      })
+      .then(() => {
+        setMessagesData((prev) =>
+          prev.map((msg) =>
+            msg.id === id ? { ...msg, is_read: true } : msg
+          )
+        );
+      })
+      .catch((error) => console.error("Error marking as read:", error));
+  };
+
+  
+
+  const markAsUnread = (id: number) => {
+    axios
+      .patch(`https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/contact_message/${id}`, {
+        is_read: false,
+      })
+      .then(() => {
+        setMessagesData((prev) =>
+          prev.map((msg) =>
+            msg.id === id ? { ...msg, is_read: false } : msg
+          )
+        );
+      })
+      .catch((error) => console.error("Error marking as unread:", error));
+  };
+
+  const deleteMessage = (id: number) => {
+    axios
+      .delete(`https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/contact_message/${id}`)
+      .then(() => {
+        setMessagesData((prev) => prev.filter((msg) => msg.id !== id));
+      })
+      .catch((error) => console.error("Error deleting message:", error));
+  };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    return new Date(dateString).toLocaleString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
   const handleViewMessage = (message: ContactMessage) => {
     setSelectedMessage(message);
     setShowMessageModal(true);
-    if (!message.isRead) {
+    if (!message.is_read) {
       markAsRead(message.id);
     }
   };
 
   const handleDeleteMessage = (id: number) => {
-    if (window.confirm('Are you sure you want to delete this message?')) {
+    if (window.confirm("Are you sure you want to delete this message?")) {
       deleteMessage(id);
     }
   };
 
   // Statistics
-  const unreadCount = messages.filter(m => !m.isRead).length;
-  const totalCount = messages.length;
+  const unreadCount = messagesData.filter((m) => !m.is_read).length;
+  const totalCount = messagesData.length;
 
   return (
     <div className="container pt-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
           <h1 className="fw-bold">Contact Messages </h1>
-          <p className="text-muted">Manage and respond to customer inquiries efficiently</p>
+          <p className="text-muted">
+            Manage and respond to customer inquiries efficiently
+          </p>
         </div>
         <div className="d-flex align-items-center gap-3">
           <div className="text-center">
@@ -110,74 +142,34 @@ function ContactMessagesManagement() {
           </div>
         </div>
       </div>
-
-      {/* Filters & Search */}
-      <Card className="shadow-sm mb-4">
-        <Card.Body>
-          <Row className="g-3 align-items-end">
-            <Col md={5}>
-              <Form.Label className="fw-semibold">Search</Form.Label>
-              <div className="position-relative">
-                <FontAwesomeIcon 
-                  icon={faSearch} 
-                  className="position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" 
-                />
-                <Form.Control
-                  type="text"
-                  className="ps-5"
-                  placeholder="Search by name, email, or subject..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
-            </Col>
-            <Col md={3}>
-              <Form.Label className="fw-semibold">Filter by Status</Form.Label>
-              <Form.Select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value as 'all' | 'unread' | 'read')}
-              >
-                <option value="all">All Messages</option>
-                <option value="unread">Unread Only</option>
-                <option value="read">Read Only</option>
-              </Form.Select>
-            </Col>
-            <Col md={4}>
-              <div className="d-flex justify-content-end gap-2">
-                <Badge bg="light" className="d-flex align-items-center gap-1">
-                  <FontAwesomeIcon icon={faEnvelope} />
-                  Showing {filteredMessages.length} messages
-                </Badge>
-              </div>
-            </Col>
-          </Row>
-        </Card.Body>
-      </Card>
-
-      {/* Messages Table */}
       <Card className="shadow-sm">
         <Card.Body className="p-0">
           <div className="table-responsive">
             <Table className="table table-hover mb-0">
               <thead className="table-dark">
                 <tr>
-                  <th style={{ width: '50px' }}></th>
+                  <th style={{ width: "50px" }}></th>
                   <th>Name</th>
                   <th>Email</th>
                   <th>Subject</th>
-                  <th style={{ width: '150px' }}>Received At</th>
-                  <th style={{ width: '100px' }}>Status</th>
-                  <th style={{ width: '120px' }}>Actions</th>
+                  <th style={{ width: "150px" }}>Received At</th>
+                  <th style={{ width: "100px" }}>Status</th>
+                  <th style={{ width: "120px" }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredMessages.length > 0 ? (
-                  filteredMessages.map((message) => (
-                    <tr key={message.id} className={!message.isRead ? 'table-info' : ''}>
+                {sortedMessages.length > 0 ? (
+                  sortedMessages.map((message) => (
+                    <tr
+                      key={message.id}
+                      className={!message.is_read ? "table-info" : ""}
+                    >
                       <td>
-                        <FontAwesomeIcon 
-                          icon={faEnvelope} 
-                          className={!message.isRead ? 'text-primary' : 'text-muted'} 
+                        <FontAwesomeIcon
+                          icon={faEnvelope}
+                          className={
+                            !message.is_read ? "text-primary" : "text-muted"
+                          }
                         />
                       </td>
                       <td>
@@ -186,53 +178,70 @@ function ContactMessagesManagement() {
                       <td>
                         <small className="text-muted">{message.email}</small>
                       </td>
-                      <td className="text-truncate" style={{ maxWidth: '250px' }}>
+                      <td
+                        className="text-truncate"
+                        style={{ maxWidth: "250px" }}
+                      >
                         {message.subject}
                       </td>
                       <td>
                         <small className="text-muted">
-                          {formatDate(message.receivedAt)}
+                          {message.created_at}
                         </small>
                       </td>
                       <td>
-                        <Badge 
-                          bg={message.isRead ? 'success' : 'danger'}
+                        <Badge
+                          bg={message.is_read ? "success" : "danger"}
                           className="px-2 py-1"
                         >
-                          {message.isRead ? 'Read' : 'Unread'}
+                          {message.is_read ? "Read" : "Unread"}
                         </Badge>
                       </td>
                       <td>
                         <div className="btn-group" role="group">
                           <Dropdown>
-                            <Dropdown.Toggle 
-                              variant="outline-primary" 
-                              size="sm" 
+                            <Dropdown.Toggle
+                              variant="outline-primary"
+                              size="sm"
                               id="dropdown-actions"
                               title="Actions"
                             >
                               <FontAwesomeIcon icon={faEye} />
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
-                              <Dropdown.Item onClick={() => handleViewMessage(message)}>
-                                <FontAwesomeIcon icon={faEye} className="me-2" />
+                              <Dropdown.Item
+                                onClick={() => handleViewMessage(message)}
+                              >
+                                <FontAwesomeIcon
+                                  icon={faEye}
+                                  className="me-2"
+                                />
                                 View Message
                               </Dropdown.Item>
-                              <Dropdown.Item 
-                                onClick={() => message.isRead ? markAsUnread(message.id) : markAsRead(message.id)}
+                              <Dropdown.Item
+                                onClick={() =>
+                                  message.is_read
+                                    ? markAsUnread(message.id)
+                                    : markAsRead(message.id)
+                                }
                               >
-                                <FontAwesomeIcon 
-                                  icon={message.isRead ? faEyeSlash : faEye} 
-                                  className="me-2" 
+                                <FontAwesomeIcon
+                                  icon={message.is_read ? faEyeSlash : faEye}
+                                  className="me-2"
                                 />
-                                {message.isRead ? 'Mark as Unread' : 'Mark as Read'}
+                                {message.is_read
+                                  ? "Mark as Unread"
+                                  : "Mark as Read"}
                               </Dropdown.Item>
                               <Dropdown.Divider />
-                              <Dropdown.Item 
+                              <Dropdown.Item
                                 onClick={() => handleDeleteMessage(message.id)}
                                 className="text-danger"
                               >
-                                <FontAwesomeIcon icon={faTrash} className="me-2" />
+                                <FontAwesomeIcon
+                                  icon={faTrash}
+                                  className="me-2"
+                                />
                                 Delete Message
                               </Dropdown.Item>
                             </Dropdown.Menu>
@@ -245,7 +254,11 @@ function ContactMessagesManagement() {
                   <tr>
                     <td colSpan={7} className="text-center py-5">
                       <div className="text-muted">
-                        <FontAwesomeIcon icon={faEnvelope} className="me-2" size="3x" />
+                        <FontAwesomeIcon
+                          icon={faEnvelope}
+                          className="me-2"
+                          size="3x"
+                        />
                         <div className="mt-3">No messages found</div>
                         <small className="text-muted">
                           Messages will appear here when customers contact you
@@ -261,16 +274,20 @@ function ContactMessagesManagement() {
       </Card>
 
       {/* Message Detail Modal */}
-      <Modal show={showMessageModal} onHide={() => setShowMessageModal(false)} size="lg">
+      <Modal
+        show={showMessageModal}
+        onHide={() => setShowMessageModal(false)}
+        size="lg"
+      >
         <Modal.Header closeButton>
           <Modal.Title>
             <div>
               <strong>{selectedMessage?.subject}</strong>
-              <Badge 
-                bg={selectedMessage?.isRead ? 'success' : 'danger'}
+              <Badge
+                bg={selectedMessage?.is_read ? "success" : "danger"}
                 className="ms-2"
               >
-                {selectedMessage?.isRead ? 'Read' : 'Unread'}
+                {selectedMessage?.is_read ? "Read" : "Unread"}
               </Badge>
             </div>
             <small className="text-muted">
@@ -278,7 +295,8 @@ function ContactMessagesManagement() {
             </small>
             <div className="mt-1">
               <small className="text-muted">
-                Received: {selectedMessage && formatDate(selectedMessage.receivedAt)}
+                Received:{" "}
+                {selectedMessage && formatDate(selectedMessage.created_at)}
               </small>
             </div>
           </Modal.Title>
@@ -288,17 +306,18 @@ function ContactMessagesManagement() {
             <p className="lead">{selectedMessage?.message}</p>
           </div>
           <div className="d-flex justify-content-end">
-            
             <div className="btn-group">
-              <Button 
-                variant="outline-success" 
+              <Button
+                variant="outline-success"
                 size="sm"
-                onClick={() => selectedMessage && markAsRead(selectedMessage.id)}
+                onClick={() =>
+                  selectedMessage && markAsRead(selectedMessage.id)
+                }
               >
                 Mark as Read
               </Button>
-              <Button 
-                variant="outline-danger" 
+              <Button
+                variant="outline-danger"
                 size="sm"
                 onClick={() => {
                   setShowMessageModal(false);

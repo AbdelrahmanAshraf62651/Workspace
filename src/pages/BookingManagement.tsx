@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import {
   Form,
   Button,
@@ -19,7 +19,7 @@ import {
   faTimesCircle,
   faImage,
 } from "@fortawesome/free-solid-svg-icons";
-import { useRooms } from "../contexts/RoomsContext";
+import axios from "axios";
 
 interface Room {
   id: string;
@@ -34,8 +34,18 @@ interface Room {
 }
 
 function BookingManagement() {
-  const { rooms, addRoom, updateRoom, deleteRoom, toggleRoomStatus } =
-    useRooms();
+  const [rooms, setRooms] = useState<Room[]>([]);
+  useEffect(() => {
+    axios
+      .get("https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/booking")
+      .then((response) => {
+        setRooms(response.data);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching rooms:", error);
+      });
+  }, []);
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingRoom, setEditingRoom] = useState<Room | null>(null);
 
@@ -49,29 +59,11 @@ function BookingManagement() {
     hourlyRate: 0,
   });
 
-  // Filters
-  const [filterStatus, setFilterStatus] = useState<string>("all");
-  const [typeFilter, setTypeFilter] = useState<string>("all");
-
   // Success/Error Messages
   const [message, setMessage] = useState<string | null>(null);
   const [messageType, setMessageType] = useState<"success" | "error" | null>(
     null
   );
-
-  //Filtering with useMemo
-  //Filtering with useMemo
-  const filteredRooms = useMemo(() => {
-    return rooms.filter((room) => {
-      // Status filter
-      if (filterStatus !== "all" && room.status !== filterStatus) return false;
-
-      // Type filter
-      if (typeFilter !== "all" && room.type !== typeFilter) return false;
-
-      return true;
-    });
-  }, [rooms, filterStatus, typeFilter]);
   // Load editing room data
   useEffect(() => {
     if (editingRoom) {
@@ -113,7 +105,42 @@ function BookingManagement() {
     setEditingRoom(null);
   };
 
-  //  Backend-ready add/update
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const addRoom = async (roomData: Record<string, any>) => {
+    const response = await axios.post(
+      "https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/booking",
+      roomData
+    );
+    setRooms([...rooms, response.data]);
+    return response.data;
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const updateRoom = async (id: string, roomData: Record<string, any>) => {
+    const response = await axios.put(
+      `https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/booking/${id}`,
+      roomData
+    );
+    setRooms(rooms.map((room) => (room.id === id ? response.data : room)));
+    return response.data;
+  };
+
+  const deleteRoom = async (id: string) => {
+    await axios.delete(
+      `https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/booking/${id}`
+    );
+    setRooms(rooms.filter((room) => room.id !== id));
+  };
+
+  const toggleRoomStatus = async (id: string, currentStatus: string) => {
+    const statusMap: { [key: string]: string } = {
+      Available: "Booked",
+      Booked: "Maintenance",
+      Maintenance: "Available",
+    };
+    const newStatus = statusMap[currentStatus] || "Available";
+    await updateRoom(id, { status: newStatus });
+  };
   const handleAddRoom = async () => {
     try {
       const roomData = {
@@ -165,12 +192,6 @@ function BookingManagement() {
         return "secondary";
     }
   };
-
-  //  Get unique room types for filter
-  const availableTypes = useMemo(() => {
-    const types = rooms.map((room) => room.type);
-    return Array.from(new Set(types)).sort();
-  }, [rooms]);
 
   return (
     <div className="container pt-5">
@@ -247,68 +268,6 @@ function BookingManagement() {
         </Card.Body>
       </Card>
 
-      {/* Filters */}
-
-      <Card className="shadow-sm mb-4">
-        <Card.Body>
-          <Row className="g-3">
-            {/* Status Filter */}
-            <Col md={4}>
-              <Form.Label className="fw-semibold">Filter by Status</Form.Label>
-              <Form.Select
-                value={filterStatus}
-                onChange={(e) => setFilterStatus(e.target.value as string)}
-                className="w-100"
-              >
-                <option value="all">All Status</option>
-                <option value="Available">Available</option>
-                <option value="Booked">Booked</option>
-                <option value="Maintenance">Maintenance</option>
-              </Form.Select>
-            </Col>
-
-            {/* Type Filter */}
-            <Col md={4}>
-              <Form.Label className="fw-semibold">Filter by Type</Form.Label>
-              <Form.Select
-                value={typeFilter}
-                onChange={(e) => setTypeFilter(e.target.value)}
-                className="w-100"
-              >
-                <option value="all">All Types</option>
-                {availableTypes.map((type) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ))}
-              </Form.Select>
-            </Col>
-
-            {/* Search */}
-            {/* <Col md={4}>
-              <Form.Label className="fw-semibold">Search Rooms</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Search by name or title..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </Col> */}
-          </Row>
-
-          {/* Filter Results Counter */}
-          <div className="mt-3 p-2 bg-light rounded">
-            <Row className="align-items-center">
-              <Col md={8}>
-                <small className="text-muted">
-                  Showing <strong>{filteredRooms.length}</strong> of{" "}
-                  <strong>{rooms.length}</strong> rooms
-                </small>
-              </Col>
-            </Row>
-          </div>
-        </Card.Body>
-      </Card>
       {/* Rooms Table */}
       <Card className="shadow-sm">
         <Card.Body className="p-0">
@@ -316,8 +275,7 @@ function BookingManagement() {
             <Table className="table table-hover mb-0">
               <thead className="table-dark">
                 <tr>
-                  <th style={{ width: "120px" }}>Image</th>
-                  <th>Room Name</th>
+                  <th>User Name</th>
                   <th>Type</th>
                   <th>Capacity</th>
                   <th>Hourly Rate</th>
@@ -326,41 +284,9 @@ function BookingManagement() {
                 </tr>
               </thead>
               <tbody>
-                {filteredRooms.length > 0 ? (
-                  filteredRooms.map((room) => (
+                {rooms.length > 0 ? (
+                  rooms.map((room) => (
                     <tr key={room.id}>
-                      <td>
-                        {room.image ? (
-                          <img
-                            src={room.image}
-                            alt={room.name}
-                            className="img-thumbnail"
-                            style={{
-                              width: "50px",
-                              height: "50px",
-                              objectFit: "cover",
-                            }}
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).src =
-                                "/images/default-room.png";
-                            }}
-                          />
-                        ) : (
-                          <div
-                            className="bg-light d-flex align-items-center justify-content-center"
-                            style={{
-                              width: "50px",
-                              height: "50px",
-                              borderRadius: "0.375rem",
-                            }}
-                          >
-                            <FontAwesomeIcon
-                              icon={faImage}
-                              className="text-muted"
-                            />
-                          </div>
-                        )}
-                      </td>
                       <td>
                         <div>
                           <strong>{room.name}</strong>
