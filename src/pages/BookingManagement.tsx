@@ -26,6 +26,7 @@ interface Room {
 
 function BookingManagement() {
   const [rooms, setRooms] = useState<Room[]>([]);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     axios
       .get('https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/booking')
@@ -35,7 +36,8 @@ function BookingManagement() {
       })
       .catch((error) => {
         console.error('Error fetching rooms:', error);
-      });
+      })
+      .finally(() => setLoading(false));
   }, []);
   // Success/Error Messages
   const [message, setMessage] = useState<string | null>(null);
@@ -198,7 +200,20 @@ function BookingManagement() {
                 </tr>
               </thead>
               <tbody>
-                {rooms.length > 0 ? (
+                {loading ? (
+                  <tr>
+                    <td colSpan={7}>
+                      <div className="d-flex justify-content-center py-5">
+                        <div
+                          className="spinner-border text-primary"
+                          role="status"
+                        >
+                          <span className="visually-hidden">Loading...</span>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                ) : rooms.length > 0 ? (
                   rooms.map((room) => (
                     <tr key={room.id}>
                       <td>
