@@ -16,7 +16,7 @@ interface CafeItem {
 function CafeManagement() {
   const [initialCafeItems, setInitialCafeItems] = useState<CafeItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [base64Image, setBase64Image] = useState<string | null>(null);
+  const [, setBase64Image] = useState<string | null>(null);
   useEffect(() => {
     axios
       .get('https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/cafe_item')
@@ -157,7 +157,6 @@ function CafeManagement() {
       };
       reader.readAsDataURL(file);
     }
-    console.log(base64Image);
   };
   // const base64ToImage = (base64String: string) => {
   //   const img = new Image();
