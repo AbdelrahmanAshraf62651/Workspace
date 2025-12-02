@@ -1,11 +1,5 @@
 import { useState, useEffect } from 'react';
-import {
-  Button,
-  Badge,
-  Table,
-  Alert,
-  Col,
-} from 'react-bootstrap';
+import { Button, Badge, Table, Alert, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faTrash,
@@ -204,10 +198,7 @@ function BookingManagement() {
                   <tr>
                     <td colSpan={7}>
                       <div className="d-flex justify-content-center py-5">
-                        <div
-                          className="spinner-border text-primary"
-                          role="status"
-                        >
+                        <div className="spinner-border" role="status">
                           <span className="visually-hidden">Loading...</span>
                         </div>
                       </div>

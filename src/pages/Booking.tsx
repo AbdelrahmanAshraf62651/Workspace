@@ -60,7 +60,7 @@ const fakeAvailabilityData: Availability[] = [
   { roomId: 'single-seat', date: '2025-12-01', hour: 15, available: true },
   { roomId: 'single-seat', date: '2025-12-01', hour: 16, available: false },
   { roomId: 'single-seat', date: '2025-12-01', hour: 17, available: true },
-  
+
   { roomId: 'single-seat', date: '2025-12-02', hour: 9, available: false },
   { roomId: 'single-seat', date: '2025-12-02', hour: 10, available: true },
   { roomId: 'single-seat', date: '2025-12-02', hour: 11, available: true },
@@ -148,7 +148,7 @@ function Booking() {
       <div className="row mb-5 g-3">
         <div className="col-md-6">
           <label htmlFor="dateSelector" className="form-label fw-semibold">
-            📅 Select Date
+            Select Date
           </label>
           <input
             type="date"
@@ -162,7 +162,7 @@ function Booking() {
 
         <div className="col-md-6">
           <label htmlFor="timeSelector" className="form-label fw-semibold">
-            🕒 Select Time
+            Select Time
           </label>
           <select
             id="timeSelector"
@@ -172,7 +172,13 @@ function Booking() {
           >
             {availableHours.map((hour) => (
               <option key={hour} value={hour}>
-                {hour}:00 - {hour + 1}:00 ({hour < 12 ? 'AM' : hour === 12 ? 'PM' : hour - 12 + (hour === 23 ? '' : ' PM')})
+                {hour}:00 - {hour + 1}:00 (
+                {hour < 12
+                  ? 'AM'
+                  : hour === 12
+                  ? 'PM'
+                  : hour - 12 + (hour === 23 ? '' : ' PM')}
+                )
               </option>
             ))}
           </select>
@@ -181,7 +187,14 @@ function Booking() {
 
       {/* Availability Info */}
       <div className="alert alert-info mb-4">
-        <strong>📍 Showing availability for:</strong> {new Date(selectedDate).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} at {selectedHour}:00 - {selectedHour + 1}:00
+        <strong>Showing availability for:</strong>{' '}
+        {new Date(selectedDate).toLocaleDateString('en-US', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })}{' '}
+        at {selectedHour}:00 - {selectedHour + 1}:00
       </div>
 
       {/* Rooms Grid */}
@@ -195,26 +208,6 @@ function Booking() {
             selectedHour={selectedHour}
           />
         ))}
-        <div className="box col-12 col-md-6 col-lg-4">
-          <div
-            className="card d-flex justify-content-center align-items-center h-100 coming-soon shadow-sm"
-            style={{
-              backgroundColor: '#F3F4F6FF',
-              fontFamily: 'Source Sans 3", sans-serif',
-            }}
-          >
-            <div
-              className="loading-icon mb-3"
-              style={{
-                padding: '1.1rem',
-                border: 'black dashed 5px',
-                opacity: '0.5',
-                borderRadius: '50%',
-              }}
-            ></div>
-            More options coming soon!
-          </div>
-        </div>
       </div>
     </div>
   );

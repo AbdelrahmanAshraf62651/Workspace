@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Form } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faLocationDot,
-  faClock,
-  faPhone,
-} from '@fortawesome/free-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import {
+//   faLocationDot,
+//   faClock,
+//   faPhone,
+// } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -19,33 +19,17 @@ const DAYS = [
   { key: 'sunday', label: 'Sunday' },
 ] as const;
 
-interface DayOpeningHours {
-  id: number;
-  isOpen: boolean;
-  openTime: string;
-  closeTime: string;
-}
-interface OpeningHours {
-  [key: string]: DayOpeningHours;
-}
-interface AboutInfo {
-  id: number;
-  address: string;
-  contact_phone: string;
-  contact_email: string;
-  location_link: string;
-  opening_hours: OpeningHours;
-  // Add other fields as necessary
-}
-
 function AdminAbout() {
   const navigate = useNavigate();
-  const [aboutData, setAboutData] = useState<AboutInfo | null>(null);
+
+  // const [aboutData, setAboutData] = useState(null);
+
   const [address, setAddress] = useState('');
   const [contactPhone, setContactPhone] = useState('');
   const [contactEmail, setContactEmail] = useState('');
   const [locationLink, setLocationLink] = useState('');
-  const [openingHours, setOpeningHours] = useState<OpeningHours>({
+
+  const [openingHours, setOpeningHours] = useState({
     monday: { id: 1, isOpen: false, openTime: '10AM', closeTime: '7PM' },
     tuesday: { id: 2, isOpen: false, openTime: '10AM', closeTime: '7PM' },
     wednesday: { id: 3, isOpen: false, openTime: '10AM', closeTime: '7PM' },
@@ -54,208 +38,196 @@ function AdminAbout() {
     saturday: { id: 6, isOpen: false, openTime: '10AM', closeTime: '7PM' },
     sunday: { id: 7, isOpen: false, openTime: '10AM', closeTime: '7PM' },
   });
+
+  const [showToast, setShowToast] = useState(false);
+
+  // Fetch Data Once
   useEffect(() => {
     axios
       .get('https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/location/1')
       .then((response) => {
         const data = response.data;
-        setAboutData(data);
+        // setAboutData(data);
+
+        setAddress(data.address || '');
+        setContactPhone(data.contact_phone || '');
+        setContactEmail(data.contact_email || '');
+        setLocationLink(data.location_link || '');
+        setOpeningHours(data.opening_hours || openingHours);
       })
       .catch((error) => {
         console.error('Error fetching about info:', error);
       });
+  }, []);
 
-    setAddress(aboutData?.address || '');
-    setContactPhone(aboutData?.contact_phone || '');
-    setContactEmail(aboutData?.contact_email || '');
-    setLocationLink(aboutData?.location_link || '');
-  }, [
-    aboutData?.address,
-    aboutData?.contact_email,
-    aboutData?.contact_phone,
-    aboutData?.location_link,
-  ]);
-  const hasChanges = true; // Implement logic to check if there are unsaved changes
+  // Auto-hide toast
+  useEffect(() => {
+    if (showToast) {
+      const timer = setTimeout(() => setShowToast(false), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [showToast]);
 
   const handleSave = () => {
     axios
       .patch('https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/location/1', {
-        address: address,
+        address,
         contact_phone: contactPhone,
         contact_email: contactEmail,
         location_link: locationLink,
         opening_hours: openingHours,
       })
       .then(() => {
-        console.log('Settings saved successfully');
+        setShowToast(true);
+
+        const btn = document.querySelector('.sec-btn');
+        btn?.classList.add('saved');
+        setTimeout(() => btn?.classList.remove('saved'), 600);
       })
       .catch((error) => {
         console.error('Error saving settings:', error);
       });
   };
-  const handleCancel = () => {
-    navigate(0);
-  };
+
+  const handleCancel = () => navigate(0);
+
+  const hasChanges = true;
 
   return (
     <div className="container pt-5">
-      <div className="mb-4">
-        <h1 className="fw-bold">About Settings</h1>
-        <p className="text-muted">
-          Manage your business's public profile, including location, operating
-          hours, and contact details.
-        </p>
+      <div
+        className={`toast position-fixed bottom-0 end-0 m-3 text-bg-success shadow-lg ${
+          showToast ? 'show' : 'hide'
+        }`}
+        style={{ transition: '0.4s' }}
+      >
+        <div className="toast-body fw-semibold">
+          Settings saved successfully!
+        </div>
       </div>
 
-      <div className="shadow-sm mb-4">
-        <div className="p-4">
-          <h5 className="fw-bold mb-3">Business Settings</h5>
-          <p className="text-muted mb-4">
-            Configure your public-facing business information.
-          </p>
+      <div className="mb-4">
+        <h1 className="fw-bold">About Settings</h1>
+        <p className="text-muted">Manage your business public profile.</p>
+      </div>
 
-          {/* Location Settings */}
-          <div className="mb-4">
-            <div className="d-flex align-items-center gap-2 mb-3">
-              <FontAwesomeIcon icon={faLocationDot} className="text-black" />
-              <h6 className="mb-0 fw-bold">Location Settings</h6>
-            </div>
-            <div className="row g-3">
-              <div className="col-12 col-md-6">
-                <Form.Label>Address</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={aboutData?.address || ''}
-                  onChange={(e) => {
-                    setAddress(e.target.value);
-                  }}
-                  placeholder="Enter full address"
-                />
-              </div>
-              <div className="col-12 col-md-6">
-                <Form.Label>
-                  Map Link <span className="text-muted">(Optional)</span>
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  value={aboutData?.location_link || ''}
-                  onChange={(e) => setLocationLink(e.target.value)}
-                  placeholder="https://maps.app.goo.gl/example"
-                />
-              </div>
-            </div>
+      <div className="shadow-sm mb-4 p-4">
+        {/* Location */}
+        <h5 className="fw-bold mb-3">Location Settings</h5>
+
+        <div className="row g-3">
+          <div className="col-md-6">
+            <Form.Label>Address</Form.Label>
+            <Form.Control
+              type="text"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="Enter full address"
+            />
           </div>
 
-          <hr className="my-4" />
+          <div className="col-md-6">
+            <Form.Label>Map Link</Form.Label>
+            <Form.Control
+              type="text"
+              value={locationLink}
+              onChange={(e) => setLocationLink(e.target.value)}
+              placeholder="https://maps.app.goo.gl/example"
+            />
+          </div>
+        </div>
 
-          {/* Opening Hours */}
-          <div className="mb-4">
-            <div className="d-flex align-items-center gap-2 mb-3">
-              <FontAwesomeIcon icon={faClock} className="text-black " />
-              <h6 className="mb-0 fw-bold">Opening Hours</h6>
-            </div>
-            <div className="row g-3">
-              {DAYS.map(({ key, label }) => {
-                const dayData = openingHours[key];
-                return (
-                  <div key={key} className="col-12 col-md-6">
-                    <div className="d-flex align-items-center gap-3">
-                      <div className="form-check form-switch">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          checked={dayData?.isOpen || false}
-                          onChange={(e) =>
-                            setOpeningHours({
-                              ...openingHours,
-                              [key]: {
-                                ...openingHours[key],
-                                isOpen: e.target.checked,
-                              },
-                            })
-                          }
-                          id={`switch-${key}`}
-                        />
-                        <label
-                          className="form-check-label fw-semibold"
-                          htmlFor={`switch-${key}`}
-                          style={{ minWidth: '100px' }}
-                        >
-                          {label}
-                        </label>
-                      </div>
-                      {dayData?.isOpen ? (
-                        <div className="d-flex align-items-center gap-2 flex-grow-1">
-                          <Form.Control
-                            type="number"
-                            value={parseInt(dayData.openTime)}
-                            onChange={(e) =>
-                              setOpeningHours({
-                                ...openingHours,
-                                [key]: {
-                                  ...openingHours[key],
-                                  openTime: e.target.value,
-                                },
-                              })
-                            }
-                            style={{ maxWidth: '100px' }}
-                          />
-                          <span className="text-muted">AM</span>
-                          <span className="text-muted">-</span>
-                          <Form.Control
-                            type="number"
-                            value={parseInt(dayData.closeTime)}
-                            onChange={(e) =>
-                              setOpeningHours({
-                                ...openingHours,
-                                [key]: {
-                                  ...openingHours[key],
-                                  closeTime: e.target.value,
-                                },
-                              })
-                            }
-                            style={{ maxWidth: '100px' }}
-                          />
-                          <span className="text-muted">PM</span>
-                        </div>
-                      ) : (
-                        <span className="text-muted">Closed</span>
-                      )}
-                    </div>
+        <hr className="my-4" />
+
+        {/* Opening Hours */}
+        <h5 className="fw-bold mb-3">Opening Hours</h5>
+        <div className="row g-3">
+          {DAYS.map(({ key, label }) => {
+            const day = openingHours[key];
+            return (
+              <div key={key} className="col-md-6">
+                <div className="d-flex align-items-center gap-3">
+                  <div className="form-check form-switch">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      checked={day.isOpen}
+                      onChange={(e) =>
+                        setOpeningHours({
+                          ...openingHours,
+                          [key]: { ...day, isOpen: e.target.checked },
+                        })
+                      }
+                      id={`switch-${key}`}
+                    />
+                    <label
+                      className="form-check-label fw-semibold"
+                      htmlFor={`switch-${key}`}
+                    >
+                      {label}
+                    </label>
                   </div>
-                );
-              })}
-            </div>
+
+                  {day.isOpen ? (
+                    <div className="d-flex align-items-center gap-2 flex-grow-1">
+                      <Form.Control
+                        type="text"
+                        value={day.openTime}
+                        onChange={(e) =>
+                          setOpeningHours({
+                            ...openingHours,
+                            [key]: { ...day, openTime: e.target.value },
+                          })
+                        }
+                        style={{ maxWidth: '100px' }}
+                      />
+
+                      <span className="text-muted">-</span>
+
+                      <Form.Control
+                        type="text"
+                        value={day.closeTime}
+                        onChange={(e) =>
+                          setOpeningHours({
+                            ...openingHours,
+                            [key]: { ...day, closeTime: e.target.value },
+                          })
+                        }
+                        style={{ maxWidth: '100px' }}
+                      />
+                    </div>
+                  ) : (
+                    <span className="text-muted">Closed</span>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <hr className="my-4" />
+
+        {/* Contact */}
+        <h5 className="fw-bold mb-3">Contact Information</h5>
+        <div className="row g-3">
+          <div className="col-md-6">
+            <Form.Label>Phone</Form.Label>
+            <Form.Control
+              type="tel"
+              value={contactPhone}
+              onChange={(e) => setContactPhone(e.target.value)}
+              placeholder="+1 (555) 987-6545"
+            />
           </div>
 
-          <hr className="my-4" />
-
-          {/* Contact Information */}
-          <div>
-            <div className="d-flex align-items-center gap-2 mb-3">
-              <FontAwesomeIcon icon={faPhone} className="text-black" />
-              <h6 className="mb-0 fw-bold">Contact Information</h6>
-            </div>
-            <div className="row g-3">
-              <div className="col-md-6">
-                <Form.Label>Phone Number</Form.Label>
-                <Form.Control
-                  type="tel"
-                  value={contactPhone || ''}
-                  onChange={(e) => setContactPhone(e.target.value)}
-                  placeholder="+1 (555) 987-6545"
-                />
-              </div>
-              <div className="col-md-6">
-                <Form.Label>Email</Form.Label>
-                <Form.Control
-                  type="email"
-                  value={contactEmail || ''}
-                  onChange={(e) => setContactEmail(e.target.value)}
-                  placeholder="contact@techbusiness.com"
-                />
-              </div>
-            </div>
+          <div className="col-md-6">
+            <Form.Label>Email</Form.Label>
+            <Form.Control
+              type="email"
+              value={contactEmail}
+              onChange={(e) => setContactEmail(e.target.value)}
+              placeholder="contact@business.com"
+            />
           </div>
         </div>
       </div>

@@ -40,7 +40,11 @@ function BookingCard({
   return (
     <>
       <div className="box col-12 col-md-6 col-lg-4">
-        <div className={`card pt-3 h-100 shadow-sm ${!isAvailable ? 'opacity-50' : ''}`}>
+        <div
+          className={`card pt-3 h-100 shadow-sm ${
+            !isAvailable ? 'opacity-50' : ''
+          }`}
+        >
           <div className="ps-3 pe-3 position-relative">
             <img src={img} className="card-img-top" alt={title} />
             {/* Availability Badge */}
@@ -67,12 +71,15 @@ function BookingCard({
             {/* Display selected time if provided */}
             {selectedDate && selectedHour !== undefined && (
               <p className="text-muted small mb-2">
-                📅 {new Date(selectedDate).toLocaleDateString()} | 🕒 {selectedHour}:00
+                {new Date(selectedDate).toLocaleDateString()} | {selectedHour}
+                :00
               </p>
             )}
             <button
               onClick={handleBookNow}
-              className={`btn mb-3 ${isAvailable ? 'sec-btn' : 'btn-secondary'}`}
+              className={`btn mb-3 ${
+                isAvailable ? 'sec-btn' : 'btn-secondary'
+              }`}
               disabled={!isAvailable}
             >
               {isAvailable ? 'Book Now' : 'Not Available'}
