@@ -77,7 +77,7 @@ function BookingCard({
             )}
             <button
               onClick={handleBookNow}
-              className={`btn mb-3 ${
+              className={`btn mb-3 mt-auto ${
                 isAvailable ? 'sec-btn' : 'btn-secondary'
               }`}
               disabled={!isAvailable}

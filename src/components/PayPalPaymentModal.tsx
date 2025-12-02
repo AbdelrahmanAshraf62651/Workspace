@@ -12,7 +12,9 @@ interface PayPalPaymentModalProps {
 }
 
 interface PayPal {
-  Buttons: (config: Record<string, unknown>) => { render: (selector: string) => void };
+  Buttons: (config: Record<string, unknown>) => {
+    render: (selector: string) => void;
+  };
 }
 
 declare global {
@@ -34,11 +36,35 @@ function PayPalPaymentModal({
   const [paypalLoaded, setPaypalLoaded] = useState(false);
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (window.paypal) {
+      setPaypalLoaded(true);
+      return;
+    }
+
+    const script = document.querySelector<HTMLScriptElement>(
+      'script[src^="https://www.paypal.com/sdk/js"]'
+    );
+
+    const handleLoad = () => {
+      setPaypalLoaded(true);
+    };
+
+    if (script) {
+      script.addEventListener('load', handleLoad);
+    }
+
+    return () => {
+      if (script) {
+        script.removeEventListener('load', handleLoad);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen || !paypalLoaded) return;
 
     // Check if PayPal is loaded
     if (window.paypal) {
-      setPaypalLoaded(true);
       // Render PayPal buttons
       const container = document.getElementById('paypal-button-container');
       if (container) {
@@ -46,7 +72,14 @@ function PayPalPaymentModal({
       }
 
       const buttons = window.paypal.Buttons({
-        createOrder: (_data: unknown, actions: { order: { create: (config: Record<string, unknown>) => Promise<string> } }) => {
+        createOrder: (
+          _data: unknown,
+          actions: {
+            order: {
+              create: (config: Record<string, unknown>) => Promise<string>;
+            };
+          }
+        ) => {
           return actions.order.create({
             intent: 'CAPTURE',
             purchase_units: [
@@ -60,20 +93,25 @@ function PayPalPaymentModal({
             ],
           });
         },
-        onApprove: async (data: { orderID: string }, actions: { order: { capture: () => Promise<Record<string, unknown>> } }) => {
+        onApprove: async (
+          data: { orderID: string },
+          actions: {
+            order: { capture: () => Promise<Record<string, unknown>> };
+          }
+        ) => {
           setIsProcessing(true);
           try {
             const orderDetails = await actions.order.capture();
             console.log('Payment successful:', orderDetails);
-            
+
             // Show success message
             alert(`Payment successful! Order ID: ${data.orderID}`);
-            
+
             // Call success callback if provided
             if (onPaymentSuccess) {
               onPaymentSuccess(orderDetails);
             }
-            
+
             onClose();
           } catch (error) {
             console.error('Payment error:', error);
@@ -95,19 +133,40 @@ function PayPalPaymentModal({
 
       buttons.render('#paypal-button-container');
     } else {
-      console.warn('PayPal SDK not loaded. Make sure to add client ID to index.html');
-      setPaypalLoaded(false);
+      console.warn(
+        'PayPal SDK not loaded. Make sure to add client ID to index.html'
+      );
     }
-  }, [isOpen, currency, price, title, capacity, onClose, onPaymentSuccess]);
+  }, [
+    isOpen,
+    paypalLoaded,
+    currency,
+    price,
+    title,
+    capacity,
+    onClose,
+    onPaymentSuccess,
+  ]);
 
   if (!isOpen) return null;
 
   return (
     <div
-      className="position-fixed top-0 start-0 w-100 h-100 bg-black bg-opacity-75 d-flex justify-content-center align-items-center"
-      style={{ zIndex: 1050 }}
+      onClick={onClose}
+      className="d-flex justify-content-center align-items-center"
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '105vh',
+        transform: 'translateY(-5vh)',
+        backgroundColor: 'rgba(0, 0, 0, 0.75)',
+        zIndex: 1050,
+      }}
     >
       <div
+        onClick={(e) => e.stopPropagation()}
         className="bg-white rounded-3 p-5 shadow-lg"
         style={{
           maxWidth: '500px',
@@ -140,7 +199,10 @@ function PayPalPaymentModal({
           </div>
           <div className="d-flex justify-content-between border-top pt-3 mt-3">
             <span className="fw-bold">Total Price:</span>
-            <span className="fw-bold text-success" style={{ fontSize: '1.5rem' }}>
+            <span
+              className="fw-bold text-success"
+              style={{ fontSize: '1.5rem' }}
+            >
               {currency} ${price.toFixed(2)}
             </span>
           </div>
@@ -148,9 +210,7 @@ function PayPalPaymentModal({
 
         {/* Payment Info */}
         <div className="alert alert-info mb-4" role="alert">
-          <small>
-            💳 Secure payment powered by PayPal
-          </small>
+          <small>Secure payment powered by PayPal</small>
         </div>
 
         {/* PayPal Button Container */}
@@ -159,7 +219,7 @@ function PayPalPaymentModal({
         ) : (
           <div className="alert alert-warning mb-3">
             <small>
-              ⚠️ PayPal is not configured. Please add your Client ID to index.html
+              PayPal is not configured. Please add your Client ID to index.html
             </small>
           </div>
         )}
