@@ -1,14 +1,13 @@
-import { useState, useEffect } from "react";
-import { Table } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState, useEffect } from 'react';
+import { Table } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faTrash,
   faEdit,
   faPlus,
-  faCheckCircle,
   faTimesCircle,
-} from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+} from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 interface Room {
   id: string;
   name: string;
@@ -17,20 +16,20 @@ interface Room {
   capacity: number;
   hourly_rate: number;
   image: string;
-  status: "unavailable" | "available" | "maintenance";
+  status: 'unavailable' | 'available';
 }
 function EditRoomSchedule() {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     axios
-      .get("https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/room")
+      .get('https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/room')
       .then((response) => {
         setRooms(response.data);
         console.log(response.data);
       })
       .catch((error) => {
-        console.error("Error fetching rooms:", error);
+        console.error('Error fetching rooms:', error);
       })
       .finally(() => setLoading(false));
   }, []);
@@ -45,30 +44,34 @@ function EditRoomSchedule() {
   const [editingRoom, setEditingRoom] = useState<Room | null>(null);
   const [, setBase64Image] = useState<string | null>(null);
   const [newRoom, setNewRoom] = useState({
-    name: "",
-    type: "",
-    room_description: "",
+    name: '',
+    type: '',
+    room_description: '',
     capacity: 0,
     hourly_rate: 0,
-    status: "unavailable",
-    image: "",
+    status: 'unavailable',
+    image: '',
   });
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     if (editingRoom) {
       setEditingRoom((prevRoom) => ({
         ...prevRoom!,
-        [name]: name === 'capacity' || name === 'hourly_rate' ? Number(value) : value,
+        [name]:
+          name === 'capacity' || name === 'hourly_rate' ? Number(value) : value,
       }));
     } else {
       setNewRoom((prevRoom) => ({
         ...prevRoom,
-        [name]: name === 'capacity' || name === 'hourly_rate' ? Number(value) : value,
+        [name]:
+          name === 'capacity' || name === 'hourly_rate' ? Number(value) : value,
       }));
     }
   };
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsSubmitting(true);
     if (editingRoom) {
       // Update existing room
       axios
@@ -77,45 +80,44 @@ function EditRoomSchedule() {
           editingRoom
         )
         .then((response) => {
-          setRooms(rooms.map((r) => (r.id === editingRoom.id ? response.data : r)));
+          setRooms(
+            rooms.map((r) => (r.id === editingRoom.id ? response.data : r))
+          );
           setEditingRoom(null);
           setBase64Image(null);
         })
         .catch((error) => {
-          console.error("Error updating room:", error);
-        });
+          console.error('Error updating room:', error);
+        })
+        .finally(() => setIsSubmitting(false));
     } else {
       // Add new room
       axios
-        .post("https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/room", newRoom)
+        .post('https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/room', newRoom)
         .then((response) => {
           setRooms([...rooms, response.data]);
           setNewRoom({
-            name: "",
-            type: "",
-            room_description: "",
+            name: '',
+            type: '',
+            room_description: '',
             capacity: 0,
             hourly_rate: 0,
-            status: "unavailable",
-            image: "",
+            status: 'unavailable',
+            image: '',
           });
           setBase64Image(null);
           setAddNewRoom(false);
         })
         .catch((error) => {
-          console.error("Error adding room:", error);
-        });
+          console.error('Error adding room:', error);
+        })
+        .finally(() => setIsSubmitting(false));
     }
   };
 
-
   const toggleRoomStatus = async (id: string, currentStatus: string) => {
-    const statusMap: { [key: string]: string } = {
-      unavailable: "available",
-      available: "maintenance",
-      maintenance: "unavailable",
-    };
-    const newStatus = statusMap[currentStatus] || "confirmed";
+    const newStatus =
+      currentStatus === 'available' ? 'unavailable' : 'available';
     try {
       const response = await axios.patch(
         `https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/room/${id}`,
@@ -123,25 +125,13 @@ function EditRoomSchedule() {
       );
       setRooms(rooms.map((r) => (r.id === id ? response.data : r)));
     } catch (error) {
-      console.error("Error updating status:", error);
+      console.error('Error updating status:', error);
     }
   };
 
   const handleDeleteRoom = (id: string) => {
-    if (window.confirm("Are you sure you want to delete this room?")) {
+    if (window.confirm('Are you sure you want to delete this room?')) {
       deleteRoom(id);
-    }
-  };
-  const getStatusBadgeVariant = (status: Room["status"]) => {
-    switch (status) {
-      case "unavailable":
-        return "success text-white";
-      case "available":
-        return "warning text-dark";
-      case "maintenance":
-        return "danger text-white";
-      default:
-        return "secondary";
     }
   };
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -176,7 +166,10 @@ function EditRoomSchedule() {
     setBase64Image(null);
   };
   return (
-    <div className="container pt-5">
+    <div
+      className="container pt-5"
+      style={{ pointerEvents: addNewRoom || editingRoom ? 'none' : 'auto' }}
+    >
       <div className="shadow-sm">
         <div className="p-0">
           <div className="table-responsive">
@@ -200,14 +193,20 @@ function EditRoomSchedule() {
             {(addNewRoom || editingRoom) && (
               <div
                 className="position-fixed bottom-0 end-0 top-0 start-0 bg-black bg-opacity-75 p-3 rounded-bottom d-flex flex-column justify-content-center align-items-center "
-                style={{ height: "100vh" }}
+                style={{
+                  height: '100vh',
+                  zIndex: 1040,
+                  pointerEvents: 'auto',
+                }}
               >
                 <form
-                  className="d-flex flex-column p-5 bg-light gap-2 z-3"
-                  style={{ width: "50vw", minWidth: "300px" }}
+                  className="d-flex flex-column p-5 bg-light gap-2 rounded"
+                  style={{ width: '50vw', minWidth: '300px', zIndex: 1050 }}
                   onSubmit={handleSubmit}
                 >
-                  <h3 className="mb-3">{editingRoom ? 'Edit Room' : 'Add New Room'}</h3>
+                  <h3 className="mb-3">
+                    {editingRoom ? 'Edit Room' : 'Add New Room'}
+                  </h3>
                   <input
                     type="text"
                     placeholder="Name"
@@ -231,33 +230,45 @@ function EditRoomSchedule() {
                     placeholder="Description"
                     className="form-control"
                     name="room_description"
-                    value={editingRoom ? editingRoom.room_description : newRoom.room_description}
+                    value={
+                      editingRoom
+                        ? editingRoom.room_description
+                        : newRoom.room_description
+                    }
                     onChange={handleInputChange}
                     required
                   />
                   <div className="form-group d-flex align-items-center gap-2">
                     <label htmlFor="capacity">Capacity:</label>
                     <input
-                    type="number"
-                    placeholder="Capacity"
-                    className="form-control"
-                    name="capacity"
-                    value={editingRoom ? editingRoom.capacity : newRoom.capacity}
-                    onChange={handleInputChange}
-                    required
-                  />
+                      type="number"
+                      placeholder="Capacity"
+                      className="form-control"
+                      name="capacity"
+                      value={
+                        editingRoom ? editingRoom.capacity : newRoom.capacity
+                      }
+                      onChange={handleInputChange}
+                      required
+                    />
                   </div>
                   <div className="form-group d-flex align-items-center gap-2">
-                    <label htmlFor="hourly_rate" className="">Cost:</label>
+                    <label htmlFor="hourly_rate" className="">
+                      Cost:
+                    </label>
                     <input
-                    type="number"
-                    placeholder="Hourly Rate"
-                    className="form-control"
-                    name="hourly_rate"
-                    value={editingRoom ? editingRoom.hourly_rate : newRoom.hourly_rate}
-                    onChange={handleInputChange}
-                    required
-                  />
+                      type="number"
+                      placeholder="Hourly Rate"
+                      className="form-control"
+                      name="hourly_rate"
+                      value={
+                        editingRoom
+                          ? editingRoom.hourly_rate
+                          : newRoom.hourly_rate
+                      }
+                      onChange={handleInputChange}
+                      required
+                    />
                   </div>
                   <input
                     type="file"
@@ -269,16 +280,42 @@ function EditRoomSchedule() {
                   {editingRoom && editingRoom.image && (
                     <div>
                       <small className="text-muted">Current image:</small>
-                      <img src={editingRoom.image} alt="Current" style={{ maxWidth: '100px', maxHeight: '100px', marginTop: '5px' }} />
+                      <img
+                        src={editingRoom.image}
+                        alt="Current"
+                        style={{
+                          maxWidth: '100px',
+                          maxHeight: '100px',
+                          marginTop: '5px',
+                        }}
+                      />
                     </div>
                   )}
-                  <button type="submit" className="btn btn-dark">
-                    {editingRoom ? 'Update Room' : 'Add Room'}
+                  <button
+                    type="submit"
+                    className="btn btn-dark"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <span
+                        className="spinner-border spinner-border-sm"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                    ) : editingRoom ? (
+                      'Update Room'
+                    ) : (
+                      'Add Room'
+                    )}
                   </button>
-                  <button type="button" className="btn btn-secondary" onClick={() => {
-                    if (editingRoom) handleCloseEdit();
-                    else setAddNewRoom(false);
-                  }}>
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={() => {
+                      if (editingRoom) handleCloseEdit();
+                      else setAddNewRoom(false);
+                    }}
+                  >
                     Cancel
                   </button>
                 </form>
@@ -294,13 +331,13 @@ function EditRoomSchedule() {
                   <th>Capacity</th>
                   <th>Hourly Rate</th>
                   <th>Status</th>
-                  <th style={{ width: "150px" }}>Actions</th>
+                  <th style={{ width: '150px' }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {loading ? (
                   <tr>
-                    <td colSpan={7}>
+                    <td colSpan={8}>
                       <div className="d-flex justify-content-center py-5">
                         <div className="spinner-border" role="status">
                           <span className="visually-hidden">Loading...</span>
@@ -319,9 +356,9 @@ function EditRoomSchedule() {
                           src={room.image}
                           alt={room.name}
                           style={{
-                            width: "80px",
-                            height: "80px",
-                            objectFit: "cover",
+                            width: '80px',
+                            height: '80px',
+                            objectFit: 'cover',
                           }}
                         />
                       </td>
@@ -338,28 +375,27 @@ function EditRoomSchedule() {
                         <strong>{room.hourly_rate} EGP</strong>
                       </td>
                       <td>
-                        <div className="d-flex align-items-center">
-                          <p
-                            className={`rounded-pill px-2 small text-center fw-semibold bg-${getStatusBadgeVariant(
-                              room.status
-                            )} mb-0`}
+                        <div className="form-check form-switch">
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            role="switch"
+                            id={`flexSwitchCheckChecked-${room.id}`}
+                            checked={room.status === 'available'}
+                            onChange={() =>
+                              toggleRoomStatus(room.id, room.status)
+                            }
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor={`flexSwitchCheckChecked-${room.id}`}
                           >
                             {room.status}
-                          </p>
+                          </label>
                         </div>
                       </td>
                       <td>
                         <div className="btn-group" role="group">
-                          <button
-                            className="btn btn-outline-success"
-                            
-                            onClick={() =>
-                              toggleRoomStatus(room.id, room.status)
-                            }
-                            title="Toggle Status"
-                          >
-                            <FontAwesomeIcon icon={faCheckCircle} />
-                          </button>
                           <button
                             className="btn btn-outline-primary"
                             title="Edit"
@@ -381,7 +417,7 @@ function EditRoomSchedule() {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={7} className="text-center py-5">
+                    <td colSpan={8} className="text-center py-5">
                       <div className="text-muted">
                         <FontAwesomeIcon
                           icon={faTimesCircle}
