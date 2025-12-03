@@ -1,6 +1,6 @@
-import { useState, useMemo } from 'react';
-import BookingCard from '../components/BookingCard';
-
+import { useState, useEffect, useMemo } from "react";
+import BookingCard from "../components/BookingCard";
+import axios from "axios";
 interface Room {
   id: string;
   title: string;
@@ -18,104 +18,115 @@ interface Availability {
   available: boolean;
 }
 
-const roomsData: Room[] = [
-  {
-    id: 'single-seat',
-    title: 'Single Seat',
-    description: 'Dedicated space for individual focus and productivity.',
-    img: '/images/booking/img1.png',
-    capacity: 1,
-    price: 10,
-    currency: 'USD',
-  },
-  {
-    id: 'private-room',
-    title: 'Private Room',
-    description: 'Fully equipped room for team meetings and private sessions.',
-    img: '/images/booking/img2.png',
-    capacity: 4,
-    price: 25,
-    currency: 'USD',
-  },
-  {
-    id: 'conference-hall',
-    title: 'Conference Hall',
-    description: 'Spacious hall for large gatherings and presentations.',
-    img: '/images/booking/img3.jpg',
-    capacity: 20,
-    price: 50,
-    currency: 'USD',
-  },
-];
+// const roomsData: Room[] = [
+//   {
+//     id: 'single-seat',
+//     title: 'Single Seat',
+//     description: 'Dedicated space for individual focus and productivity.',
+//     img: '/images/booking/img1.png',
+//     capacity: 1,
+//     price: 10,
+//     currency: 'USD',
+//   },
+//   {
+//     id: 'private-room',
+//     title: 'Private Room',
+//     description: 'Fully equipped room for team meetings and private sessions.',
+//     img: '/images/booking/img2.png',
+//     capacity: 4,
+//     price: 25,
+//     currency: 'USD',
+//   },
+//   {
+//     id: 'conference-hall',
+//     title: 'Conference Hall',
+//     description: 'Spacious hall for large gatherings and presentations.',
+//     img: '/images/booking/img3.jpg',
+//     capacity: 20,
+//     price: 50,
+//     currency: 'USD',
+//   },
+// ];
 
 // Fake availability data for testing
 const fakeAvailabilityData: Availability[] = [
   // Single Seat availability
-  { roomId: 'single-seat', date: '2025-12-01', hour: 9, available: true },
-  { roomId: 'single-seat', date: '2025-12-01', hour: 10, available: false },
-  { roomId: 'single-seat', date: '2025-12-01', hour: 11, available: true },
-  { roomId: 'single-seat', date: '2025-12-01', hour: 12, available: true },
-  { roomId: 'single-seat', date: '2025-12-01', hour: 13, available: false },
-  { roomId: 'single-seat', date: '2025-12-01', hour: 14, available: true },
-  { roomId: 'single-seat', date: '2025-12-01', hour: 15, available: true },
-  { roomId: 'single-seat', date: '2025-12-01', hour: 16, available: false },
-  { roomId: 'single-seat', date: '2025-12-01', hour: 17, available: true },
+  { roomId: "single-seat", date: "2025-12-01", hour: 9, available: true },
+  { roomId: "single-seat", date: "2025-12-01", hour: 10, available: false },
+  { roomId: "single-seat", date: "2025-12-01", hour: 11, available: true },
+  { roomId: "single-seat", date: "2025-12-01", hour: 12, available: true },
+  { roomId: "single-seat", date: "2025-12-01", hour: 13, available: false },
+  { roomId: "single-seat", date: "2025-12-01", hour: 14, available: true },
+  { roomId: "single-seat", date: "2025-12-01", hour: 15, available: true },
+  { roomId: "single-seat", date: "2025-12-01", hour: 16, available: false },
+  { roomId: "single-seat", date: "2025-12-01", hour: 17, available: true },
 
-  { roomId: 'single-seat', date: '2025-12-02', hour: 9, available: false },
-  { roomId: 'single-seat', date: '2025-12-02', hour: 10, available: true },
-  { roomId: 'single-seat', date: '2025-12-02', hour: 11, available: true },
-  { roomId: 'single-seat', date: '2025-12-02', hour: 12, available: true },
-  { roomId: 'single-seat', date: '2025-12-02', hour: 13, available: true },
-  { roomId: 'single-seat', date: '2025-12-02', hour: 14, available: false },
-  { roomId: 'single-seat', date: '2025-12-02', hour: 15, available: true },
-  { roomId: 'single-seat', date: '2025-12-02', hour: 16, available: true },
-  { roomId: 'single-seat', date: '2025-12-02', hour: 17, available: true },
+  { roomId: "single-seat", date: "2025-12-02", hour: 9, available: false },
+  { roomId: "single-seat", date: "2025-12-02", hour: 10, available: true },
+  { roomId: "single-seat", date: "2025-12-02", hour: 11, available: true },
+  { roomId: "single-seat", date: "2025-12-02", hour: 12, available: true },
+  { roomId: "single-seat", date: "2025-12-02", hour: 13, available: true },
+  { roomId: "single-seat", date: "2025-12-02", hour: 14, available: false },
+  { roomId: "single-seat", date: "2025-12-02", hour: 15, available: true },
+  { roomId: "single-seat", date: "2025-12-02", hour: 16, available: true },
+  { roomId: "single-seat", date: "2025-12-02", hour: 17, available: true },
 
   // Private Room availability
-  { roomId: 'private-room', date: '2025-12-01', hour: 9, available: true },
-  { roomId: 'private-room', date: '2025-12-01', hour: 10, available: true },
-  { roomId: 'private-room', date: '2025-12-01', hour: 11, available: false },
-  { roomId: 'private-room', date: '2025-12-01', hour: 12, available: false },
-  { roomId: 'private-room', date: '2025-12-01', hour: 13, available: true },
-  { roomId: 'private-room', date: '2025-12-01', hour: 14, available: true },
-  { roomId: 'private-room', date: '2025-12-01', hour: 15, available: false },
-  { roomId: 'private-room', date: '2025-12-01', hour: 16, available: true },
-  { roomId: 'private-room', date: '2025-12-01', hour: 17, available: true },
+  { roomId: "private-room", date: "2025-12-01", hour: 9, available: true },
+  { roomId: "private-room", date: "2025-12-01", hour: 10, available: true },
+  { roomId: "private-room", date: "2025-12-01", hour: 11, available: false },
+  { roomId: "private-room", date: "2025-12-01", hour: 12, available: false },
+  { roomId: "private-room", date: "2025-12-01", hour: 13, available: true },
+  { roomId: "private-room", date: "2025-12-01", hour: 14, available: true },
+  { roomId: "private-room", date: "2025-12-01", hour: 15, available: false },
+  { roomId: "private-room", date: "2025-12-01", hour: 16, available: true },
+  { roomId: "private-room", date: "2025-12-01", hour: 17, available: true },
 
-  { roomId: 'private-room', date: '2025-12-02', hour: 9, available: true },
-  { roomId: 'private-room', date: '2025-12-02', hour: 10, available: false },
-  { roomId: 'private-room', date: '2025-12-02', hour: 11, available: true },
-  { roomId: 'private-room', date: '2025-12-02', hour: 12, available: true },
-  { roomId: 'private-room', date: '2025-12-02', hour: 13, available: false },
-  { roomId: 'private-room', date: '2025-12-02', hour: 14, available: true },
-  { roomId: 'private-room', date: '2025-12-02', hour: 15, available: true },
-  { roomId: 'private-room', date: '2025-12-02', hour: 16, available: false },
-  { roomId: 'private-room', date: '2025-12-02', hour: 17, available: true },
+  { roomId: "private-room", date: "2025-12-02", hour: 9, available: true },
+  { roomId: "private-room", date: "2025-12-02", hour: 10, available: false },
+  { roomId: "private-room", date: "2025-12-02", hour: 11, available: true },
+  { roomId: "private-room", date: "2025-12-02", hour: 12, available: true },
+  { roomId: "private-room", date: "2025-12-02", hour: 13, available: false },
+  { roomId: "private-room", date: "2025-12-02", hour: 14, available: true },
+  { roomId: "private-room", date: "2025-12-02", hour: 15, available: true },
+  { roomId: "private-room", date: "2025-12-02", hour: 16, available: false },
+  { roomId: "private-room", date: "2025-12-02", hour: 17, available: true },
 
   // Conference Hall availability
-  { roomId: 'conference-hall', date: '2025-12-01', hour: 9, available: false },
-  { roomId: 'conference-hall', date: '2025-12-01', hour: 10, available: true },
-  { roomId: 'conference-hall', date: '2025-12-01', hour: 11, available: true },
-  { roomId: 'conference-hall', date: '2025-12-01', hour: 12, available: true },
-  { roomId: 'conference-hall', date: '2025-12-01', hour: 13, available: false },
-  { roomId: 'conference-hall', date: '2025-12-01', hour: 14, available: false },
-  { roomId: 'conference-hall', date: '2025-12-01', hour: 15, available: true },
-  { roomId: 'conference-hall', date: '2025-12-01', hour: 16, available: true },
-  { roomId: 'conference-hall', date: '2025-12-01', hour: 17, available: true },
+  { roomId: "conference-hall", date: "2025-12-01", hour: 9, available: false },
+  { roomId: "conference-hall", date: "2025-12-01", hour: 10, available: true },
+  { roomId: "conference-hall", date: "2025-12-01", hour: 11, available: true },
+  { roomId: "conference-hall", date: "2025-12-01", hour: 12, available: true },
+  { roomId: "conference-hall", date: "2025-12-01", hour: 13, available: false },
+  { roomId: "conference-hall", date: "2025-12-01", hour: 14, available: false },
+  { roomId: "conference-hall", date: "2025-12-01", hour: 15, available: true },
+  { roomId: "conference-hall", date: "2025-12-01", hour: 16, available: true },
+  { roomId: "conference-hall", date: "2025-12-01", hour: 17, available: true },
 
-  { roomId: 'conference-hall', date: '2025-12-02', hour: 9, available: true },
-  { roomId: 'conference-hall', date: '2025-12-02', hour: 10, available: true },
-  { roomId: 'conference-hall', date: '2025-12-02', hour: 11, available: false },
-  { roomId: 'conference-hall', date: '2025-12-02', hour: 12, available: true },
-  { roomId: 'conference-hall', date: '2025-12-02', hour: 13, available: true },
-  { roomId: 'conference-hall', date: '2025-12-02', hour: 14, available: true },
-  { roomId: 'conference-hall', date: '2025-12-02', hour: 15, available: false },
-  { roomId: 'conference-hall', date: '2025-12-02', hour: 16, available: true },
-  { roomId: 'conference-hall', date: '2025-12-02', hour: 17, available: true },
+  { roomId: "conference-hall", date: "2025-12-02", hour: 9, available: true },
+  { roomId: "conference-hall", date: "2025-12-02", hour: 10, available: true },
+  { roomId: "conference-hall", date: "2025-12-02", hour: 11, available: false },
+  { roomId: "conference-hall", date: "2025-12-02", hour: 12, available: true },
+  { roomId: "conference-hall", date: "2025-12-02", hour: 13, available: true },
+  { roomId: "conference-hall", date: "2025-12-02", hour: 14, available: true },
+  { roomId: "conference-hall", date: "2025-12-02", hour: 15, available: false },
+  { roomId: "conference-hall", date: "2025-12-02", hour: 16, available: true },
+  { roomId: "conference-hall", date: "2025-12-02", hour: 17, available: true },
 ];
 
 function Booking() {
-  const [selectedDate, setSelectedDate] = useState<string>('2025-12-01');
+  const [roomsData, setRoomsData] = useState<Room[]>([]);
+  useEffect(() => {
+    axios
+      .get("https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/room")
+      .then((response) => {
+        setRoomsData(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching rooms data:", error);
+      });
+  }, []);
+  const [selectedDate, setSelectedDate] = useState<string>("2025-12-01");
   const [selectedHour, setSelectedHour] = useState<number>(9);
 
   // Get available hours for selected date
@@ -138,7 +149,7 @@ function Booking() {
   }, [selectedDate, selectedHour]);
 
   // Get the minimum date (today)
-  const minDate = new Date().toISOString().split('T')[0];
+  const minDate = new Date().toISOString().split("T")[0];
 
   return (
     <div className="container pt-5">
@@ -174,10 +185,10 @@ function Booking() {
               <option key={hour} value={hour}>
                 {hour}:00 - {hour + 1}:00 (
                 {hour < 12
-                  ? 'AM'
+                  ? "AM"
                   : hour === 12
-                  ? 'PM'
-                  : hour - 12 + (hour === 23 ? '' : ' PM')}
+                  ? "PM"
+                  : hour - 12 + (hour === 23 ? "" : " PM")}
                 )
               </option>
             ))}
@@ -187,13 +198,13 @@ function Booking() {
 
       {/* Availability Info */}
       <div className="alert alert-info mb-4">
-        <strong>Showing availability for:</strong>{' '}
-        {new Date(selectedDate).toLocaleDateString('en-US', {
-          weekday: 'long',
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        })}{' '}
+        <strong>Showing availability for:</strong>{" "}
+        {new Date(selectedDate).toLocaleDateString("en-US", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })}{" "}
         at {selectedHour}:00 - {selectedHour + 1}:00
       </div>
 
