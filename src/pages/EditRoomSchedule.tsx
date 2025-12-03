@@ -386,12 +386,6 @@ function EditRoomSchedule() {
                               toggleRoomStatus(room.id, room.status)
                             }
                           />
-                          <label
-                            className="form-check-label"
-                            htmlFor={`flexSwitchCheckChecked-${room.id}`}
-                          >
-                            {room.status}
-                          </label>
                         </div>
                       </td>
                       <td>

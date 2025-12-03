@@ -43,14 +43,24 @@ function Login() {
         localStorage.setItem('authToken', data.authToken);
         localStorage.setItem('role', data.role);
 
-        setIsLoading(false);
+        fetch('https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/auth/me', {
+          headers: {
+            Authorization: `Bearer ${data.authToken}`,
+          },
+        })
+          .then((response) => response.json())
+          .then((user) => {
+            localStorage.setItem('user_id', user.id);
+            localStorage.setItem('user_name', user.name);
 
-        // 🔥 Redirect based on role
-        if (data.role === 'admin') {
-          navigate('/dashboard');
-        } else {
-          navigate('/');
-        }
+            setIsLoading(false);
+
+            if (data.role === 'admin') {
+              navigate('/dashboard');
+            } else {
+              navigate('/');
+            }
+          });
       })
       .catch((error) => {
         setError(error.message);

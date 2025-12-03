@@ -4,11 +4,12 @@ import '../styles.css';
 interface PayPalPaymentModalProps {
   isOpen: boolean;
   onClose: () => void;
-  title: string;
+  name: string;
   price: number;
   currency: string;
   capacity: number;
-  onPaymentSuccess?: (orderDetails: Record<string, unknown>) => void;
+  duration: number;
+  onPaymentSuccess?: () => void;
 }
 
 interface PayPal {
@@ -26,10 +27,11 @@ declare global {
 function PayPalPaymentModal({
   isOpen,
   onClose,
-  title,
+  name,
   price,
   currency,
   capacity,
+  duration,
   onPaymentSuccess,
 }: PayPalPaymentModalProps) {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -86,9 +88,9 @@ function PayPalPaymentModal({
               {
                 amount: {
                   currency_code: currency,
-                  value: price.toFixed(2),
+                  value: (price * duration).toFixed(2),
                 },
-                description: `${title} - Capacity: ${capacity} people`,
+                description: `${name} - Capacity: ${capacity} people`,
               },
             ],
           });
@@ -109,7 +111,7 @@ function PayPalPaymentModal({
 
             // Call success callback if provided
             if (onPaymentSuccess) {
-              onPaymentSuccess(orderDetails);
+              onPaymentSuccess();
             }
 
             onClose();
@@ -142,8 +144,9 @@ function PayPalPaymentModal({
     paypalLoaded,
     currency,
     price,
-    title,
+    name,
     capacity,
+    duration,
     onClose,
     onPaymentSuccess,
   ]);
@@ -188,14 +191,16 @@ function PayPalPaymentModal({
 
         {/* Booking Details */}
         <div className="border-bottom pb-3 mb-4">
-          <h5 className="fw-semibold mb-3">{title}</h5>
+          <h5 className="fw-semibold mb-3">{name}</h5>
           <div className="d-flex justify-content-between mb-2">
             <span className="text-muted">Capacity:</span>
             <span className="fw-semibold">{capacity} people</span>
           </div>
           <div className="d-flex justify-content-between mb-2">
             <span className="text-muted">Duration:</span>
-            <span className="fw-semibold">1 day</span>
+            <span className="fw-semibold">
+              {duration} hour{duration > 1 ? 's' : ''}
+            </span>
           </div>
           <div className="d-flex justify-content-between border-top pt-3 mt-3">
             <span className="fw-bold">Total Price:</span>
@@ -203,7 +208,7 @@ function PayPalPaymentModal({
               className="fw-bold text-success"
               style={{ fontSize: '1.5rem' }}
             >
-              {currency} ${price.toFixed(2)}
+              {currency} ${(price * duration).toFixed(2)}
             </span>
           </div>
         </div>

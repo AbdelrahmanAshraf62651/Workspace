@@ -2,39 +2,45 @@ import { useState } from 'react';
 import PayPalPaymentModal from './PayPalPaymentModal';
 
 interface BookingCardProps {
-  title: string;
+  name: string;
   description: string;
   img: string;
   capacity: number;
   price: number;
   currency: string;
   isAvailable?: boolean;
-  selectedDate?: string;
-  selectedHour?: number;
+  duration: number;
+  onBook: () => void;
 }
 
 function BookingCard({
   img,
-  title,
+  name,
   description,
   capacity,
   price,
   currency,
   isAvailable = true,
-  selectedDate = '',
-  selectedHour = 0,
+  duration,
+  onBook,
 }: BookingCardProps) {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   const handleBookNow = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (isAvailable) {
+      onBook();
       setShowPaymentModal(true);
     }
   };
 
   const handleCloseModal = () => {
     setShowPaymentModal(false);
+  };
+
+  const handlePaymentSuccess = () => {
+    console.log('Payment successful, booking was already made.');
+    handleCloseModal();
   };
 
   return (
@@ -46,7 +52,7 @@ function BookingCard({
           }`}
         >
           <div className="ps-3 pe-3 position-relative">
-            <img src={img} className="card-img-top" alt={title} />
+            <img src={img} className="card-img-top" alt={name} />
             {/* Availability Badge */}
             <div
               className={`position-absolute top-0 end-0 m-2 px-3 py-1 rounded-pill text-white fw-semibold ${
@@ -54,27 +60,21 @@ function BookingCard({
               }`}
               style={{ fontSize: '0.85rem' }}
             >
-              {isAvailable ? '✓ Available' : '✗ Booked'}
+              {isAvailable ? 'Available' : 'Booked'}
             </div>
           </div>
           <div className="card-body pb-1 d-flex flex-column">
-            <h4 className="item-name fw-bold">{title}</h4>
+            <h4 className="item-name fw-bold">{name}</h4>
             <p className="card-text text-black-50 fw-semibold">{description}</p>
-            <div>
+            <div className="d-flex justify-content-between align-items-center mb-3">
               <p className="btn main-btn rounded-pill mt-auto">
                 Capacity: {capacity} people
               </p>
               <p className="btn main-btn rounded-pill mt-auto">
-                Price: {price} {currency}
+                {price * duration} {currency}EGP / {duration} hour
+                {duration > 1 ? 's' : ''}
               </p>
             </div>
-            {/* Display selected time if provided */}
-            {selectedDate && selectedHour !== undefined && (
-              <p className="text-muted small mb-2">
-                {new Date(selectedDate).toLocaleDateString()} | {selectedHour}
-                :00
-              </p>
-            )}
             <button
               onClick={handleBookNow}
               className={`btn mb-3 mt-auto ${
@@ -91,10 +91,12 @@ function BookingCard({
       <PayPalPaymentModal
         isOpen={showPaymentModal}
         onClose={handleCloseModal}
-        title={title}
+        name={name}
         price={price}
         currency={currency}
         capacity={capacity}
+        duration={duration}
+        onPaymentSuccess={handlePaymentSuccess}
       />
     </>
   );

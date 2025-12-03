@@ -1,5 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashCan, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import {
+  faTrashCan,
+  faPenToSquare,
+  faTimesCircle,
+} from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -363,77 +367,92 @@ function CafeManagement() {
               </div>
             ) : (
               <div style={{ overflowX: 'auto' }}>
-                <table
-                  className="table table-bordered table-striped"
-                  style={{ minWidth: '900px' }}
-                >
-                  <thead className="table-light">
-                    <tr className="text-center">
+                <table className="table table-hover mb-0">
+                  <thead className="table-dark">
+                    <tr>
                       <th>Name</th>
                       <th>Image</th>
                       <th>Category</th>
                       <th>Description</th>
                       <th>Price</th>
                       <th>Availability</th>
-                      <th>Actions</th>
+                      <th style={{ width: '150px' }}>Actions</th>
                     </tr>
                   </thead>
-
                   <tbody>
-                    {filteredItems.map((item, index) => (
-                      <tr
-                        key={index}
-                        id={`item-${item.id}`}
-                        className="text-center align-middle"
-                      >
-                        <td>{item.name}</td>
-                        <td>
-                          <img
-                            src={item.image}
-                            alt={item.name}
-                            style={{
-                              width: '80px',
-                              height: '80px',
-                              objectFit: 'cover',
-                            }}
-                          />
-                        </td>
-                        <td>{item.category}</td>
-                        <td className="text-wrap">{item.description}</td>
-                        <td>{item.price}</td>
-
-                        <td>
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            role="switch"
-                            id={`switchCheck-${index}`}
-                            checked={item.in_stock}
-                            onChange={() => handleStockChange(index)}
-                          />
-                        </td>
-
-                        <td>
-                          <button
-                            className="btn"
-                            id="edit"
-                            onClick={() => handleEdit(index)}
-                          >
-                            <FontAwesomeIcon icon={faPenToSquare} />
-                          </button>
-                          <button
-                            className="btn"
-                            id="delete"
-                            onClick={() => handleDelete(index)}
-                          >
-                            <FontAwesomeIcon
-                              className="text-danger"
-                              icon={faTrashCan}
+                    {filteredItems.length > 0 ? (
+                      filteredItems.map((item, index) => (
+                        <tr key={item.id} className="align-middle">
+                          <td>
+                            <strong>{item.name}</strong>
+                          </td>
+                          <td>
+                            <img
+                              src={item.image}
+                              alt={item.name}
+                              style={{
+                                width: '80px',
+                                height: '80px',
+                                objectFit: 'cover',
+                              }}
                             />
-                          </button>
+                          </td>
+                          <td>
+                            <strong>{item.category}</strong>
+                          </td>
+                          <td>
+                            <strong>{item.description}</strong>
+                          </td>
+                          <td>
+                            <strong>{item.price} EGP</strong>
+                          </td>
+                          <td>
+                            <div className="form-check form-switch">
+                              <input
+                                className="form-check-input"
+                                type="checkbox"
+                                role="switch"
+                                id={`flexSwitchCheckChecked-${item.id}`}
+                                checked={item.in_stock}
+                                onChange={() => handleStockChange(index)}
+                              />
+                            </div>
+                          </td>
+                          <td>
+                            <div className="btn-group" role="group">
+                              <button
+                                className="btn btn-outline-primary"
+                                title="Edit"
+                                onClick={() => handleEdit(index)}
+                                type="button"
+                              >
+                                <FontAwesomeIcon icon={faPenToSquare} />
+                              </button>
+                              <button
+                                className="btn btn-outline-danger"
+                                onClick={() => handleDelete(index)}
+                                title="Delete"
+                              >
+                                <FontAwesomeIcon icon={faTrashCan} />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={7} className="text-center py-5">
+                          <div className="text-muted">
+                            <FontAwesomeIcon
+                              icon={faTimesCircle}
+                              className="me-2"
+                              size="3x"
+                            />
+                            <div className="mt-3">No Cafe Items Available</div>
+                          </div>
                         </td>
                       </tr>
-                    ))}
+                    )}
                   </tbody>
                 </table>
               </div>

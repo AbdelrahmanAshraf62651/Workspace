@@ -1,169 +1,154 @@
-import { useState, useEffect, useMemo } from "react";
-import BookingCard from "../components/BookingCard";
-import axios from "axios";
+import { useState, useEffect, useMemo } from 'react';
+import BookingCard from '../components/BookingCard';
+import axios from 'axios';
+
 interface Room {
   id: string;
   title: string;
+  name: string;
   description: string;
   img: string;
+  room_description: string;
   capacity: number;
-  price: number;
+  hourly_rate: number;
   currency: string;
+  image: string;
+  isAvailableNow?: boolean;
+  price?: number;
 }
 
-interface Availability {
-  roomId: string;
-  date: string;
-  hour: number;
-  available: boolean;
+interface Booking {
+  id: string;
+  room_name: string;
+  start_time: string;
+  end_time: string;
+  status: 'cancelled' | 'pending' | 'confirmed';
 }
-
-// const roomsData: Room[] = [
-//   {
-//     id: 'single-seat',
-//     title: 'Single Seat',
-//     description: 'Dedicated space for individual focus and productivity.',
-//     img: '/images/booking/img1.png',
-//     capacity: 1,
-//     price: 10,
-//     currency: 'USD',
-//   },
-//   {
-//     id: 'private-room',
-//     title: 'Private Room',
-//     description: 'Fully equipped room for team meetings and private sessions.',
-//     img: '/images/booking/img2.png',
-//     capacity: 4,
-//     price: 25,
-//     currency: 'USD',
-//   },
-//   {
-//     id: 'conference-hall',
-//     title: 'Conference Hall',
-//     description: 'Spacious hall for large gatherings and presentations.',
-//     img: '/images/booking/img3.jpg',
-//     capacity: 20,
-//     price: 50,
-//     currency: 'USD',
-//   },
-// ];
-
-// Fake availability data for testing
-const fakeAvailabilityData: Availability[] = [
-  // Single Seat availability
-  { roomId: "single-seat", date: "2025-12-01", hour: 9, available: true },
-  { roomId: "single-seat", date: "2025-12-01", hour: 10, available: false },
-  { roomId: "single-seat", date: "2025-12-01", hour: 11, available: true },
-  { roomId: "single-seat", date: "2025-12-01", hour: 12, available: true },
-  { roomId: "single-seat", date: "2025-12-01", hour: 13, available: false },
-  { roomId: "single-seat", date: "2025-12-01", hour: 14, available: true },
-  { roomId: "single-seat", date: "2025-12-01", hour: 15, available: true },
-  { roomId: "single-seat", date: "2025-12-01", hour: 16, available: false },
-  { roomId: "single-seat", date: "2025-12-01", hour: 17, available: true },
-
-  { roomId: "single-seat", date: "2025-12-02", hour: 9, available: false },
-  { roomId: "single-seat", date: "2025-12-02", hour: 10, available: true },
-  { roomId: "single-seat", date: "2025-12-02", hour: 11, available: true },
-  { roomId: "single-seat", date: "2025-12-02", hour: 12, available: true },
-  { roomId: "single-seat", date: "2025-12-02", hour: 13, available: true },
-  { roomId: "single-seat", date: "2025-12-02", hour: 14, available: false },
-  { roomId: "single-seat", date: "2025-12-02", hour: 15, available: true },
-  { roomId: "single-seat", date: "2025-12-02", hour: 16, available: true },
-  { roomId: "single-seat", date: "2025-12-02", hour: 17, available: true },
-
-  // Private Room availability
-  { roomId: "private-room", date: "2025-12-01", hour: 9, available: true },
-  { roomId: "private-room", date: "2025-12-01", hour: 10, available: true },
-  { roomId: "private-room", date: "2025-12-01", hour: 11, available: false },
-  { roomId: "private-room", date: "2025-12-01", hour: 12, available: false },
-  { roomId: "private-room", date: "2025-12-01", hour: 13, available: true },
-  { roomId: "private-room", date: "2025-12-01", hour: 14, available: true },
-  { roomId: "private-room", date: "2025-12-01", hour: 15, available: false },
-  { roomId: "private-room", date: "2025-12-01", hour: 16, available: true },
-  { roomId: "private-room", date: "2025-12-01", hour: 17, available: true },
-
-  { roomId: "private-room", date: "2025-12-02", hour: 9, available: true },
-  { roomId: "private-room", date: "2025-12-02", hour: 10, available: false },
-  { roomId: "private-room", date: "2025-12-02", hour: 11, available: true },
-  { roomId: "private-room", date: "2025-12-02", hour: 12, available: true },
-  { roomId: "private-room", date: "2025-12-02", hour: 13, available: false },
-  { roomId: "private-room", date: "2025-12-02", hour: 14, available: true },
-  { roomId: "private-room", date: "2025-12-02", hour: 15, available: true },
-  { roomId: "private-room", date: "2025-12-02", hour: 16, available: false },
-  { roomId: "private-room", date: "2025-12-02", hour: 17, available: true },
-
-  // Conference Hall availability
-  { roomId: "conference-hall", date: "2025-12-01", hour: 9, available: false },
-  { roomId: "conference-hall", date: "2025-12-01", hour: 10, available: true },
-  { roomId: "conference-hall", date: "2025-12-01", hour: 11, available: true },
-  { roomId: "conference-hall", date: "2025-12-01", hour: 12, available: true },
-  { roomId: "conference-hall", date: "2025-12-01", hour: 13, available: false },
-  { roomId: "conference-hall", date: "2025-12-01", hour: 14, available: false },
-  { roomId: "conference-hall", date: "2025-12-01", hour: 15, available: true },
-  { roomId: "conference-hall", date: "2025-12-01", hour: 16, available: true },
-  { roomId: "conference-hall", date: "2025-12-01", hour: 17, available: true },
-
-  { roomId: "conference-hall", date: "2025-12-02", hour: 9, available: true },
-  { roomId: "conference-hall", date: "2025-12-02", hour: 10, available: true },
-  { roomId: "conference-hall", date: "2025-12-02", hour: 11, available: false },
-  { roomId: "conference-hall", date: "2025-12-02", hour: 12, available: true },
-  { roomId: "conference-hall", date: "2025-12-02", hour: 13, available: true },
-  { roomId: "conference-hall", date: "2025-12-02", hour: 14, available: true },
-  { roomId: "conference-hall", date: "2025-12-02", hour: 15, available: false },
-  { roomId: "conference-hall", date: "2025-12-02", hour: 16, available: true },
-  { roomId: "conference-hall", date: "2025-12-02", hour: 17, available: true },
-];
 
 function Booking() {
   const [roomsData, setRoomsData] = useState<Room[]>([]);
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [userId, setUserId] = useState<number | null>(null);
+
+  const fetchBookings = () => {
+    axios
+      .get('https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/booking')
+      .then((response) => setBookings(response.data))
+      .catch((error) => console.error('Error fetching bookings data:', error));
+  };
+
   useEffect(() => {
     axios
-      .get("https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/room")
+      .get('https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/room')
       .then((response) => {
-        setRoomsData(response.data);
+        const transformedData = response.data.map((room: Room) => ({
+          ...room,
+          img: room.image,
+          price: room.hourly_rate,
+        }));
+        setRoomsData(transformedData);
       })
-      .catch((error) => {
-        console.error("Error fetching rooms data:", error);
-      });
+      .catch((error) => console.error('Error fetching rooms data:', error));
+
+    fetchBookings();
+
+    const storedUserId = localStorage.getItem('user_id');
+    if (storedUserId) {
+      setUserId(Number(storedUserId));
+    }
   }, []);
-  const [selectedDate, setSelectedDate] = useState<string>("2025-12-01");
+
+  const [selectedDate, setSelectedDate] = useState<string>(
+    new Date().toISOString().split('T')[0]
+  );
   const [selectedHour, setSelectedHour] = useState<number>(9);
+  const [duration, setDuration] = useState<number>(1);
 
-  // Get available hours for selected date
+  const formatHourString = (h: number) => {
+    const hour = h % 24;
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    const displayHour = hour % 12 || 12;
+    return `${displayHour}:00 ${ampm}`;
+  };
+
   const availableHours = useMemo(() => {
-    return Array.from({ length: 9 }, (_, i) => 9 + i); // 9 AM to 5 PM
+    return Array.from({ length: 13 }, (_, i) => 9 + i); // 9 AM to 9 PM
   }, []);
 
-  // Get filtered rooms based on availability
   const filteredRooms = useMemo(() => {
     return roomsData.map((room) => {
-      const isAvailable = fakeAvailabilityData.some(
-        (slot) =>
-          slot.roomId === room.id &&
-          slot.date === selectedDate &&
-          slot.hour === selectedHour &&
-          slot.available
+      const [year, month, day] = selectedDate.split('-').map(Number);
+
+      const desiredStartTime = new Date(year, month - 1, day, selectedHour);
+      const desiredEndTime = new Date(
+        year,
+        month - 1,
+        day,
+        selectedHour + duration
       );
+
+      const isAvailable = !bookings.some((booking) => {
+        if (booking.room_name !== room.name || booking.status === 'cancelled') {
+          return false;
+        }
+
+        const bookingStart = new Date(Number(booking.start_time));
+        const bookingEnd = new Date(Number(booking.end_time));
+
+        return desiredStartTime < bookingEnd && desiredEndTime > bookingStart;
+      });
+
       return { ...room, isAvailableNow: isAvailable };
     });
-  }, [selectedDate, selectedHour]);
+  }, [roomsData, bookings, selectedDate, selectedHour, duration]);
 
-  // Get the minimum date (today)
-  const minDate = new Date().toISOString().split("T")[0];
+  const handleBooking = async (roomName: string, cost: number) => {
+    if (!userId) {
+      alert('You must be logged in to book a room.');
+      return;
+    }
+
+    const [year, month, day] = selectedDate.split('-').map(Number);
+    const startTime = new Date(year, month - 1, day, selectedHour);
+    const endTime = new Date(year, month - 1, day, selectedHour + duration);
+    const bookingData = {
+      room_name: roomName,
+      start_time: startTime.getTime().toString(),
+      end_time: endTime.getTime().toString(),
+      status: 'pending',
+      user_id: userId,
+      cost: cost,
+    };
+
+    axios
+      .post(
+        'https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/booking',
+        bookingData
+      )
+      .then((response) => {
+        console.log('Booking request sent:', response.data);
+        fetchBookings();
+      })
+      .catch((error) => {
+        console.error('Error booking room:', error);
+        alert('Booking failed. Please try again.');
+      });
+  };
+
+  const minDate = new Date().toISOString().split('T')[0];
 
   return (
     <div className="container pt-5">
       <h1 className="fw-bolder mb-4">Book Your Workspace</h1>
+      <p className="text-muted mb-4">
+        Select your desired date and time to see available workspaces.
+      </p>
 
-      {/* Date and Time Selectors */}
       <div className="row mb-5 g-3">
-        <div className="col-md-6">
-          <label htmlFor="dateSelector" className="form-label fw-semibold">
-            Select Date
-          </label>
+        <div className="col-md-4">
+          <label className="form-label fw-semibold">Select Date</label>
           <input
             type="date"
-            id="dateSelector"
             className="form-control form-control-lg"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
@@ -171,52 +156,58 @@ function Booking() {
           />
         </div>
 
-        <div className="col-md-6">
-          <label htmlFor="timeSelector" className="form-label fw-semibold">
-            Select Time
-          </label>
+        <div className="col-md-4">
+          <label className="form-label fw-semibold">Start Time</label>
           <select
-            id="timeSelector"
             className="form-select form-select-lg"
             value={selectedHour}
             onChange={(e) => setSelectedHour(Number(e.target.value))}
           >
             {availableHours.map((hour) => (
               <option key={hour} value={hour}>
-                {hour}:00 - {hour + 1}:00 (
-                {hour < 12
-                  ? "AM"
-                  : hour === 12
-                  ? "PM"
-                  : hour - 12 + (hour === 23 ? "" : " PM")}
-                )
+                {formatHourString(hour)}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="col-md-4">
+          <label className="form-label fw-semibold">Duration</label>
+          <select
+            className="form-select form-select-lg"
+            value={duration}
+            onChange={(e) => setDuration(Number(e.target.value))}
+          >
+            {[1, 2, 3, 4].map((h) => (
+              <option key={h} value={h}>
+                {h} hour{h > 1 ? 's' : ''}
               </option>
             ))}
           </select>
         </div>
       </div>
 
-      {/* Availability Info */}
-      <div className="alert alert-info mb-4">
-        <strong>Showing availability for:</strong>{" "}
-        {new Date(selectedDate).toLocaleDateString("en-US", {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })}{" "}
-        at {selectedHour}:00 - {selectedHour + 1}:00
+      <div className="alert alert-dark mb-4">
+        <strong>Showing availability for:</strong>{' '}
+        {new Date(selectedDate).toLocaleDateString('en-US', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })}{' '}
+        at {selectedHour}:00 - {selectedHour + duration}:00
       </div>
 
-      {/* Rooms Grid */}
       <div className="row g-4">
         {filteredRooms.map((item) => (
           <BookingCard
             {...item}
             key={item.id}
             isAvailable={item.isAvailableNow}
-            selectedDate={selectedDate}
-            selectedHour={selectedHour}
+            duration={duration}
+            onBook={() =>
+              handleBooking(item.name, (item.price || 0) * duration)
+            }
           />
         ))}
       </div>
