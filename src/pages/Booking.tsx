@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import BookingCard from '../components/BookingCard';
 import axios from 'axios';
+import { Spinner } from 'react-bootstrap';
 
 interface Room {
   id: string;
@@ -30,6 +31,7 @@ function Booking() {
   const [roomsData, setRoomsData] = useState<Room[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [userId, setUserId] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const fetchBookings = () => {
     axios
@@ -39,19 +41,26 @@ function Booking() {
   };
 
   useEffect(() => {
-    axios
-      .get('https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/room')
-      .then((response) => {
-        const transformedData = response.data.map((room: Room) => ({
+    setIsLoading(true);
+    const fetchRooms = axios.get(
+      'https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/room'
+    );
+    const fetchBookings = axios.get(
+      'https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/booking'
+    );
+
+    Promise.all([fetchRooms, fetchBookings])
+      .then(([roomsResponse, bookingsResponse]) => {
+        const transformedData = roomsResponse.data.map((room: Room) => ({
           ...room,
           img: room.image,
           price: room.hourly_rate,
         }));
         setRoomsData(transformedData);
+        setBookings(bookingsResponse.data);
       })
-      .catch((error) => console.error('Error fetching rooms data:', error));
-
-    fetchBookings();
+      .catch((error) => console.error('Error fetching data:', error))
+      .finally(() => setIsLoading(false));
 
     const storedUserId = localStorage.getItem('user_id');
     if (storedUserId) {
@@ -141,7 +150,6 @@ function Booking() {
   };
 
   const minDate = new Date().toISOString().split('T')[0];
-
   return (
     <div className="container pt-5">
       <h1 className="fw-bolder mb-4">Book Your Workspace</h1>
@@ -202,7 +210,13 @@ function Booking() {
         })}{' '}
         at {selectedHour}:00 - {selectedHour + duration}:00
       </div>
-
+      {isLoading && (
+        <div className="text-center my-5">
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        </div>
+      )}
       <div className="row g-4">
         {filteredRooms.map((item) => (
           <BookingCard
