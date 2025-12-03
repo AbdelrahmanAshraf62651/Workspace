@@ -39,14 +39,17 @@ interface AboutInfo {
   contact_email: string;
   location_link: string;
   opening_hours: {
-    monday: { open: string; close: string , isOpen: boolean };
-    tuesday: { open: string; close: string , isOpen: boolean };
-    wednesday: { open: string; close: string , isOpen: boolean };
-    thursday: { open: string; close: string , isOpen: boolean };
-    friday: { open: string; close: string , isOpen: boolean };
-    saturday: { open: string; close: string , isOpen: boolean };
-    sunday: { open: string; close: string , isOpen: boolean };
-  }
+    monday: { open: string; close: string, isOpen: boolean };
+    tuesday: { open: string; close: string, isOpen: boolean };
+    wednesday: { open: string; close: string, isOpen: boolean };
+    thursday: { open: string; close: string, isOpen: boolean };
+    friday: { open: string; close: string, isOpen: boolean };
+    saturday: { open: string; close: string, isOpen: boolean };
+    sunday: { open: string; close: string, isOpen: boolean };
+  };
+  facebook: string;
+  twitter: string;
+  linkedin: string;
   // Add other fields as necessary
 }
 
@@ -118,18 +121,24 @@ function About() {
               <div>
                 <hr />
                 <div className="d-flex gap-3">
-                  <a href="#" target="_blank" aria-label="Facebook">
-                    <FontAwesomeIcon className="fs-4 me-2" icon={faFacebookF} />
-                  </a>
-                  <a href="#" target="_blank" aria-label="Twitter">
-                    <FontAwesomeIcon className="fs-4 me-2" icon={faXTwitter} />
-                  </a>
-                  <a href="#" target="_blank" aria-label="LinkedIn">
-                    <FontAwesomeIcon
-                      className="fs-4 me-2"
-                      icon={faLinkedinIn}
-                    />
-                  </a>
+                  {aboutInfo?.facebook && (
+                    <a href={aboutInfo.facebook} target="_blank" aria-label="Facebook">
+                      <FontAwesomeIcon className="fs-4 me-2" icon={faFacebookF} />
+                    </a>
+                  )}
+                  {aboutInfo?.twitter && (
+                    <a href={aboutInfo.twitter} target="_blank" aria-label="Twitter">
+                      <FontAwesomeIcon className="fs-4 me-2" icon={faXTwitter} />
+                    </a>
+                  )}
+                  {aboutInfo?.linkedin && (
+                    <a href={aboutInfo.linkedin} target="_blank" aria-label="LinkedIn">
+                      <FontAwesomeIcon
+                        className="fs-4 me-2"
+                        icon={faLinkedinIn}
+                      />
+                    </a>
+                  )}
                 </div>
               </div>
             </div>

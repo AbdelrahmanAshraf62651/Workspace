@@ -28,6 +28,9 @@ function AdminAbout() {
   const [contactPhone, setContactPhone] = useState('');
   const [contactEmail, setContactEmail] = useState('');
   const [locationLink, setLocationLink] = useState('');
+  const [facebook, setFacebook] = useState('');
+  const [twitter, setTwitter] = useState('');
+  const [linkedin, setLinkedin] = useState('');
 
   const [openingHours, setOpeningHours] = useState({
     monday: { id: 1, isOpen: false, openTime: '10AM', closeTime: '7PM' },
@@ -54,6 +57,9 @@ function AdminAbout() {
         setContactEmail(data.contact_email || '');
         setLocationLink(data.location_link || '');
         setOpeningHours(data.opening_hours || openingHours);
+        setFacebook(data.facebook || '');
+        setTwitter(data.twitter || '');
+        setLinkedin(data.linkedin || '');
       })
       .catch((error) => {
         console.error('Error fetching about info:', error);
@@ -76,6 +82,9 @@ function AdminAbout() {
         contact_email: contactEmail,
         location_link: locationLink,
         opening_hours: openingHours,
+        facebook,
+        twitter,
+        linkedin,
       })
       .then(() => {
         setShowToast(true);
@@ -227,6 +236,39 @@ function AdminAbout() {
               value={contactEmail}
               onChange={(e) => setContactEmail(e.target.value)}
               placeholder="contact@business.com"
+            />
+          </div>
+        </div>
+        <hr className="my-4" />
+
+        {/* Social Media */}
+        <h5 className="fw-bold mb-3">Social Media</h5>
+        <div className="row g-3">
+          <div className="col-md-4">
+            <Form.Label>Facebook</Form.Label>
+            <Form.Control
+              type="text"
+              value={facebook}
+              onChange={(e) => setFacebook(e.target.value)}
+              placeholder="https://facebook.com/username"
+            />
+          </div>
+          <div className="col-md-4">
+            <Form.Label>Twitter</Form.Label>
+            <Form.Control
+              type="text"
+              value={twitter}
+              onChange={(e) => setTwitter(e.target.value)}
+              placeholder="https://twitter.com/username"
+            />
+          </div>
+          <div className="col-md-4">
+            <Form.Label>LinkedIn</Form.Label>
+            <Form.Control
+              type="text"
+              value={linkedin}
+              onChange={(e) => setLinkedin(e.target.value)}
+              placeholder="https://linkedin.com/in/username"
             />
           </div>
         </div>
