@@ -6,11 +6,12 @@ interface BookingCardProps {
   description: string;
   img: string;
   capacity: number;
-  price: number;
+  price?: number;
   currency: string;
   isAvailable?: boolean;
   duration: number;
   onBook: () => void;
+  status?: string;
 }
 
 function BookingCard({
@@ -23,6 +24,7 @@ function BookingCard({
   isAvailable = true,
   duration,
   onBook,
+  status,
 }: BookingCardProps) {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
 
@@ -43,6 +45,9 @@ function BookingCard({
     handleCloseModal();
   };
 
+  const isPermanentlyUnavailable =
+    status && status.toLowerCase() === 'unavailable';
+
   return (
     <>
       <div className="box col-12 col-md-6 col-lg-4">
@@ -60,7 +65,11 @@ function BookingCard({
               }`}
               style={{ fontSize: '0.85rem' }}
             >
-              {isAvailable ? 'Available' : 'Booked'}
+              {isAvailable
+                ? 'Available'
+                : isPermanentlyUnavailable
+                ? 'Unavailable'
+                : 'Booked'}
             </div>
           </div>
           <div className="card-body pb-1 d-flex flex-column">
@@ -71,7 +80,7 @@ function BookingCard({
                 Capacity: {capacity} people
               </p>
               <p className="btn main-btn rounded-pill mt-auto">
-                {price * duration} {currency}EGP / {duration} hour
+                {(price || 0) * duration} {currency} / {duration} hour
                 {duration > 1 ? 's' : ''}
               </p>
             </div>
@@ -82,7 +91,11 @@ function BookingCard({
               }`}
               disabled={!isAvailable}
             >
-              {isAvailable ? 'Book Now' : 'Not Available'}
+              {isAvailable
+                ? 'Book Now'
+                : isPermanentlyUnavailable
+                ? 'Unavailable'
+                : 'Not Available'}
             </button>
           </div>
         </div>
@@ -92,7 +105,7 @@ function BookingCard({
         isOpen={showPaymentModal}
         onClose={handleCloseModal}
         name={name}
-        price={price}
+        price={(price || 0) * duration}
         currency={currency}
         capacity={capacity}
         duration={duration}

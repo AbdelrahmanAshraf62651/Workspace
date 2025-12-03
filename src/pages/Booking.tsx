@@ -6,6 +6,7 @@ interface Room {
   id: string;
   title: string;
   name: string;
+  status: string;
   description: string;
   img: string;
   room_description: string;
@@ -98,7 +99,11 @@ function Booking() {
         return desiredStartTime < bookingEnd && desiredEndTime > bookingStart;
       });
 
-      return { ...room, isAvailableNow: isAvailable };
+      return {
+        ...room,
+        isAvailableNow:
+          isAvailable && room.status.toLowerCase() !== 'unavailable',
+      };
     });
   }, [roomsData, bookings, selectedDate, selectedHour, duration]);
 
@@ -202,6 +207,7 @@ function Booking() {
         {filteredRooms.map((item) => (
           <BookingCard
             {...item}
+            currency="EGP"
             key={item.id}
             isAvailable={item.isAvailableNow}
             duration={duration}
