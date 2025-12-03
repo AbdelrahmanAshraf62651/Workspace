@@ -14,10 +14,21 @@ export type GalleryImage = {
   isVisible: boolean;
 };
 
+export interface Booking {
+  id: string;
+  user_id: string;
+  room_name: string;
+  start_time: string;
+  end_time: string;
+  status: 'cancelled' | 'pending' | 'confirmed';
+  cost: number;
+}
+
 export type DaySchedule = {
   isOpen: boolean;
   openTime: string;
   closeTime: string;
+
 };
 
 export type AboutSettings = {

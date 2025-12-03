@@ -10,7 +10,8 @@ import axios from 'axios';
 
 interface Room {
   id: string;
-  user_name: string;
+  user_id: string;
+  user_name?: string;
   room_name: string;
   start_time: string;
   end_time: string;
@@ -19,14 +20,33 @@ interface Room {
 }
 
 function BookingManagement() {
+  const fetchUser = async (userId: string) => {
+    const response = await axios.get(
+      `https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/user/${userId}`
+    );
+    return response.data;
+  };
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     axios
       .get('https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/booking')
-      .then((response) => {
-        setRooms(response.data);
-        console.log(response.data);
+      .then(async (response) => {
+        const bookingsWithUsers = await Promise.all(
+          response.data.map(async (booking: Room) => {
+            try {
+              const user = await fetchUser(booking.user_id);
+              return { ...booking, user_name: user.name };
+            } catch (error) {
+              console.error(
+                `Failed to fetch user for booking ${booking.id}`,
+                error
+              );
+              return { ...booking, user_name: 'Unknown' };
+            }
+          })
+        );
+        setRooms(bookingsWithUsers);
       })
       .catch((error) => {
         console.error('Error fetching rooms:', error);
@@ -58,23 +78,19 @@ function BookingManagement() {
     setRooms(rooms.filter((room) => room.id !== id));
   };
 
-  const toggleRoomStatus = async (id: string, currentStatus: string) => {
-    const statusMap: { [key: string]: string } = {
-      confirmed: 'pending',
-      pending: 'cancelled',
-      cancelled: 'confirmed',
-    };
-    const newStatus = statusMap[currentStatus] || 'confirmed';
+  const confirmBooking = async (id: string) => {
     try {
-      const response = await axios.put(
+      await axios.patch(
         `https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/booking/${id}`,
-        { status: newStatus }
+        { status: 'confirmed' }
       );
-      setRooms(rooms.map((r) => (r.id === id ? response.data : r)));
-      showMessage('Status updated', 'success');
+      setRooms(
+        rooms.map((r) => (r.id === id ? { ...r, status: 'confirmed' } : r))
+      );
+      showMessage('Booking confirmed', 'success');
     } catch (error) {
-      console.error('Error updating status:', error);
-      showMessage('Failed to update status', 'error');
+      console.error('Error confirming booking:', error);
+      showMessage('Failed to confirm booking', 'error');
     }
   };
 
@@ -235,16 +251,16 @@ function BookingManagement() {
                       </td>
                       <td>
                         <div className="btn-group" role="group">
-                          <Button
-                            variant="outline-success"
-                            size="sm"
-                            onClick={() =>
-                              toggleRoomStatus(room.id, room.status)
-                            }
-                            title="Toggle Status"
-                          >
-                            <FontAwesomeIcon icon={faCheckCircle} />
-                          </Button>
+                          {room.status !== 'confirmed' && (
+                            <Button
+                              variant="outline-success"
+                              size="sm"
+                              onClick={() => confirmBooking(room.id)}
+                              title="Confirm"
+                            >
+                              <FontAwesomeIcon icon={faCheckCircle} />
+                            </Button>
+                          )}
                           <Button
                             variant="outline-danger"
                             size="sm"
