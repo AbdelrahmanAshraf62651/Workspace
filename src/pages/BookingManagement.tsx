@@ -26,6 +26,7 @@ function BookingManagement() {
     );
     return response.data;
   };
+
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -70,12 +71,23 @@ function BookingManagement() {
   // add/edit functionality removed — bookings are read and managed via API
 
   // add/edit API helpers removed — booking management is read/update/delete only
-
-  const deleteRoom = async (id: string) => {
-    await axios.delete(
-      `https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/booking/${id}`
-    );
-    setRooms(rooms.filter((room) => room.id !== id));
+  const cancelRoom = async (id: string) => {
+    try {
+      await axios.patch(
+        `https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/booking/${id}`,
+        { status: 'cancelled' }
+      );
+      // Update local state
+      setRooms(
+        rooms.map((room) =>
+          room.id === id ? { ...room, status: 'cancelled' } : room
+        )
+      );
+      showMessage('Booking cancelled successfully!', 'success');
+    } catch (error) {
+      console.error('Error cancelling booking:', error);
+      showMessage('Failed to cancel booking', 'error');
+    }
   };
 
   const confirmBooking = async (id: string) => {
@@ -95,10 +107,7 @@ function BookingManagement() {
   };
 
   const handleDeleteRoom = (id: string) => {
-    if (window.confirm('Are you sure you want to delete this room?')) {
-      deleteRoom(id);
-      showMessage('Room deleted successfully!', 'success');
-    }
+    cancelRoom(id);
   };
 
   const getStatusBadgeVariant = (status: Room['status']) => {
@@ -140,7 +149,6 @@ function BookingManagement() {
         {/* Add Room removed per request */}
       </div>
 
-      {/*  Success/Error Messages */}
       {message && (
         <Alert
           variant={messageType === 'success' ? 'success' : 'danger'}
@@ -251,7 +259,8 @@ function BookingManagement() {
                       </td>
                       <td>
                         <div className="btn-group" role="group">
-                          {room.status !== 'confirmed' && (
+                          {(room.status === 'pending' ||
+                            room.status === 'cancelled') && (
                             <Button
                               variant="outline-success"
                               size="sm"
@@ -261,14 +270,18 @@ function BookingManagement() {
                               <FontAwesomeIcon icon={faCheckCircle} />
                             </Button>
                           )}
-                          <Button
-                            variant="outline-danger"
-                            size="sm"
-                            onClick={() => handleDeleteRoom(room.id)}
-                            title="Delete"
-                          >
-                            <FontAwesomeIcon icon={faTrash} />
-                          </Button>
+
+                          {(room.status === 'pending' ||
+                            room.status === 'confirmed') && (
+                            <Button
+                              variant="outline-danger"
+                              size="sm"
+                              onClick={() => handleDeleteRoom(room.id)}
+                              title="Cancel"
+                            >
+                              <FontAwesomeIcon icon={faTrash} />
+                            </Button>
+                          )}
                         </div>
                       </td>
                     </tr>
