@@ -1,4 +1,3 @@
-// ... (Your imports and interfaces remain the same)
 import { useState, useEffect } from 'react';
 import { Table } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -74,7 +73,6 @@ function EditRoomSchedule() {
     e.preventDefault();
     setIsSubmitting(true);
     if (editingRoom) {
-      // Update existing room
       axios
         .patch(
           `https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/room/${editingRoom.id}`,
@@ -92,7 +90,6 @@ function EditRoomSchedule() {
         })
         .finally(() => setIsSubmitting(false));
     } else {
-      // Add new room
       axios
         .post('https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/room', newRoom)
         .then((response) => {
@@ -181,26 +178,25 @@ function EditRoomSchedule() {
       className="container pt-5"
       style={{ pointerEvents: addNewRoom || editingRoom ? 'none' : 'auto' }}
     >
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h1 className="fw-bold">Rooms</h1>
+          <p className="text-muted">
+            Manage your booking rooms, their details, and availability status
+          </p>
+        </div>
+        <button
+          type="button"
+          className="btn btn-dark"
+          onClick={() => setAddNewRoom(!addNewRoom)}
+        >
+          <FontAwesomeIcon icon={faPlus} />
+          Add Room
+        </button>
+      </div>
       <div className="shadow-sm">
         <div className="p-0">
-          <div className="table-responsive">
-            <div className="d-flex justify-content-between align-items-center mb-4">
-              <div>
-                <h1 className="fw-bold">Rooms</h1>
-                <p className="text-muted">
-                  Manage your booking rooms, their details, and availability
-                  status
-                </p>
-              </div>
-              <button
-                type="button"
-                className="btn btn-dark"
-                onClick={() => setAddNewRoom(!addNewRoom)}
-              >
-                <FontAwesomeIcon icon={faPlus} />
-                Add Room
-              </button>
-            </div>
+          <div className="table-responsive rounded">
             {(addNewRoom || editingRoom) && (
               <div
                 className="position-fixed bottom-0 end-0 top-0 start-0 bg-black bg-opacity-75 p-3 rounded-bottom d-flex flex-column justify-content-center align-items-center "
@@ -209,14 +205,12 @@ function EditRoomSchedule() {
                   zIndex: 1040,
                   pointerEvents: 'auto',
                 }}
-                // 1. Add onClick to close the modal when clicking the backdrop
                 onClick={handleCloseModal}
               >
                 <form
                   className="d-flex flex-column p-5 bg-light gap-2 rounded"
                   style={{ width: '50vw', minWidth: '300px', zIndex: 1050 }}
                   onSubmit={handleSubmit}
-                  // 2. Add onClick with stopPropagation to keep the form open when clicking inside it
                   onClick={(e) => e.stopPropagation()}
                 >
                   <h3 className="mb-3">
@@ -346,14 +340,14 @@ function EditRoomSchedule() {
             <Table className="table table-hover mb-0">
               <thead className="table-dark">
                 <tr>
-                  <th>Name</th>
-                  <th>Image</th>
-                  <th>Type</th>
-                  <th>Description</th>
-                  <th>Capacity</th>
-                  <th>Hourly Rate</th>
-                  <th>Status</th>
-                  <th style={{ width: '150px' }}>Actions</th>
+                  <th className='text-center'>Name</th>
+                  <th className='text-center'>Image</th>
+                  <th className='text-center'>Type</th>
+                  <th className='text-center'>Description</th>
+                  <th className='text-center'>Capacity</th>
+                  <th className='text-center'>Hourly Rate</th>
+                  <th className='text-center'>Status</th>
+                  <th className='text-center' style={{ width: '150px' }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -370,10 +364,10 @@ function EditRoomSchedule() {
                 ) : rooms.length > 0 ? (
                   rooms.map((room) => (
                     <tr key={room.id} className="align-middle">
-                      <td>
+                      <td className='text-center'>
                         <strong>{room.name}</strong>
                       </td>
-                      <td>
+                      <td className='text-center'>
                         <img
                           src={room.image}
                           alt={room.name}
@@ -384,20 +378,20 @@ function EditRoomSchedule() {
                           }}
                         />
                       </td>
-                      <td>
+                      <td className='text-center'>
                         <strong>{room.type}</strong>
                       </td>
-                      <td>
+                      <td className='text-center'>
                         <strong>{room.room_description}</strong>
                       </td>
-                      <td>
+                      <td className='text-center'>
                         <strong>{room.capacity} Person</strong>
                       </td>
-                      <td>
+                      <td className='text-center'>
                         <strong>{room.hourly_rate} EGP</strong>
                       </td>
-                      <td>
-                        <div className="form-check form-switch">
+                      <td className='text-center'>
+                        <div className="form-check form-switch text-center d-flex justify-content-center">
                           <input
                             className="form-check-input"
                             type="checkbox"
@@ -410,7 +404,7 @@ function EditRoomSchedule() {
                           />
                         </div>
                       </td>
-                      <td>
+                      <td className='text-center'>
                         <div className="btn-group" role="group">
                           <button
                             className="btn btn-outline-primary"

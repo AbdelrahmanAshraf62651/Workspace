@@ -204,17 +204,19 @@ function BookingManagement() {
       {/* Rooms Table */}
       <div className="shadow-sm">
         <div className="p-0">
-          <div className="table-responsive">
+          <div className="table-responsive rounded">
             <Table className="table table-hover mb-0">
               <thead className="table-dark">
                 <tr>
-                  <th>User</th>
-                  <th>Room</th>
-                  <th>Start Time</th>
-                  <th>End Time</th>
-                  <th>Cost</th>
-                  <th>Status</th>
-                  <th style={{ width: '150px' }}>Actions</th>
+                  <th className="text-center">User</th>
+                  <th className="text-center">Room</th>
+                  <th className="text-center">Start Time</th>
+                  <th className="text-center">End Time</th>
+                  <th className="text-center">Cost</th>
+                  <th className="text-center">Status</th>
+                  <th className="text-center" style={{ width: '150px' }}>
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -231,23 +233,23 @@ function BookingManagement() {
                 ) : rooms.length > 0 ? (
                   rooms.map((room) => (
                     <tr key={room.id}>
-                      <td>
+                      <td className="text-center">
                         <strong>{room.user_name}</strong>
                       </td>
-                      <td>
+                      <td className="text-center">
                         <strong>{room.room_name}</strong>
                       </td>
-                      <td>
+                      <td className="text-center">
                         <strong>{formatDate(room.start_time)}</strong>
                       </td>
-                      <td>
+                      <td className="text-center">
                         <strong>{formatDate(room.end_time)}</strong>
                       </td>
-                      <td>
+                      <td className="text-center">
                         <strong>${room.cost}</strong>
                       </td>
-                      <td>
-                        <div className="d-flex align-items-center">
+                      <td className="text-center">
+                        <div className="d-flex align-items-center justify-content-center">
                           <p
                             className={`rounded-pill px-2 small text-center fw-semibold bg-${getStatusBadgeVariant(
                               room.status
@@ -257,7 +259,7 @@ function BookingManagement() {
                           </p>
                         </div>
                       </td>
-                      <td>
+                      <td className="text-center">
                         <div className="btn-group" role="group">
                           {(room.status === 'pending' ||
                             room.status === 'cancelled') && (

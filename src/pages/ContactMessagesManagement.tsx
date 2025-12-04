@@ -147,13 +147,13 @@ function ContactMessagesManagement() {
             <Table className="table table-hover mb-0">
               <thead className="table-dark">
                 <tr>
-                  <th style={{ width: '50px' }}></th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Subject</th>
-                  <th style={{ width: '150px' }}>Received At</th>
-                  <th style={{ width: '100px' }}>Status</th>
-                  <th style={{ width: '120px' }}>Actions</th>
+                  <th className='text-center' style={{ width: '50px' }}></th>
+                  <th className='text-center'>Name</th>
+                  <th className='text-center'>Email</th>
+                  <th className='text-center'>Subject</th>
+                  <th className='text-center' style={{ width: '150px' }}>Received At</th>
+                  <th className='text-center' style={{ width: '100px' }}>Status</th>
+                  <th className='text-center' style={{ width: '120px' }}>Actions</th>
                 </tr>
               </thead>
               {loading ? (
@@ -176,7 +176,7 @@ function ContactMessagesManagement() {
                         key={message.id}
                         className={!message.is_read ? 'table-info' : ''}
                       >
-                        <td>
+                        <td className="text-center">
                           <FontAwesomeIcon
                             icon={faEnvelope}
                             className={
@@ -184,25 +184,25 @@ function ContactMessagesManagement() {
                             }
                           />
                         </td>
-                        <td>
+                        <td className="text-center">
                           <strong>{message.name}</strong>
                         </td>
-                        <td>
+                        <td className="text-center">
                           <small className="text-muted">{message.email}</small>
                         </td>
                         <td
-                          className="text-truncate"
+                          className="text-center text-truncate"
                           style={{ maxWidth: '250px' }}
                         >
                           {message.subject}
                         </td>
-                        <td>
+                        <td className="text-center">
                           <small className="text-muted">
                             {new Date(message.created_at).toLocaleDateString()}
                           </small>
                         </td>
-                        <td>
-                          <div className="d-flex align-items-center">
+                        <td className="text-center">
+                          <div className="d-flex align-items-center justify-content-center">
                             <p
                               className={`rounded-pill px-2 small text-white text-center  ${
                                 message.is_read ? 'bg-success' : 'bg-danger'
@@ -212,7 +212,7 @@ function ContactMessagesManagement() {
                             </p>
                           </div>
                         </td>
-                        <td>
+                        <td className="text-center">
                           <div className="btn-group" role="group">
                             <Dropdown>
                               <Dropdown.Toggle

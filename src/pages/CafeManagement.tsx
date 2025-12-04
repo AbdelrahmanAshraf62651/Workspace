@@ -289,7 +289,7 @@ function CafeManagement() {
 
       <div className="container">
         <div className="row g-4">
-          <aside className="col-12 col-md-3 border p-3 rounded">
+          <aside className="col-12 col-lg-2  rounded">
             <h5 className="fw-bold py-4 text-center">Categories</h5>
             <ul className="list-unstyled d-flex flex-column gap-3 justify-content-center text-center">
               <li
@@ -318,114 +318,112 @@ function CafeManagement() {
               </li>
             </ul>
           </aside>
-
-          <div className="col-12 col-md-9 border p-3 rounded">
+          <div className="col-12 col-lg-10">
             <h5 className="fw-bold py-4">Menu Items</h5>
 
-            {loading ? (
-              <div
-                className="d-flex justify-content-center align-items-center"
-                style={{ minHeight: '300px' }}
-              >
-                <div className="spinner-border" role="status">
-                  <span className="visually-hidden">Loading...</span>
-                </div>
-              </div>
-            ) : (
-              <div style={{ overflowX: 'auto' }}>
-                <table className="table table-hover mb-0">
-                  <thead className="table-dark">
+            <div className="table-responsive rounded shadow-sm">
+              <table className="table table-hover">
+                <thead className="table-dark">
+                  <tr>
+                    <th className="text-center">Name</th>
+                    <th className="text-center">Image</th>
+                    <th className="text-center">Category</th>
+                    <th className="text-center">Description</th>
+                    <th className="text-center">Price</th>
+                    <th className="text-center">Availability</th>
+                    <th className="text-center" style={{ width: '150px' }}>
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {loading ? (
                     <tr>
-                      <th>Name</th>
-                      <th>Image</th>
-                      <th>Category</th>
-                      <th>Description</th>
-                      <th>Price</th>
-                      <th>Availability</th>
-                      <th style={{ width: '150px' }}>Actions</th>
+                      <td colSpan={7} className="text-center py-5">
+                        <div className="spinner-border" role="status">
+                          <span className="visually-hidden">Loading...</span>
+                        </div>
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {filteredItems.length > 0 ? (
-                      filteredItems.map((item) => (
-                        <tr key={item.id} className="align-middle">
-                          <td>
-                            <strong>{item.name}</strong>
-                          </td>
-                          <td>
-                            <img
-                              src={item.image}
-                              alt={item.name}
-                              style={{
-                                width: '80px',
-                                height: '80px',
-                                objectFit: 'cover',
-                              }}
+                  ) : filteredItems.length > 0 ? (
+                    filteredItems.map((item) => (
+                      <tr key={item.id} className="align-middle">
+                        <td className="text-center">
+                          <strong>{item.name}</strong>
+                        </td>
+                        <td className="text-center">
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            style={{
+                              width: '80px',
+                              height: '80px',
+                              objectFit: 'cover',
+                            }}
+                          />
+                        </td>
+                        <td className="text-center">
+                          <strong>{item.category}</strong>
+                        </td>
+                        <td className="text-center">
+                          <strong>{item.description}</strong>
+                        </td>
+                        <td className="text-center">
+                          <strong>{item.price} EGP</strong>
+                        </td>
+                        <td className="text-center">
+                          <div className="form-check form-switch d-flex justify-content-center">
+                            <input
+                              className="form-check-input"
+                              type="checkbox"
+                              role="switch"
+                              id={`flexSwitchCheckChecked-${item.id}`}
+                              checked={item.in_stock}
+                              onChange={() => handleStockChange(item)}
+                              disabled={isFormOpen}
                             />
-                          </td>
-                          <td>
-                            <strong>{item.category}</strong>
-                          </td>
-                          <td>
-                            <strong>{item.description}</strong>
-                          </td>
-                          <td>
-                            <strong>{item.price} EGP</strong>
-                          </td>
-                          <td>
-                            <div className="form-check form-switch">
-                              <input
-                                className="form-check-input"
-                                type="checkbox"
-                                role="switch"
-                                id={`flexSwitchCheckChecked-${item.id}`}
-                                checked={item.in_stock}
-                                onChange={() => handleStockChange(item)}
-                                disabled={isFormOpen}
-                              />
-                            </div>
-                          </td>
-                          <td>
-                            <div className="btn-group" role="group">
-                              <button
-                                className="btn btn-outline-primary"
-                                title="Edit"
-                                onClick={() => handleOpenEdit(item)}
-                                type="button"
-                                disabled={isFormOpen}
-                              >
-                                <FontAwesomeIcon icon={faPenToSquare} />
-                              </button>
-                              <button
-                                className="btn btn-outline-danger"
-                                onClick={() => handleDelete(item.id)}
-                                title="Delete"
-                                disabled={isFormOpen}
-                              >
-                                <FontAwesomeIcon icon={faTrashCan} />
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan={7} className="text-center py-5">
-                          <div className="text-muted">
-                            <FontAwesomeIcon
-                              icon={faTimesCircle}
-                              className="me-2"
-                              size="3x"
-                            />
-                            <div className="mt-3">No Cafe Items Available</div>
+                          </div>
+                        </td>
+                        <td className="text-center">
+                          <div className="btn-group" role="group">
+                            <button
+                              className="btn btn-outline-primary"
+                              title="Edit"
+                              onClick={() => handleOpenEdit(item)}
+                              type="button"
+                              disabled={isFormOpen}
+                            >
+                              <FontAwesomeIcon icon={faPenToSquare} />
+                            </button>
+                            <button
+                              className="btn btn-outline-danger"
+                              onClick={() => handleDelete(item.id)}
+                              title="Delete"
+                              disabled={isFormOpen}
+                            >
+                              <FontAwesomeIcon icon={faTrashCan} />
+                            </button>
                           </div>
                         </td>
                       </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            )}
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={7} className="text-center py-5">
+                        <div className="text-muted">
+                          <FontAwesomeIcon
+                            icon={faTimesCircle}
+                            className="me-2"
+                            size="3x"
+                          />
+                          <div className="mt-3">No Cafe Items Available</div>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

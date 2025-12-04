@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import GalleryImageCard from '../components/GalleryImageCard';
 import AddEditImageModal from '../components/AddEditImageModal';
@@ -161,9 +163,18 @@ export default function AdminGalleryManager() {
           <div className="spinner-border" />
         </div>
       ) : gallery.length === 0 ? (
-        <div className="text-center py-5">
-          <p className="text-muted">No images in the gallery yet.</p>
-        </div>
+        <>
+          <div className="text-center py-5">
+            <div className="text-muted">
+              <FontAwesomeIcon
+                icon={faTimesCircle}
+                className="me-2"
+                size="3x"
+              />
+              <div className="mt-3">No Gallery Items Available</div>
+            </div>
+          </div>
+        </>
       ) : (
         <div className="row g-4">
           {gallery.map((img) => (
