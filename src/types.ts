@@ -16,6 +16,7 @@ export interface Booking {
   end_time: string;
   status: 'cancelled' | 'pending' | 'confirmed';
   cost: number;
+  user_id?: string;
 }
 
 export interface CafeItem {
@@ -34,4 +35,12 @@ export interface User {
   email: string;
   phone_number: string;
   role: 'admin' | 'customer';
+}
+
+export interface GalleryImage {
+  id: number;
+  image: string;
+  title: string;
+  description: string;
+  isVisible: boolean;
 }
