@@ -33,7 +33,6 @@ function Cafe() {
     setDrinks(data.filter((item) => item.category === 'Drinks'));
     setFood(data.filter((item) => item.category === 'Food'));
   }, [data]);
-  console.log(drinks);
   return (
     <div className="container pt-5">
       <h1 className="fw-bolder mb-4">Our Cafe Menu</h1>
