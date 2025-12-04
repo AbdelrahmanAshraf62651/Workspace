@@ -1,22 +1,16 @@
-export type Room = {
-  id: number;
+export interface Room {
+  id: string;
   name: string;
+  type: string;
+  room_description: string;
   capacity: number;
-  status: string;
-  nextEvent: string;
-};
-
-export type GalleryImage = {
-  id: number;
+  hourly_rate: number;
   image: string;
-  title: string;
-  description: string;
-  isVisible: boolean;
-};
+  status: 'unavailable' | 'available';
+}
 
 export interface Booking {
   id: string;
-  user_id: string;
   room_name: string;
   start_time: string;
   end_time: string;
@@ -24,31 +18,20 @@ export interface Booking {
   cost: number;
 }
 
-export type DaySchedule = {
-  isOpen: boolean;
-  openTime: string;
-  closeTime: string;
+export interface CafeItem {
+  id: number;
+  category: string;
+  name: string;
+  image: string;
+  description: string;
+  price: string;
+  in_stock: boolean;
+}
 
-};
-
-export type AboutSettings = {
-  location: {
-    address: string;
-    city: string;
-    country: string;
-    mapLink: string;
-  };
-  openingHours: {
-    monday: DaySchedule;
-    tuesday: DaySchedule;
-    wednesday: DaySchedule;
-    thursday: DaySchedule;
-    friday: DaySchedule;
-    saturday: DaySchedule;
-    sunday: DaySchedule;
-  };
-  contact: {
-    phone: string;
-    email: string;
-  };
-};
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  phone_number: string;
+  role: 'admin' | 'customer';
+}

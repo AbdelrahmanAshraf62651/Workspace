@@ -1,18 +1,28 @@
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import CustomSimpleLineChart from './CustomSimpleLineChart';
-const data = [
-  { name: 'Mon', value: 12 },
-  { name: 'Tue', value: 15 },
-  { name: 'Wed', value: 10 },
-  { name: 'Thu', value: 18 },
-  { name: 'Fri', value: 24 },
-  { name: 'Sat', value: 7 },
-  { name: 'Sun', value: 5 },
-];
 
 const DailyBooking = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          'https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/get_weekly_income'
+        );
+        setData(response.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
-    <div className="border border-1 border-dark border-opacity-25 p-4 rounded-2 h-100 d-flex flex-column">
-      <h3 className="mb-4">Daily Booking Trends</h3>
+    <div className="mt-4 h-100 d-flex flex-column">
+      <h3 className="mb-4 fw-semibold">Week's Income</h3>
       <div className="flex-grow-1" style={{ minHeight: '200px' }}>
         <CustomSimpleLineChart data={data} colors={['#000000']} />
       </div>

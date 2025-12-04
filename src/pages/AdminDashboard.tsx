@@ -1,88 +1,123 @@
 import {
   faCalendar,
   faHospital,
-  faTable,
+  faBowlFood,
   faUserAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import RoomStatusTable from '../components/RoomStatus';
-import type { Room } from '../types';
 import DailyBooking from '../components/DailyBooking';
 import RecentActivity from '../components/RecentActivity';
 import DashboardCard from '../components/DashboardCard';
+import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import type { Room, Booking, CafeItem, User } from '../types';
 
 function AdminDashboard() {
-  const roomsData: Room[] = [
-    {
-      id: 1,
-      name: 'Meeting Room A',
-      capacity: 8,
-      status: 'Available',
-      nextEvent: 'None',
-    },
-    {
-      id: 2,
-      name: 'Small Conference',
-      capacity: 4,
-      status: 'Occupied',
-      nextEvent: 'Until 3:00 PM',
-    },
-    {
-      id: 3,
-      name: 'Quiet Booth 1',
-      capacity: 1,
-      status: 'Maintenance',
-      nextEvent: 'End of Day',
-    },
-    {
-      id: 4,
-      name: 'Creative Studio',
-      capacity: 12,
-      status: 'Available',
-      nextEvent: 'None',
-    },
-    {
-      id: 5,
-      name: 'Focus Pod 2',
-      capacity: 1,
-      status: 'Occupied',
-      nextEvent: 'Until 1:30 PM',
-    },
-    {
-      id: 6,
-      name: 'Large Training Hall',
-      capacity: 30,
-      status: 'Available',
-      nextEvent: 'Booked tomorrow',
-    },
-  ];
+  const [rooms, setRooms] = useState<Room[]>([]);
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [cafeItems, setCafeItems] = useState<CafeItem[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
+  const [loadingBookings, setLoadingBookings] = useState(true);
+  const [loadingRooms, setLoadingRooms] = useState(true);
 
-  const statCardsData = [
-    { title: 'Total Bookings', value: 24, icon: faCalendar },
-    { title: 'Available Rooms', value: 8, icon: faHospital },
-    { title: 'Occupied Desks', value: 16, icon: faTable },
-    { title: 'New Members', value: 4, icon: faUserAlt },
-  ];
+  useEffect(() => {
+    axios
+      .get('https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/room')
+      .then((response) => {
+        setRooms(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching rooms:', error);
+      })
+      .finally(() => setLoadingRooms(false));
+
+    axios
+      .get('https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/user')
+      .then((response) => {
+        setUsers(response.data);
+        console.log('users' + users);
+      })
+      .catch((error) => {
+        console.error('Error fetching users:', error);
+      });
+
+    axios
+      .get('https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/cafe_item')
+      .then((response) => {
+        setCafeItems(response.data);
+        console.log('cafe' + cafeItems);
+      })
+      .catch((error) => {
+        console.error('Error fetching cafe items:', error);
+      });
+
+    axios
+      .get('https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/booking')
+      .then((response) => {
+        setBookings(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching bookings:', error);
+      })
+      .finally(() => setLoadingBookings(false));
+  }, []);
 
   return (
     <div className="container pt-5 admin-dashboard-page">
       <h1 className="fw-bold">Admin Dashboard</h1>
       <div className="row g-4 pt-4">
-        {statCardsData.map((card) => (
-          <div key={card.title} className="col-12 col-sm-6 col-lg-3">
-            <DashboardCard {...card} />
-          </div>
-        ))}
-        <div className="col-12 col-lg-6 ">
-          <RoomStatusTable rooms={roomsData} />
+        <div className="col-12 col-sm-6 col-lg-3">
+          <DashboardCard
+            {...{
+              title: 'Total Bookings',
+              value: bookings.length,
+              icon: faCalendar,
+            }}
+          />
+        </div>
+        <div className="col-12 col-sm-6 col-lg-3">
+          <DashboardCard
+            {...{
+              title: 'Total Rooms',
+              value: rooms.filter((room) => room.status === 'available').length,
+              icon: faHospital,
+            }}
+          />
+        </div>
+        <div className="col-12 col-sm-6 col-lg-3">
+          <DashboardCard
+            {...{
+              title: 'Cafe Items',
+              value: cafeItems.length,
+              icon: faBowlFood,
+            }}
+          />
+        </div>
+        <div className="col-12 col-sm-6 col-lg-3">
+          <DashboardCard
+            {...{
+              title: 'Total Users',
+              value: users.length,
+              icon: faUserAlt,
+            }}
+          />
+        </div>
+        <div className="col-12 col-lg-6">
+          <RoomStatusTable rooms={rooms.slice(-5)} loading={loadingRooms} />
         </div>
         <div className="col-12 col-lg-6">
           <DailyBooking />
         </div>
       </div>
-      <RecentActivity />
+      <RecentActivity bookings={bookings.slice(-5)} loading={loadingBookings} />
       <div className="d-flex flex-row gap-3 mt-3">
-        <button className="btn sec-btn">Add New Room</button>
-        <button className="btn main-btn">View All Bookings</button>
+        <Link to="/edit-room-schedule" className="btn sec-btn">
+          Add New Room
+        </Link>
+        <Link to="/booking-management" className="btn main-btn">
+          View All Bookings
+        </Link>
       </div>
     </div>
   );

@@ -10,8 +10,8 @@ import {
 } from 'recharts';
 
 type LineDataItem = {
-  name: string;
-  value: number;
+  day: string;
+  income: number;
   [key: string]: string | number;
 };
 
@@ -29,7 +29,7 @@ interface CustomSimpleLineChartProps {
 
 const CustomSimpleLineChart: React.FC<CustomSimpleLineChartProps> = ({
   data,
-  lineKeys = ['value'],
+  lineKeys = ['income'],
   colors = ['#8884d8', '#82ca9d', '#ff7300', '#ffc658'],
   margin = { top: 20 },
   isAnimationActive = true,
@@ -44,7 +44,7 @@ const CustomSimpleLineChart: React.FC<CustomSimpleLineChartProps> = ({
           {showGrid && (
             <CartesianGrid strokeDasharray="3 3" stroke="#ccc" opacity={0.6} />
           )}
-          <XAxis dataKey="name" />
+          <XAxis dataKey="day" />
           <YAxis />
           {showTooltip && <Tooltip />}
           {lineKeys.map((key, index) => (

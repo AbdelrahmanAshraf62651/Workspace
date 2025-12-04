@@ -51,11 +51,6 @@ function AdminNavbar() {
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className={getLinkClass} to="/analytics">
-                Analytics
-              </NavLink>
-            </li>
-            <li className="nav-item">
               <NavLink className={getLinkClass} to="/edit-room-schedule">
                 Edit Rooms
               </NavLink>

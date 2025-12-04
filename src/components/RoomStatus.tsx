@@ -1,45 +1,64 @@
 import { Table } from 'react-bootstrap';
 import type { Room } from '../types';
 
+interface RoomStatusTableProps {
+  rooms: Room[];
+  loading: boolean;
+}
+
 const renderStatus = (status: string) => {
-  if (status === 'Available') {
+  if (status === 'available') {
     return (
-      <span className={`badge rounded-pill text-bg-success`}>{status} </span>
+      <span className={`badge rounded-pill text-bg-success`}>Available</span>
     );
   }
-  else if (status === 'Occupied') {
-    return (
-      <span className={`badge rounded-pill text-bg-danger`}>{status}</span>
-    );
-  }
-  return <span className={`badge rounded-pill text-bg-warning`}>{status}</span>;
+  return (
+    <span className={`badge rounded-pill text-bg-danger`}>Unavailable</span>
+  );
 };
 
-const RoomStatusTable = (Props: { rooms: Room[] }) => {
-  const rooms = Props.rooms;
+const RoomStatusTable = ({ rooms, loading }: RoomStatusTableProps) => {
   return (
-    <div className="border border-1 border-dark border-opacity-25 p-4 rounded-2 w-100">
-      <h3 className="mb-4">Current Room Status</h3>
-      <Table responsive hover className="align-middle">
-        <thead style={{ backgroundColor: '#f8f9fa' }}>
-          <tr>
-            <th>Room Name</th>
-            <th>Capacity</th>
-            <th>Status</th>
-            <th>Next Event</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rooms.map((room: Room) => (
-            <tr key={room.id}>
-              <td>{room.name}</td>
-              <td>{room.capacity}</td>
-              <td>{renderStatus(room.status)}</td>
-              <td>{room.nextEvent}</td>
+    <div className="mt-4">
+      <h3 className="mb-4 fw-semibold">Rooms Added Recently</h3>
+        <Table responsive hover className="align-middle">
+          <thead style={{ backgroundColor: '#f8f9fa' }}>
+            <tr>
+              <th className="text-center">Room</th>
+              <th className="text-center">Type</th>
+              <th className="text-center">Capacity</th>
+              <th className="text-center">Hourly Rate</th>
+              <th className="text-center">Status</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {loading ? (
+              <tr>
+                <td colSpan={5} className="text-center py-5">
+                  <div className="spinner-border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                </td>
+              </tr>
+            ) : rooms.length > 0 ? (
+              rooms.map((room: Room) => (
+                <tr key={room.id}>
+                  <td className="text-center">{room.name}</td>
+                  <td className="text-center">{room.type}</td>
+                  <td className="text-center">{room.capacity}</td>
+                  <td className="text-center">{room.hourly_rate} EGP</td>
+                  <td className="text-center">{renderStatus(room.status)}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={5} className="text-center py-5">
+                  No recent rooms found.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </Table>
     </div>
   );
 };

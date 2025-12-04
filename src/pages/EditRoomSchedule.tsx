@@ -362,7 +362,7 @@ function EditRoomSchedule() {
                     </td>
                   </tr>
                 ) : rooms.length > 0 ? (
-                  rooms.map((room) => (
+                  rooms.slice(-5).map((room) => (
                     <tr key={room.id} className="align-middle">
                       <td className='text-center'>
                         <strong>{room.name}</strong>

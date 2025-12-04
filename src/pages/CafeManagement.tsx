@@ -6,16 +6,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-
-interface CafeItem {
-  id: number;
-  category: string;
-  name: string;
-  image: string;
-  description: string;
-  price: string;
-  in_stock: boolean;
-}
+import type { CafeItem } from '../types';
 
 const initialNewItem: CafeItem = {
   id: 0,

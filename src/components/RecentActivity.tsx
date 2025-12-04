@@ -1,43 +1,42 @@
 import { Table } from 'react-bootstrap';
-const activityData = [
-  {
-    id: 1,
-    user: 'John Doe',
-    action: 'Booked Meeting Room A',
-    time: '2 hours ago',
-  },
-  {
-    id: 2,
-    user: 'Admin Sarah',
-    action: 'Updated Room B schedule',
-    time: 'Yesterday',
-  },
-  {
-    id: 3,
-    user: 'Jane Smith',
-    action: 'Cancelled Focus Pod 2 booking',
-    time: '2 days ago',
-  },
-  {
-    id: 4,
-    user: 'System',
-    action: 'Completed maintenance on Room 103',
-    time: '3 days ago',
-  },
-  {
-    id: 5,
-    user: 'Mike Brown',
-    action: 'Registered as a new user',
-    time: '4 days ago',
-  },
-];
+import type { Booking } from '../types';
 
-const RecentActivity = () => {
+interface RecentActivityProps {
+  bookings: Booking[];
+  loading: boolean;
+}
+
+const RecentActivity = ({ bookings, loading }: RecentActivityProps) => {
+  const formatDate = (iso?: string) => {
+    if (!iso) return '-';
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return iso;
+    return d.toLocaleString(undefined, {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  };
+
+  const getStatusBadgeVariant = (status: Booking['status']) => {
+    switch (status) {
+      case 'confirmed':
+        return 'success text-white';
+      case 'pending':
+        return 'warning text-dark';
+      case 'cancelled':
+        return 'danger text-white';
+      default:
+        return 'secondary';
+    }
+  };
+
   return (
-    <div className="mt-4 border border-1 border-dark border-opacity-25 p-4 rounded-2">
+    <div className="mt-5">
       <div>
-        <h3 className="mb-4">Recent Activity</h3>
-
+        <h3 className="mb-4 fw-semibold">Recent Bookings</h3>
         <Table
           responsive
           hover
@@ -46,19 +45,51 @@ const RecentActivity = () => {
         >
           <thead style={{ backgroundColor: '#f8f9fa' }}>
             <tr>
-              <th className="text-start">User</th>
-              <th className="text-start">Action</th>
-              <th className="text-center">Timestamp</th>
+              <th className="text-center">Room</th>
+              <th className="text-center">Start Time</th>
+              <th className="text-center">End Time</th>
+              <th className="text-center">Cost</th>
+              <th className="text-center">Status</th>
             </tr>
           </thead>
           <tbody>
-            {activityData.map((activity) => (
-              <tr key={activity.id}>
-                <td className="text-start">{activity.user}</td>
-                <td className="text-start">{activity.action}</td>
-                <td className="text-center">{activity.time}</td>
+            {loading ? (
+              <tr>
+                <td colSpan={5} className="text-center py-5">
+                  <div className="spinner-border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                </td>
               </tr>
-            ))}
+            ) : bookings.length > 0 ? (
+              bookings.map((booking) => (
+                <tr key={booking.id}>
+                  <td className="text-center">{booking.room_name}</td>
+                  <td className="text-center">
+                    {formatDate(booking.start_time)}
+                  </td>
+                  <td className="text-center">{formatDate(booking.end_time)}</td>
+                  <td className="text-center">${booking.cost}</td>
+                  <td className="text-center">
+                    <div className="d-flex align-items-center justify-content-center">
+                      <p
+                        className={`rounded-pill px-2 small text-center fw-semibold bg-${getStatusBadgeVariant(
+                          booking.status
+                        )} mb-0`}
+                      >
+                        {booking.status}
+                      </p>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={5} className="text-center py-5">
+                  No recent bookings found.
+                </td>
+              </tr>
+            )}
           </tbody>
         </Table>
       </div>
