@@ -14,10 +14,8 @@ function Login() {
   }
 
   const navigate = useNavigate();
-
   function handleLogin(props: LoginPayload) {
     setIsLoading(true);
-
     const loginUrl =
       'https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/auth/login';
 
@@ -42,7 +40,7 @@ function Login() {
 
         localStorage.setItem('authToken', data.authToken);
         localStorage.setItem('role', data.role);
-
+        localStorage.setItem('userId', JSON.stringify(data.userId));
         fetch('https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/auth/me', {
           headers: {
             Authorization: `Bearer ${data.authToken}`,

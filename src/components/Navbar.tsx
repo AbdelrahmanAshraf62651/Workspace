@@ -2,10 +2,24 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import logo from "/logo.png";
-import profilePic from "/images/profile.jpg";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 function Navbar() {
+  const [userImage, setUserImage] = useState<string | null>(null);
+  const isUserLoggedIn = localStorage.getItem("authToken") !== null;
+  useEffect(() => {
+    if (localStorage.getItem("userId")){
+      axios
+      .get(`https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/user/${localStorage.getItem("userId")}`)
+      .then((response) => {
+        setUserImage(response.data.image);
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+    }
+  }, [isUserLoggedIn]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -123,10 +137,10 @@ function Navbar() {
             </button>
             <NavLink to="/profile" className="">
               <img
-                src={profilePic}
+                src={userImage || "/images/user.webp"}
                 alt="Profile"
                 className="rounded-circle"
-                style={{ width: "40px", height: "40px" }}
+                style={{ width: "40px", height: "40px"  , objectFit: "cover" }}
               />
             </NavLink>
           </div>
