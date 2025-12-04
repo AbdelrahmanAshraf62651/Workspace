@@ -105,7 +105,7 @@ function BookingCard({
         isOpen={showPaymentModal}
         onClose={handleCloseModal}
         name={name}
-        price={(price || 0) * duration}
+        price={price || 0}
         currency={currency}
         capacity={capacity}
         duration={duration}

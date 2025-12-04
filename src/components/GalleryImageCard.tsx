@@ -30,11 +30,19 @@ const GalleryImageCard: React.FC<GalleryImageCardProps> = ({
       />
       <div className="card-body d-flex flex-column">
         <h5 className="card-title fw-bold">{image.title}</h5>
-        <p className="card-text text-black-50 flex-grow-1" style={{ fontSize: '0.9rem' }}>
+        <p
+          className="card-text text-black-50 flex-grow-1"
+          style={{ fontSize: '0.9rem' }}
+        >
           {image.description}
         </p>
+
+        {/* Visibility Toggle */}
         <div className="d-flex align-items-center mb-3">
-          <label className="form-check-label me-2" style={{ fontSize: '0.9rem' }}>
+          <label
+            className="form-check-label me-2"
+            style={{ fontSize: '0.9rem' }}
+          >
             Visible
           </label>
           <div className="form-check form-switch">
@@ -46,6 +54,8 @@ const GalleryImageCard: React.FC<GalleryImageCardProps> = ({
             />
           </div>
         </div>
+
+        {/* Edit/Delete Buttons */}
         <div className="d-flex gap-2">
           <button
             className="btn main-btn flex-grow-1"

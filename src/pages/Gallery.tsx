@@ -11,7 +11,7 @@ function Gallery() {
 
   useEffect(() => {
     axios
-      .get('https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/gallery')
+      .get('https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/room')
       .then((response) => {
         setImages(response.data);
       })

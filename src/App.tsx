@@ -28,7 +28,7 @@ import AdminLogin from "./pages/AdminLogin";
 import CafeManagement from "./pages/CafeManagement";
 import BookingManagement from "./pages/BookingManagement";
 import ContactMessagesManagement from "./pages/ContactMessagesManagement";
-import { UserImageContext } from "./contexts/Context";
+// import { UserImageContext } from "./contexts/Context";
 const AppContent = () => {
   const location = useLocation();
   const [isAdmin, setIsAdmin] = useState<boolean>(true);
@@ -114,9 +114,9 @@ const AppContent = () => {
 function App() {
   return (
     <Router> 
-      <UserImageContext.Provider value={null}>
+      {/* <UserImageContext.Provider value={null}> */}
       <AppContent />
-      </UserImageContext.Provider>
+      {/* </UserImageContext.Provider> */}
     </Router>
   );
 }
