@@ -109,10 +109,10 @@ function Home() {
             collaboration.
           </p>
           <div className="buttons position-relative text-start">
-            <Link to="/booking" className="btn btn-lg sec-btn me-2">
+            <Link to={isUserLoggedIn ? '/booking' : '/login'} className="btn btn-lg btn-dark me-2">
               Book Now
             </Link>
-            <Link to="/gallery" className="btn btn-lg main-btn">
+            <Link to="/gallery" className="btn btn-lg btn-light">
               Explore Spaces
             </Link>
           </div>
