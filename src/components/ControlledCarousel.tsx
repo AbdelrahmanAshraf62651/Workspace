@@ -2,7 +2,7 @@ import { type FC } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 
 interface ControlledCarouselProps {
-  slides: { img: string; title: string; description: string }[];
+  slides: { image: string; title: string; description: string }[];
   activeIndex: number;
   onSelect: (selectedIndex: number) => void;
 }
@@ -27,7 +27,7 @@ const ControlledCarousel: FC<ControlledCarouselProps> = ({
               fontSize: '1.5rem',
               borderRadius: '10px',
             }}
-            src={slide.img}
+            src={slide.image}
             alt={`Slide ${i + 1}`}
           />
           <Carousel.Caption>

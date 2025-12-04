@@ -19,7 +19,7 @@ const GalleryImageCard: React.FC<GalleryImageCardProps> = ({
   return (
     <div className="card shadow-sm h-100">
       <img
-        src={image.img}
+        src={image.image}
         alt={image.title}
         className="card-img-top"
         style={{

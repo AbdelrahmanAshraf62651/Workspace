@@ -1,19 +1,19 @@
 import React from 'react';
 
 interface GalleryThumbnailProps {
-  img: string;
+  image: string;
   isSelected: boolean;
   onClick: () => void;
 }
 
 const GalleryThumbnail: React.FC<GalleryThumbnailProps> = ({
-  img,
+  image,
   isSelected,
   onClick,
 }) => {
   return (
     <img
-      src={img}
+      src={image}
       alt="Thumbnail"
       className={`thumbnail img-fluid shadow-sm rounded ${
         isSelected ? 'active' : ''

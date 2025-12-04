@@ -8,7 +8,7 @@ export type Room = {
 
 export type GalleryImage = {
   id: number;
-  img: string;
+  image: string;
   title: string;
   description: string;
   isVisible: boolean;

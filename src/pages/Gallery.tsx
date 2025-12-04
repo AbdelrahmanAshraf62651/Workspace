@@ -1,15 +1,29 @@
 import ControlledCarousel from '../components/ControlledCarousel';
 import GalleryThumbnail from '../components/GalleryThumbnail';
-import { useState, useMemo } from 'react';
-import { useGallery } from '../contexts/GalleryContext';
+import { useState, useMemo, useEffect } from 'react';
+import type { GalleryImage } from '../types';
+import axios from 'axios';
 
 function Gallery() {
-  const { images } = useGallery();
+  const [images, setImages] = useState<GalleryImage[]>([]);
+  const [loading, setLoading] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    axios
+      .get('https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/gallery')
+      .then((response) => {
+        setImages(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching gallery images:', error);
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
   // Filter only visible images
   const visibleImages = useMemo(() => {
-    return images.filter((img) => img.isVisible);
+    return images.filter((image) => image.isVisible);
   }, [images]);
 
   const handleSelect = (selectedIndex: number) => {
@@ -17,17 +31,25 @@ function Gallery() {
   };
 
   // Prepare slides for carousel (only img, title, description)
-  const slides = visibleImages.map((img) => ({
-    img: img.img,
-    title: img.title,
-    description: img.description,
+  const slides = visibleImages.map((imageItem) => ({
+    image: imageItem.image,
+    title: imageItem.title,
+    description: imageItem.description,
   }));
 
   return (
     <div className="container pt-5">
       <div className="content-container row">
         <h1 className="mb-4 fw-bold">Our Gallery</h1>
-        {visibleImages.length > 0 && (
+        {loading ? (
+          <div className="text-center py-5">
+            <div className="spinner-border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        ) : visibleImages.length === 0 ? (
+          <p className="text-muted">There are no images to display.</p>
+        ) : (
           <ControlledCarousel
             slides={slides}
             activeIndex={activeIndex}
@@ -36,13 +58,13 @@ function Gallery() {
         )}
       </div>
       <div className="row mt-5">
-        {visibleImages.map((image, i) => (
+        {visibleImages.map((imageItem, i) => (
           <div
             className="col-6 col-md-3 col-lg-2 g-3 d-flex justify-content-start"
-            key={image.id}
+            key={imageItem.id}
           >
             <GalleryThumbnail
-              img={image.img}
+              image={imageItem.image}
               isSelected={activeIndex === i}
               onClick={() => handleSelect(i)}
             />
