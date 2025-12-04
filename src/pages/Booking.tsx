@@ -62,7 +62,7 @@ function Booking() {
       .catch((error) => console.error('Error fetching data:', error))
       .finally(() => setIsLoading(false));
 
-    const storedUserId = localStorage.getItem('user_id');
+    const storedUserId = localStorage.getItem('userId');
     if (storedUserId) {
       setUserId(Number(storedUserId));
     }
