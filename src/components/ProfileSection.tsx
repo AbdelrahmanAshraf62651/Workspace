@@ -2,7 +2,6 @@ import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useEffect} from "react";
 import axios from "axios";
-import { useRef } from "react";
 import { useLocation } from "react-router-dom";
 
 interface UserData {
@@ -33,16 +32,6 @@ function ProfileSection() {
       });
   }, [isProfilePage]);
   const [isEditing, setIsEditing] = useState(false);
-  function handleImageUpload(event: React.ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setData({ ...data, image: reader.result as string });
-      };
-      reader.readAsDataURL(file);
-    }
-  }
   function handleSaveChanges() {
     axios
       .put(
@@ -56,29 +45,12 @@ function ProfileSection() {
         console.error("Error updating user data:", error);
       });
   }
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  function handleImageClick() {
-    fileInputRef.current?.click();
-  }
   return (
     <>
       {isEditing ? (
         <div className="p-4 shadow-sm">
         <h2 className="mb-4 fw-bold">My Profile</h2>
         <div className="row align-items-start g-4">
-          <div className="col-12 col-md-auto d-flex justify-content-center">
-            <div className="profile-image-container mb-3 ">
-              <input type="file" accept="image/*" onChange={handleImageUpload} style={{ display: 'none' }} id="image-input" ref={fileInputRef} />
-              <img
-                id="user-profile-image"
-                src={data.image}
-                className="img-fluid rounded-circle"
-                alt="User Profile Image"
-                style={{ width: '150px', height: '150px', objectFit: 'cover', cursor: 'pointer', border: '2px solid #ced4da', padding: '2px', transition: 'border-color 0.3s' }}
-                onClick={handleImageClick}
-              />
-            </div>
-          </div>
           <div className="col">
             <form id="profile-form">
               <div className="mb-3">
@@ -145,17 +117,6 @@ function ProfileSection() {
         <div className="p-4 shadow-sm">
           <h2 className="mb-4 fw-bold">My Profile</h2>
           <div className="row align-items-start g-4">
-            <div className="col-12 col-md-auto d-flex justify-content-center">
-              <div className="profile-image-container mb-3">
-                <img
-                  id="user-profile-image"
-                  src={data.image}
-                  className="img-fluid rounded-circle"
-                  alt="User Profile Image"
-                  style={{ width: "150px" , height: "150px", objectFit: "cover" }}
-                />
-              </div>
-            </div>
             <div className="col">
               <form id="profile-form">
                 <div className="mb-3">

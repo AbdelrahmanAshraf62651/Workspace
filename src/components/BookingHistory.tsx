@@ -3,66 +3,6 @@ import axios from "axios";
 import type { Booking } from "../types";
 import { useLocation } from "react-router-dom";
 
-// const data = {
-//   upcomingBookings: [
-//     {
-//       room: 'Meeting Room Alpha',
-//       date: '2024-08-15',
-//       time: '10:00 AM',
-//       status: 'Upcoming' as const,
-//       amount: '$50.00',
-//     },
-//     {
-//       room: 'Meeting Room Alpha',
-//       date: '2024-09-01',
-//       time: '11:00 AM',
-//       status: 'Upcoming' as const,
-//       amount: '$50.00',
-//     },
-//     {
-//       room: 'Training Room Epsilon',
-//       date: '2024-08-20',
-//       time: '04:00 PM',
-//       status: 'Upcoming' as const,
-//       amount: '$75.00',
-//     },
-//   ],
-//   completedBookings: [
-//     {
-//       room: 'Meeting Room Zeta',
-//       date: '2024-06-10',
-//       time: '09:00 AM',
-//       status: 'Completed' as const,
-//       amount: '$50.00',
-//     },
-//     {
-//       room: 'Conference Hall Delta',
-//       date: '2024-05-25',
-//       time: '01:00 PM',
-//       status: 'Completed' as const,
-//       amount: '$120.00',
-//     },
-//   ],
-//   canceledBookings: [
-//     {
-//       room: 'Focus Pod Gamma',
-//       date: '2024-07-29',
-//       time: '10:00 AM',
-//       status: 'Canceled' as const,
-//       amount: '$15.00',
-//     },
-//     {
-//       room: 'Hot Desk 7',
-//       date: '2024-07-15',
-//       time: '02:00 PM',
-//       status: 'Canceled' as const,
-//       amount: '$10.00',
-//     },
-//   ],
-// };
-
-// const status = ["pending" , "confirmed"];
-
 function BookingHistory() {
   const location = useLocation();
   const isProfilePage = location.pathname === "/profile";
@@ -94,6 +34,8 @@ function BookingHistory() {
         return "text-bg-warning";
       case "confirmed":
         return "text-bg-success";
+      case "cancelled":
+        return "text-bg-danger";
       default:
         return "text-bg-secondary";
     }
@@ -131,7 +73,6 @@ function BookingHistory() {
                     <th scope="col">Time</th>
                     <th scope="col">Status</th>
                     <th scope="col">Amount</th>
-                    <th scope="col">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -150,11 +91,6 @@ function BookingHistory() {
                         </span>
                       </td>
                       <td>{booking.cost} EGP</td>
-                      <td>
-                        <button className="btn btn-sm btn-outline-secondary">
-                          View Details
-                        </button>
-                      </td>
                     </tr>
                   ))}
                 </tbody>

@@ -20,7 +20,7 @@ export interface Booking {
   room_name: string;
   start_time: string;
   end_time: string;
-  status: 'pending' | 'confirmed';
+  status: 'cancelled' | 'pending' | 'confirmed';
   cost: number;
 }
 

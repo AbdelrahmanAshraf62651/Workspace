@@ -6,18 +6,22 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 function Navbar() {
-  const [userImage, setUserImage] = useState<string | null>(null);
   const isUserLoggedIn = localStorage.getItem("authToken") !== null;
+  const [userName, setUserName] = useState("");
   useEffect(() => {
-    if (localStorage.getItem("userId")){
+    if (localStorage.getItem("userId")) {
       axios
-      .get(`https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/user/${localStorage.getItem("userId")}`)
-      .then((response) => {
-        setUserImage(response.data.image);
-      })
-      .catch((error) => {
-        console.error("Error fetching user data:", error);
-      });
+        .get(
+          `https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/user/${localStorage.getItem(
+            "userId"
+          )}`
+        )
+        .then((response) => {
+          setUserName(response.data.name);
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error);
+        });
     }
   }, [isUserLoggedIn]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -135,14 +139,15 @@ function Navbar() {
             <button className={"btn btn-dark"} onClick={handleLogout}>
               <FontAwesomeIcon icon={faRightFromBracket} />
             </button>
-            <NavLink to="/profile" className="">
-              <img
-                src={userImage || "/images/user.webp"}
-                alt="Profile"
-                className="rounded-circle"
-                style={{ width: "40px", height: "40px"  , objectFit: "cover" }}
-              />
-            </NavLink>
+            {location.pathname === "/profile" ? (
+              <button  disabled className={"btn btn-outline-dark"} >
+                {userName}
+              </button>
+            ) : (
+              <NavLink to="/profile" className={"btn btn-outline-dark"}>
+                {userName}
+              </NavLink>
+            )}
           </div>
         ) : (
           <div className="d-none d-lg-flex gap-3">
