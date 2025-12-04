@@ -73,7 +73,7 @@ function BookingCard({
             </div>
           </div>
           <div className="card-body pb-1 d-flex flex-column">
-            <h4 className="item-name fw-bold">{name}</h4>
+            <h4 className="item-name fw-bold h-100 mt-auto">{name}</h4>
             <p className="card-text text-black-50 fw-semibold">{description}</p>
             <div className="d-flex justify-content-between align-items-center mb-3">
               <p className="btn main-btn rounded-pill mt-auto">

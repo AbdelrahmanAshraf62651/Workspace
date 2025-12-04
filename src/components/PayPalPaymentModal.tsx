@@ -166,16 +166,24 @@ function PayPalPaymentModal({
         transform: 'translateY(-5vh)',
         backgroundColor: 'rgba(0, 0, 0, 0.75)',
         zIndex: 1050,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        transition: 'opacity 0.2s ease',
       }}
     >
       <div
         onClick={(e) => e.stopPropagation()}
         className="bg-white rounded-3 p-5 shadow-lg"
         style={{
+          backgroundColor: 'white',
+          borderRadius: '12px',
+          padding: '2rem',
           maxWidth: '500px',
           width: '90%',
           maxHeight: '90vh',
           overflowY: 'auto',
+          transition: 'all 0.2s ease',
         }}
       >
         {/* Header */}

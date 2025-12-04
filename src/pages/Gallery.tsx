@@ -4,6 +4,14 @@ import { useState, useMemo, useEffect } from 'react';
 import type { GalleryImage } from '../types';
 import axios from 'axios';
 
+interface RoomResponse {
+  id: number;
+  image: string;
+  name: string;
+  room_description: string;
+  gallery_visible: boolean;
+}
+
 function Gallery() {
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
@@ -11,9 +19,19 @@ function Gallery() {
 
   useEffect(() => {
     axios
-      .get('https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/room')
+      .get<RoomResponse[]>(
+        'https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/room'
+      )
       .then((response) => {
-        setImages(response.data);
+        // Map API response directly to GalleryImage type
+        const galleryData: GalleryImage[] = response.data.map((item) => ({
+          id: item.id,
+          image: item.image,
+          title: item.name,
+          description: item.room_description,
+          isVisible: item.gallery_visible,
+        }));
+        setImages(galleryData);
       })
       .catch((error) => {
         console.error('Error fetching gallery images:', error);
@@ -22,19 +40,20 @@ function Gallery() {
   }, []);
 
   // Filter only visible images
-  const visibleImages = useMemo(() => {
-    return images.filter((image) => image.isVisible);
-  }, [images]);
+  const visibleImages = useMemo(
+    () => images.filter((img) => img.isVisible),
+    [images]
+  );
 
   const handleSelect = (selectedIndex: number) => {
     setActiveIndex(selectedIndex);
   };
 
-  // Prepare slides for carousel (only img, title, description)
-  const slides = visibleImages.map((imageItem) => ({
-    image: imageItem.image,
-    title: imageItem.title,
-    description: imageItem.description,
+  // Map visible images for carousel
+  const slides = visibleImages.map(({ image, title, description }) => ({
+    image,
+    title,
+    description,
   }));
 
   return (

@@ -1,3 +1,4 @@
+// ... (Your imports and interfaces remain the same)
 import { useState, useEffect } from 'react';
 import { Table } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -165,6 +166,16 @@ function EditRoomSchedule() {
     setEditingRoom(null);
     setBase64Image(null);
   };
+
+  // New function to handle closing the form/modal
+  const handleCloseModal = () => {
+    if (editingRoom) {
+      handleCloseEdit();
+    } else if (addNewRoom) {
+      setAddNewRoom(false);
+    }
+  };
+
   return (
     <div
       className="container pt-5"
@@ -198,11 +209,15 @@ function EditRoomSchedule() {
                   zIndex: 1040,
                   pointerEvents: 'auto',
                 }}
+                // 1. Add onClick to close the modal when clicking the backdrop
+                onClick={handleCloseModal}
               >
                 <form
                   className="d-flex flex-column p-5 bg-light gap-2 rounded"
                   style={{ width: '50vw', minWidth: '300px', zIndex: 1050 }}
                   onSubmit={handleSubmit}
+                  // 2. Add onClick with stopPropagation to keep the form open when clicking inside it
+                  onClick={(e) => e.stopPropagation()}
                 >
                   <h3 className="mb-3">
                     {editingRoom ? 'Edit Room' : 'Add New Room'}
@@ -238,37 +253,41 @@ function EditRoomSchedule() {
                     onChange={handleInputChange}
                     required
                   />
-                  <div className="form-group d-flex align-items-center gap-2">
-                    <label htmlFor="capacity">Capacity:</label>
-                    <input
-                      type="number"
-                      placeholder="Capacity"
-                      className="form-control"
-                      name="capacity"
-                      value={
-                        editingRoom ? editingRoom.capacity : newRoom.capacity
-                      }
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
-                  <div className="form-group d-flex align-items-center gap-2">
-                    <label htmlFor="hourly_rate" className="">
-                      Cost:
-                    </label>
-                    <input
-                      type="number"
-                      placeholder="Hourly Rate"
-                      className="form-control"
-                      name="hourly_rate"
-                      value={
-                        editingRoom
-                          ? editingRoom.hourly_rate
-                          : newRoom.hourly_rate
-                      }
-                      onChange={handleInputChange}
-                      required
-                    />
+                  <div className="form-group d-flex justify-content-between align-items-center">
+                    <div>
+                      <label htmlFor="capacity">Capacity:</label>
+                      <input
+                        type="number"
+                        placeholder="Capacity"
+                        className="form-control"
+                        name="capacity"
+                        min={1}
+                        value={
+                          editingRoom ? editingRoom.capacity : newRoom.capacity
+                        }
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="hourly_rate" className="">
+                        Cost:
+                      </label>
+                      <input
+                        type="number"
+                        placeholder="Hourly Rate"
+                        className="form-control"
+                        name="hourly_rate"
+                        min={0}
+                        value={
+                          editingRoom
+                            ? editingRoom.hourly_rate
+                            : newRoom.hourly_rate
+                        }
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
                   </div>
                   <input
                     type="file"
@@ -291,33 +310,36 @@ function EditRoomSchedule() {
                       />
                     </div>
                   )}
-                  <button
-                    type="submit"
-                    className="btn btn-dark"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? (
-                      <span
-                        className="spinner-border spinner-border-sm"
-                        role="status"
-                        aria-hidden="true"
-                      ></span>
-                    ) : editingRoom ? (
-                      'Update Room'
-                    ) : (
-                      'Add Room'
-                    )}
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    onClick={() => {
-                      if (editingRoom) handleCloseEdit();
-                      else setAddNewRoom(false);
-                    }}
-                  >
-                    Cancel
-                  </button>
+                  <div className="d-flex gap-1 justify-content-end">
+                    <div>
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        onClick={handleCloseModal}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                    <div>
+                      <button
+                        type="submit"
+                        className="btn btn-dark"
+                        disabled={isSubmitting}
+                      >
+                        {isSubmitting ? (
+                          <span
+                            className="spinner-border spinner-border-sm"
+                            role="status"
+                            aria-hidden="true"
+                          ></span>
+                        ) : editingRoom ? (
+                          'Update Room'
+                        ) : (
+                          'Add Room'
+                        )}
+                      </button>
+                    </div>
+                  </div>
                 </form>
               </div>
             )}
