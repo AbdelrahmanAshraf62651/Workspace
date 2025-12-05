@@ -11,26 +11,9 @@ import {
   faClock,
 } from '@fortawesome/free-solid-svg-icons';
 import img from '/images/about/image.png';
-// import { useAbout } from '../contexts/AboutContext';
 import axios from 'axios';
-import { useEffect , useState } from 'react';
+import { useEffect, useState } from 'react';
 import ContactForm from '../components/ContactForm';
-
-// // Helper function to convert 24-hour time to 12-hour format
-// const formatTime = (time24: string): string => {
-//   const [hours, minutes] = time24.split(':');
-//   const hour = parseInt(hours, 10);
-//   const ampm = hour >= 12 ? 'PM' : 'AM';
-//   const hour12 = hour % 12 || 12;
-//   return `${hour12}:${minutes} ${ampm}`;
-// };
-
-// axios.get('https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/location/1').then((response) => {
-//   const data = response.data;
-//   console.log('About Info:', data);
-// }).catch((error) => {
-//   console.error('Error fetching about info:', error);
-// });
 
 interface AboutInfo {
   id: number;
@@ -39,37 +22,32 @@ interface AboutInfo {
   contact_email: string;
   location_link: string;
   opening_hours: {
-    monday: { open: string; close: string, isOpen: boolean };
-    tuesday: { open: string; close: string, isOpen: boolean };
-    wednesday: { open: string; close: string, isOpen: boolean };
-    thursday: { open: string; close: string, isOpen: boolean };
-    friday: { open: string; close: string, isOpen: boolean };
-    saturday: { open: string; close: string, isOpen: boolean };
-    sunday: { open: string; close: string, isOpen: boolean };
+    monday: { open: string; close: string; isOpen: boolean };
+    tuesday: { open: string; close: string; isOpen: boolean };
+    wednesday: { open: string; close: string; isOpen: boolean };
+    thursday: { open: string; close: string; isOpen: boolean };
+    friday: { open: string; close: string; isOpen: boolean };
+    saturday: { open: string; close: string; isOpen: boolean };
+    sunday: { open: string; close: string; isOpen: boolean };
   };
   facebook: string;
   twitter: string;
   linkedin: string;
-  // Add other fields as necessary
 }
 
 function About() {
   const [aboutInfo, setAboutInfo] = useState<AboutInfo | null>(null);
   useEffect(() => {
     axios
-      .get(
-        'https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/location/1'
-      )
+      .get('https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/location/1')
       .then((response) => {
         setAboutInfo(response.data);
         console.log('About Info:', response.data);
-      }
-      )
+      })
       .catch((error) => {
         console.error('Error fetching about info:', error);
       });
   }, []);
-  // const { settings } = useAbout();
   return (
     <main className="container pt-5 about-page">
       <div className="hero-section d-flex flex-column flex-lg-row align-items-center justify-content-between p-3 p-lg-4 rounded gap-5 gap-lg-3">
@@ -122,17 +100,35 @@ function About() {
                 <hr />
                 <div className="d-flex gap-3">
                   {aboutInfo?.facebook && (
-                    <a href={aboutInfo.facebook} target="_blank" aria-label="Facebook">
-                      <FontAwesomeIcon className="fs-4 me-2" icon={faFacebookF} />
+                    <a
+                      href={aboutInfo.facebook}
+                      target="_blank"
+                      aria-label="Facebook"
+                    >
+                      <FontAwesomeIcon
+                        className="fs-4 me-2"
+                        icon={faFacebookF}
+                      />
                     </a>
                   )}
                   {aboutInfo?.twitter && (
-                    <a href={aboutInfo.twitter} target="_blank" aria-label="Twitter">
-                      <FontAwesomeIcon className="fs-4 me-2" icon={faXTwitter} />
+                    <a
+                      href={aboutInfo.twitter}
+                      target="_blank"
+                      aria-label="Twitter"
+                    >
+                      <FontAwesomeIcon
+                        className="fs-4 me-2"
+                        icon={faXTwitter}
+                      />
                     </a>
                   )}
                   {aboutInfo?.linkedin && (
-                    <a href={aboutInfo.linkedin} target="_blank" aria-label="LinkedIn">
+                    <a
+                      href={aboutInfo.linkedin}
+                      target="_blank"
+                      aria-label="LinkedIn"
+                    >
                       <FontAwesomeIcon
                         className="fs-4 me-2"
                         icon={faLinkedinIn}
@@ -147,37 +143,45 @@ function About() {
             <div className="p-3 border rounded-1 h-100 d-flex flex-column justify-content-between w-100 shadow-sm">
               <div>
                 <p className="fs-3 fw-bold pb-2">Opening Hours</p>
-                {Object.entries(aboutInfo?.opening_hours || {}).map(([day, schedule]) => {
-                  const dayLabels: { [key: string]: string } = {
-                    monday: 'Monday',
-                    tuesday: 'Tuesday',
-                    wednesday: 'Wednesday',
-                    thursday: 'Thursday',
-                    friday: 'Friday',
-                    saturday: 'Saturday',
-                    sunday: 'Sunday',
-                  };
-                  const dayLabel = dayLabels[day] || day;
-                  
-                  return schedule.isOpen ? (
-                    <div key={day} className="d-flex gap-2 align-items-center mb-2">
-                      <FontAwesomeIcon icon={faClock} />
-                      <div>
-                        {dayLabel}:{' '}
-                        <span className="ms-2">
-                          {schedule.open} - {schedule.close}
-                        </span>
+                {Object.entries(aboutInfo?.opening_hours || {}).map(
+                  ([day, schedule]) => {
+                    const dayLabels: { [key: string]: string } = {
+                      monday: 'Monday',
+                      tuesday: 'Tuesday',
+                      wednesday: 'Wednesday',
+                      thursday: 'Thursday',
+                      friday: 'Friday',
+                      saturday: 'Saturday',
+                      sunday: 'Sunday',
+                    };
+                    const dayLabel = dayLabels[day] || day;
+
+                    return schedule.isOpen ? (
+                      <div
+                        key={day}
+                        className="d-flex gap-2 align-items-center mb-2"
+                      >
+                        <FontAwesomeIcon icon={faClock} />
+                        <div>
+                          {dayLabel}:{' '}
+                          <span className="ms-2">
+                            {schedule.open} - {schedule.close}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  ) : (
-                    <div key={day} className="d-flex gap-2 align-items-center mb-2">
-                      <FontAwesomeIcon icon={faClock} />
-                      <div>
-                        {dayLabel}: <span className="ms-2">Closed</span>
+                    ) : (
+                      <div
+                        key={day}
+                        className="d-flex gap-2 align-items-center mb-2"
+                      >
+                        <FontAwesomeIcon icon={faClock} />
+                        <div>
+                          {dayLabel}: <span className="ms-2">Closed</span>
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  }
+                )}
                 <div className="d-flex gap-2 align-items-center">
                   <FontAwesomeIcon icon={faClock} />
                   <div>

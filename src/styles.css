@@ -234,7 +234,7 @@ footer a:hover {
     background-color: rgb(219, 219, 219);
 }
 
-.active-category{
+.active-category {
     background-color: black !important;
     color: #fff !important;
 }
@@ -249,4 +249,42 @@ footer a:hover {
     .chart-style {
         width: 50% !important;
     }
+}
+
+/* Footer styles */
+.footer {
+    background-color: #f8f9fa;
+    color: #6c757d;
+}
+
+.footer h5 {
+    color: #343a40;
+    margin-bottom: 20px;
+}
+
+.footer-links a {
+    color: #6c757d;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-links a:hover {
+    color: #000;
+}
+
+.social-icons a {
+    color: #6c757d;
+    margin-right: 15px;
+    font-size: 1.5rem;
+    transition: color 0.3s;
+}
+
+.social-icons a:hover {
+    color: #000;
+}
+
+.footer-bottom {
+    border-top: 1px solid #dee2e6;
+    padding-top: 20px;
+    margin-top: 20px;
 }

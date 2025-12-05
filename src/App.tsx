@@ -98,7 +98,10 @@ const AppContent = () => {
           <Route path="*" element={<NotFound />} />
           <Route path="/" element={<Home />} />
           <Route path="/cafe" element={<Cafe />} />
-          <Route path="/booking" element={<Booking />} />
+          <Route
+            path="/booking"
+            element={localStorage.getItem('role') ? <Booking /> : <NotFound />}
+          />
           <Route path="/about" element={<About />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/profile" element={<Profile />} />
@@ -125,9 +128,7 @@ const AppContent = () => {
 function App() {
   return (
     <Router>
-      {/* <UserImageContext.Provider value={null}> */}
       <AppContent />
-      {/* </UserImageContext.Provider> */}
     </Router>
   );
 }
