@@ -44,3 +44,8 @@ export interface GalleryImage {
   description: string;
   isVisible: boolean;
 }
+
+export interface RoomAnalytics {
+  name: string;
+  total_bookings: number;
+}
