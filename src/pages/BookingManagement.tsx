@@ -233,21 +233,15 @@ function BookingManagement() {
                 ) : rooms.length > 0 ? (
                   rooms.map((room) => (
                     <tr key={room.id}>
+                      <td className="text-center">{room.user_name}</td>
+                      <td className="text-center">{room.room_name}</td>
                       <td className="text-center">
-                        <strong>{room.user_name}</strong>
+                        {formatDate(room.start_time)}
                       </td>
                       <td className="text-center">
-                        <strong>{room.room_name}</strong>
+                        {formatDate(room.end_time)}
                       </td>
-                      <td className="text-center">
-                        <strong>{formatDate(room.start_time)}</strong>
-                      </td>
-                      <td className="text-center">
-                        <strong>{formatDate(room.end_time)}</strong>
-                      </td>
-                      <td className="text-center">
-                        <strong>${room.cost}</strong>
-                      </td>
+                      <td className="text-center">${room.cost}</td>
                       <td className="text-center">
                         <div className="d-flex align-items-center justify-content-center">
                           <p

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Table } from 'react-bootstrap';
+import { Table, Modal, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faTrash,
@@ -52,7 +52,9 @@ function EditRoomSchedule() {
     status: 'unavailable',
     image: '',
   });
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     if (editingRoom) {
       setEditingRoom((prevRoom) => ({
@@ -174,10 +176,7 @@ function EditRoomSchedule() {
   };
 
   return (
-    <div
-      className="container pt-5"
-      style={{ pointerEvents: addNewRoom || editingRoom ? 'none' : 'auto' }}
-    >
+    <div className="container pt-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
           <h1 className="fw-bold">Rooms</h1>
@@ -197,65 +196,87 @@ function EditRoomSchedule() {
       <div className="shadow-sm">
         <div className="p-0">
           <div className="table-responsive rounded">
-            {(addNewRoom || editingRoom) && (
-              <div
-                className="position-fixed bottom-0 end-0 top-0 start-0 bg-black bg-opacity-75 p-3 rounded-bottom d-flex flex-column justify-content-center align-items-center "
-                style={{
-                  height: '100vh',
-                  zIndex: 1040,
-                  pointerEvents: 'auto',
-                }}
-                onClick={handleCloseModal}
-              >
+            <Modal
+              show={addNewRoom || !!editingRoom}
+              onHide={handleCloseModal}
+              centered
+              size="lg"
+            >
+              <Modal.Header closeButton>
+                <Modal.Title className="fw-bold">
+                  {editingRoom ? 'Edit Room' : 'Add New Room'}
+                </Modal.Title>
+              </Modal.Header>
+
+              <Modal.Body>
                 <form
-                  className="d-flex flex-column p-5 bg-light gap-2 rounded"
-                  style={{ width: '50vw', minWidth: '300px', zIndex: 1050 }}
+                  id="room-form"
+                  className="d-flex flex-column gap-3"
                   onSubmit={handleSubmit}
-                  onClick={(e) => e.stopPropagation()}
                 >
-                  <h3 className="mb-3">
-                    {editingRoom ? 'Edit Room' : 'Add New Room'}
-                  </h3>
-                  <input
-                    type="text"
-                    placeholder="Name"
-                    className="form-control"
-                    name="name"
-                    value={editingRoom ? editingRoom.name : newRoom.name}
-                    onChange={handleInputChange}
-                    required
-                  />
-                  <input
-                    type="text"
-                    placeholder="Type"
-                    className="form-control"
-                    name="type"
-                    value={editingRoom ? editingRoom.type : newRoom.type}
-                    onChange={handleInputChange}
-                    required
-                  />
-                  <input
-                    type="text"
-                    placeholder="Description"
-                    className="form-control"
-                    name="room_description"
-                    value={
-                      editingRoom
-                        ? editingRoom.room_description
-                        : newRoom.room_description
-                    }
-                    onChange={handleInputChange}
-                    required
-                  />
-                  <div className="form-group d-flex justify-content-between align-items-center">
-                    <div>
-                      <label htmlFor="capacity">Capacity:</label>
+                  {/* Name & Type */}
+                  <div className="row g-3">
+                    <div className="col-md-6">
+                      <label className="form-label fw-semibold">
+                        Room Name
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Enter room name"
+                        name="name"
+                        value={editingRoom ? editingRoom.name : newRoom.name}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
+
+                    <div className="col-md-6">
+                      <label className="form-label fw-semibold">
+                        Room Type
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Conference, Study, etc."
+                        name="type"
+                        value={editingRoom ? editingRoom.type : newRoom.type}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  {/* Description */}
+                  <div>
+                    <label className="form-label fw-semibold">
+                      Description
+                    </label>
+                    <textarea
+                      className="form-control"
+                      name="room_description"
+                      rows={3}
+                      placeholder="Write a short room description..."
+                      value={
+                        editingRoom
+                          ? editingRoom.room_description
+                          : newRoom.room_description
+                      }
+                      onChange={handleInputChange}
+                      required
+                    ></textarea>
+                  </div>
+
+                  {/* Capacity & Cost */}
+                  <div className="row g-3">
+                    <div className="col-md-6">
+                      <label className="form-label fw-semibold">Capacity</label>
                       <input
                         type="number"
-                        placeholder="Capacity"
+                        min={1}
                         className="form-control"
                         name="capacity"
-                        min={1}
+                        placeholder="Number of people"
                         value={
                           editingRoom ? editingRoom.capacity : newRoom.capacity
                         }
@@ -263,16 +284,17 @@ function EditRoomSchedule() {
                         required
                       />
                     </div>
-                    <div>
-                      <label htmlFor="hourly_rate" className="">
-                        Cost:
+
+                    <div className="col-md-6">
+                      <label className="form-label fw-semibold">
+                        Cost per Hour
                       </label>
                       <input
                         type="number"
-                        placeholder="Hourly Rate"
+                        min={0}
                         className="form-control"
                         name="hourly_rate"
-                        min={0}
+                        placeholder="EGP / hour"
                         value={
                           editingRoom
                             ? editingRoom.hourly_rate
@@ -283,71 +305,82 @@ function EditRoomSchedule() {
                       />
                     </div>
                   </div>
-                  <input
-                    type="file"
-                    name="Image"
-                    id="image"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                  />
-                  {editingRoom && editingRoom.image && (
-                    <div>
-                      <small className="text-muted">Current image:</small>
-                      <img
-                        src={editingRoom.image}
-                        alt="Current"
-                        style={{
-                          maxWidth: '100px',
-                          maxHeight: '100px',
-                          marginTop: '5px',
-                        }}
-                      />
-                    </div>
-                  )}
-                  <div className="d-flex gap-1 justify-content-end">
-                    <div>
-                      <button
-                        type="button"
-                        className="btn btn-secondary"
-                        onClick={handleCloseModal}
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                    <div>
-                      <button
-                        type="submit"
-                        className="btn btn-dark"
-                        disabled={isSubmitting}
-                      >
-                        {isSubmitting ? (
-                          <span
-                            className="spinner-border spinner-border-sm"
-                            role="status"
-                            aria-hidden="true"
-                          ></span>
-                        ) : editingRoom ? (
-                          'Update Room'
-                        ) : (
-                          'Add Room'
-                        )}
-                      </button>
-                    </div>
+
+                  {/* Image Upload */}
+                  <div>
+                    <label className="form-label fw-semibold">Room Image</label>
+                    <input
+                      type="file"
+                      className="form-control"
+                      name="Image"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                    />
+
+                    {editingRoom && editingRoom.image && (
+                      <div className="mt-2">
+                        <small className="text-muted">Current Image:</small>
+                        <br />
+                        <img
+                          src={editingRoom.image}
+                          alt="Room"
+                          className="rounded border mt-1"
+                          style={{
+                            maxWidth: '120px',
+                            maxHeight: '120px',
+                            objectFit: 'cover',
+                          }}
+                        />
+                      </div>
+                    )}
                   </div>
                 </form>
-              </div>
-            )}
+              </Modal.Body>
+
+              <Modal.Footer>
+                <Button
+                  variant="secondary"
+                  onClick={handleCloseModal}
+                  className="px-4"
+                >
+                  Cancel
+                </Button>
+
+                <Button
+                  variant="dark"
+                  type="submit"
+                  form="room-form"
+                  disabled={isSubmitting}
+                  className="px-4"
+                >
+                  {isSubmitting ? (
+                    <span
+                      className="spinner-border spinner-border-sm"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                  ) : editingRoom ? (
+                    'Update Room'
+                  ) : (
+                    'Add Room'
+                  )}
+                </Button>
+              </Modal.Footer>
+            </Modal>
+
             <Table className="table table-hover mb-0">
               <thead className="table-dark">
                 <tr>
-                  <th className='text-center'>Name</th>
-                  <th className='text-center'>Image</th>
-                  <th className='text-center'>Type</th>
-                  <th className='text-center'>Description</th>
-                  <th className='text-center'>Capacity</th>
-                  <th className='text-center'>Hourly Rate</th>
-                  <th className='text-center'>Status</th>
-                  <th className='text-center' style={{ width: '150px' }}>Actions</th>
+                  <th className="text-center">Name</th>
+                  <th className="text-center">Image</th>
+                  <th className="text-center">Type</th>
+                  <th className="text-center">Description</th>
+                  <th className="text-center">Capacity</th>
+                  <th className="text-center">Hourly Rate</th>
+                  <th className="text-center">Status</th>
+                  <th className="text-center" style={{ width: '150px' }}>
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -362,12 +395,10 @@ function EditRoomSchedule() {
                     </td>
                   </tr>
                 ) : rooms.length > 0 ? (
-                  rooms.slice(-5).map((room) => (
+                  rooms.map((room) => (
                     <tr key={room.id} className="align-middle">
-                      <td className='text-center'>
-                        <strong>{room.name}</strong>
-                      </td>
-                      <td className='text-center'>
+                      <td className="text-center">{room.name}</td>
+                      <td className="text-center">
                         <img
                           src={room.image}
                           alt={room.name}
@@ -378,19 +409,13 @@ function EditRoomSchedule() {
                           }}
                         />
                       </td>
-                      <td className='text-center'>
-                        <strong>{room.type}</strong>
+                      <td className="text-center">{room.type}</td>
+                      <td className="text-center">{room.room_description}</td>
+                      <td className="text-center">{room.capacity} Person</td>
+                      <td className="text-center">
+                        {room.hourly_rate.toFixed(2)} EGP
                       </td>
-                      <td className='text-center'>
-                        <strong>{room.room_description}</strong>
-                      </td>
-                      <td className='text-center'>
-                        <strong>{room.capacity} Person</strong>
-                      </td>
-                      <td className='text-center'>
-                        <strong>{room.hourly_rate} EGP</strong>
-                      </td>
-                      <td className='text-center'>
+                      <td className="text-center">
                         <div className="form-check form-switch text-center d-flex justify-content-center">
                           <input
                             className="form-check-input"
@@ -404,7 +429,7 @@ function EditRoomSchedule() {
                           />
                         </div>
                       </td>
-                      <td className='text-center'>
+                      <td className="text-center">
                         <div className="btn-group" role="group">
                           <button
                             className="btn btn-outline-primary"
