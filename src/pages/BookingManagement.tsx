@@ -241,7 +241,7 @@ function BookingManagement() {
                       <td className="text-center">
                         {formatDate(room.end_time)}
                       </td>
-                      <td className="text-center">${room.cost}</td>
+                      <td className="text-center">{room.cost} EGP</td>
                       <td className="text-center">
                         <div className="d-flex align-items-center justify-content-center">
                           <p
@@ -301,8 +301,6 @@ function BookingManagement() {
           </div>
         </div>
       </div>
-
-      {/* Add/Edit UI removed */}
     </div>
   );
 }
