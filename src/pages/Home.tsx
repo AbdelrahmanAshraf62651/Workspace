@@ -86,7 +86,8 @@ const loggedOutCards: HomeCardData[] = [
 function Home() {
   const [isUserLoggedIn] = useState<boolean>(() =>
     typeof window !== 'undefined'
-      ? localStorage.getItem('isUserLoggedIn') === 'true'
+      ? localStorage.getItem('role') === 'admin' ||
+        localStorage.getItem('role') === 'user'
       : false
   );
 
@@ -109,7 +110,10 @@ function Home() {
             collaboration.
           </p>
           <div className="buttons position-relative text-start">
-            <Link to={isUserLoggedIn ? '/booking' : '/login'} className="btn btn-lg btn-dark me-2">
+            <Link
+              to={isUserLoggedIn ? '/booking' : '/login'}
+              className="btn btn-lg btn-dark me-2"
+            >
               Book Now
             </Link>
             <Link to="/gallery" className="btn btn-lg btn-light">
