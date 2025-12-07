@@ -360,7 +360,7 @@ function EditRoomSchedule() {
                       aria-hidden="true"
                     ></span>
                   ) : editingRoom ? (
-                    'Update Room'
+                    'Save Changes'
                   ) : (
                     'Add Room'
                   )}

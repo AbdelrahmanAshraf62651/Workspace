@@ -14,6 +14,7 @@ import img from '/images/about/image.png';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import ContactForm from '../components/ContactForm';
+import { Link } from 'react-router-dom';
 
 interface AboutInfo {
   id: number;
@@ -59,7 +60,12 @@ function About() {
             collaborative co-working spaces, we provide an environment where
             your ideas can thrive.
           </p>
-          <button className="sec-btn btn-lg rounded-1">Discover More</button>
+          <Link
+            className="sec-btn btn-lg rounded-1 text-light text-decoration-none"
+            to="/"
+          >
+            Discover More
+          </Link>
         </div>
         <div className="col-12 col-lg-6 pe-lg-3">
           <img src={img} alt="landscape" className="img-fluid rounded-2" />

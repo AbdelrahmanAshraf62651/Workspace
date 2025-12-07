@@ -1,4 +1,4 @@
-import { Modal, Form, Spinner } from 'react-bootstrap';
+import { Modal, Form, Spinner, Button } from 'react-bootstrap';
 import type { GalleryImage } from '../types';
 
 interface AddEditImageModalProps {
@@ -122,35 +122,19 @@ function AddEditImageModal({
         </Modal.Body>
 
         <Modal.Footer>
-          <button
-            className="btn btn-light"
-            type="button"
-            onClick={onHide}
-            disabled={isSubmitting}
-          >
+          <Button variant="secondary" onClick={onHide} className="px-4">
             Cancel
-          </button>
+          </Button>
 
-          <button
-            className="btn btn-dark d-flex align-items-center gap-2"
-            type="submit"
-            disabled={isSubmitting}
-          >
+          <Button variant="dark" type="submit" disabled={isSubmitting}>
             {isSubmitting ? (
               <>
-                <Spinner
-                  as="span"
-                  // animation="border"
-                  size="sm"
-                  role="status"
-                  aria-hidden="true"
-                />
-                <span>Saving...</span>
+                <Spinner as="span" size="sm" role="status" aria-hidden="true" />
               </>
             ) : (
               'Save Changes'
             )}
-          </button>
+          </Button>
         </Modal.Footer>
       </Form>
     </Modal>

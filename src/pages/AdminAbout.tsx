@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Form } from 'react-bootstrap';
+import { Button, Form, Toast } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,9 +15,6 @@ const DAYS = [
 
 function AdminAbout() {
   const navigate = useNavigate();
-
-  // const [aboutData, setAboutData] = useState(null);
-
   const [address, setAddress] = useState('');
   const [contactPhone, setContactPhone] = useState('');
   const [contactEmail, setContactEmail] = useState('');
@@ -25,6 +22,7 @@ function AdminAbout() {
   const [facebook, setFacebook] = useState('');
   const [twitter, setTwitter] = useState('');
   const [linkedin, setLinkedin] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const [openingHours, setOpeningHours] = useState({
     monday: { id: 1, isOpen: false, openTime: '10AM', closeTime: '7PM' },
@@ -37,6 +35,8 @@ function AdminAbout() {
   });
 
   const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastVariant, setToastVariant] = useState('success');
 
   // Fetch Data Once
   useEffect(() => {
@@ -44,7 +44,6 @@ function AdminAbout() {
       .get('https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/location/1')
       .then((response) => {
         const data = response.data;
-        // setAboutData(data);
 
         setAddress(data.address || '');
         setContactPhone(data.contact_phone || '');
@@ -57,18 +56,21 @@ function AdminAbout() {
       })
       .catch((error) => {
         console.error('Error fetching about info:', error);
+        setToastMessage('Error fetching data.');
+        setToastVariant('danger');
+        setShowToast(true);
       });
   }, []);
 
-  // Auto-hide toast
   useEffect(() => {
     if (showToast) {
-      const timer = setTimeout(() => setShowToast(false), 2000);
+      const timer = setTimeout(() => setShowToast(false), 3000);
       return () => clearTimeout(timer);
     }
   }, [showToast]);
 
   const handleSave = () => {
+    setLoading(true);
     axios
       .patch('https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/location/1', {
         address,
@@ -81,14 +83,18 @@ function AdminAbout() {
         linkedin,
       })
       .then(() => {
+        setToastMessage('Settings saved successfully!');
+        setToastVariant('success');
         setShowToast(true);
-
-        const btn = document.querySelector('.sec-btn');
-        btn?.classList.add('saved');
-        setTimeout(() => btn?.classList.remove('saved'), 600);
       })
       .catch((error) => {
         console.error('Error saving settings:', error);
+        setToastMessage('Error saving settings.');
+        setToastVariant('danger');
+        setShowToast(true);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -98,22 +104,18 @@ function AdminAbout() {
 
   return (
     <div className="container pt-5">
-      <div
-        className={`toast position-fixed bottom-0 end-0 m-3 text-bg-success shadow-lg ${
-          showToast ? 'show' : 'hide'
-        }`}
-        style={{ transition: '0.4s' }}
-      >
-        <div className="toast-body fw-semibold">
-          Settings saved successfully!
-        </div>
-      </div>
-
       <div className="mb-4">
         <h1 className="fw-bold">About Settings</h1>
         <p className="text-muted">Manage your business public profile.</p>
       </div>
-
+      <Toast
+        show={showToast}
+        onClose={() => setShowToast(false)}
+        className="position-fixed bottom-0 end-0 m-3 shadow-lg"
+        bg={toastVariant}
+      >
+        <Toast.Body className="text-white">{toastMessage}</Toast.Body>
+      </Toast>
       <div className="shadow-sm mb-4 p-4">
         {/* Location */}
         <h5 className="fw-bold mb-3">Location Settings</h5>
@@ -270,20 +272,24 @@ function AdminAbout() {
 
       {/* Action Buttons */}
       <div className="d-flex justify-content-end gap-3">
-        <button
-          className="btn main-btn"
+        <Button
+          variant="secondary"
           onClick={handleCancel}
           disabled={!hasChanges}
         >
           Cancel
-        </button>
-        <button
-          className="btn sec-btn"
-          onClick={handleSave}
-          disabled={!hasChanges}
-        >
-          Save Settings
-        </button>
+        </Button>
+        <Button variant="dark" onClick={handleSave} disabled={!hasChanges}>
+          {loading ? (
+            <span
+              className="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>
+          ) : (
+            'Save Settings'
+          )}
+        </Button>
       </div>
     </div>
   );
