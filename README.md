@@ -1,5 +1,4 @@
-# Workspace Manager
-
+# SpaceX
 A comprehensive workspace booking and management system built with React, TypeScript, and Bootstrap. This application provides a modern solution for managing co-working spaces, meeting rooms, and cafe services.
 
 ## Table of Contents
