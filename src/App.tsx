@@ -22,7 +22,6 @@ import AdminGalleryManagement from './pages/AdminGalleryManagement';
 import AdminAbout from './pages/AdminAbout';
 import NotFound from './pages/NotFound';
 import { useEffect, useState } from 'react';
-import AdminLogin from './pages/AdminLogin';
 import CafeManagement from './pages/CafeManagement';
 import BookingManagement from './pages/BookingManagement';
 import ContactMessagesManagement from './pages/ContactMessagesManagement';
@@ -67,17 +66,6 @@ const AppContent = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          {/* =================== admin sections =======================*/}
-          <Route
-            path="/admin-login"
-            element={
-              localStorage.getItem('role') === 'admin' ? (
-                <AdminDashboard />
-              ) : (
-                <AdminLogin />
-              )
-            }
-          />
           <Route path="/dashboard" element={<AdminDashboard />} />
           <Route path="/access-history" element={<AccessHistory />} />
           <Route path="/edit-room-schedule" element={<EditRoomSchedule />} />
@@ -107,17 +95,6 @@ const AppContent = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          {/* =================== admin sections =======================*/}
-          <Route
-            path="/admin-login"
-            element={
-              localStorage.getItem('role') === 'admin' ? (
-                <AdminDashboard />
-              ) : (
-                <AdminLogin />
-              )
-            }
-          />
         </Routes>
       )}
       {showLayout && <Footer />}
