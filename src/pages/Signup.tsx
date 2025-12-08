@@ -36,9 +36,30 @@ function Signup() {
           return response.json();
         })
         .then((data) => {
-          localStorage.setItem('authToken', data.auth_token);
-          setIsLoading(false);
-          navigate('/');
+          // Your API returns:
+          // { "authToken": "token", "role": "customer" }
+
+          localStorage.setItem('authToken', data.authToken);
+          localStorage.setItem('role', data.role);
+          localStorage.setItem('userId', JSON.stringify(data.userId));
+          fetch('https://x8ki-letl-twmt.n7.xano.io/api:VprH3nkO/auth/me', {
+            headers: {
+              Authorization: `Bearer ${data.authToken}`,
+            },
+          })
+            .then((response) => response.json())
+            .then((user) => {
+              localStorage.setItem('user_id', user.id);
+              localStorage.setItem('user_name', user.name);
+
+              setIsLoading(false);
+
+              if (data.role === 'admin') {
+                navigate('/dashboard');
+              } else {
+                navigate('/');
+              }
+            });
         })
         .catch((error) => {
           setError(error.message);
