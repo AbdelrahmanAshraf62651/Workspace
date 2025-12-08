@@ -104,7 +104,9 @@ const AppContent = () => {
           />
           <Route path="/about" element={<About />} />
           <Route path="/gallery" element={<Gallery />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={
+            localStorage.getItem("role") === "admin" || localStorage.getItem("role") === "user" ? (<Profile />) : (<NotFound />)
+          } />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           {/* =================== admin sections =======================*/}
